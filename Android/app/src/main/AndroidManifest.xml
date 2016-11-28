@@ -44,7 +44,8 @@
 
         <activity
             android:name=".ramstalk.co.jp.project.activity.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".ramstalk.co.jp.project.activity.RegistUserActivity"></activity>
     </application>
 
 </manifest>

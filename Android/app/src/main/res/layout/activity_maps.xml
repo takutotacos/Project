@@ -5,4 +5,4 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ramstalk.co.jp.project.ramstalk.co.jp.project.activity.MapsActivity" />
+    tools:context=".ramstalk.co.jp.project.activity.Activity.MapsActivity" />

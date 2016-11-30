@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ramstalk.co.jp.project.activity.LoginActivity">
+    tools:context=".ramstalk.co.jp.project.activity.Activity.LoginActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -91,7 +91,6 @@
                 android:id="@+id/login_singup_link"
                 android:text="@string/login_signup_link"
                 android:autoLink="all"/>
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

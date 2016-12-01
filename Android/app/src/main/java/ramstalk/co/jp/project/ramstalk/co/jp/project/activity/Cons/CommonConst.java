@@ -10,4 +10,17 @@ public class CommonConst {
         public static final String SHARED_PREFERENCES = "Project";
 
     }
+
+    public class ActivityName {
+
+        public static final String TAG_LOGIN_ACTIVITY = "LoginActivity";
+    }
+
+    public class UrlForPhp {
+
+        private static final String APACHE_SERVER_IP = "http://10.0.2.2/";
+
+        public static final String LOGIN_NORMAL_PHP = APACHE_SERVER_IP + "login_normal_way.php";
+
+    }
 }

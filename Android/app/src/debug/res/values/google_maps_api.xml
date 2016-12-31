@@ -16,10 +16,10 @@
     string in this file.
     -->
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyAPQgLrviezS8Phw0oKzPQ47tu6G-7Z4FM
         <!-- TODO: google map api key needed
             ・APIの取得に際して、色々なモードがあるらしい。（例、デバッグモード）
             →アプリを公開するにはデバッグモードじゃない方がセキュリティ的にいいらしい。って書いてあったから、そこを調べてもらって、都合の良い奴を取得してほしい。
          -->
-        YOUR_KEY_HERE
     </string>
 </resources>

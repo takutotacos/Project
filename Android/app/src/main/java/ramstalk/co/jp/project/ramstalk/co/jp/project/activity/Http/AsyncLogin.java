@@ -27,6 +27,7 @@ public class AsyncLogin extends AsyncTask<Void, Void, JSONObject> {
     private String mPassword;
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient client = new OkHttpClient();
+
     public AsyncLogin(AsyncResponse delegate, String email, String password) {
         this.delegate = delegate;
         this.mEmail = email;
@@ -74,5 +75,7 @@ public class AsyncLogin extends AsyncTask<Void, Void, JSONObject> {
     public void onPostExecute(JSONObject result) {
         delegate.processFinish(result);
     }
+
+
 
 }

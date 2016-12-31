@@ -17,8 +17,10 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +43,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private CheckBox mCheckBox;
     private View mProgressView;
     private View mLoginFormView;
     private SharedPreferences sharedPreferences;
@@ -51,10 +54,14 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.login_email);
-
         sharedPreferences = getApplicationContext().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         sharedPreferencesEditor = sharedPreferences.edit();
+        if(isUserRemembered()){
+            Log.i(TAG, "The user has been kept logged in.");
+            proceedToActivity(MapsActivity.class);
+        }
+        mCheckBox = (CheckBox) findViewById(R.id.login_remember_checkbox);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.login_email);
         mPasswordView = (EditText) findViewById(R.id.login_password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -183,22 +190,41 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void processFinish(JSONObject output) {
+        finish();
         if(output != null) {
             String email = null;
             try {
                 email = output.getString("email");
-                Log.i(TAG, "USER EMAIL: " + email);
             } catch(JSONException e) {
                 Log.e(TAG, "JSON Exception happens: " + e.getCause());
             }
-            Intent intent = new Intent(this, MapsActivity.class);
-            startActivity(intent);
-            Log.i(TAG, "MapActivity will start soon.");
-            finish();
+            if(mCheckBox.isChecked()) {
+                keepUserLoggedIn();
+            }
+            proceedToActivity(MapsActivity.class);
         } else {
             Log.e(TAG, "Null output is returned.");
-            mAuthTask.cancel(true);
+            // go back to the login screen with the message saying "the combination of email and password does not match any records"
+            String message = getString(R.string.login_failed);
+            startActivity(getIntent());
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
+    }
+    private boolean isUserRemembered() {
+        boolean isUserRemembered = sharedPreferences.getBoolean(CommonConst.StatusOfUser.IS_USER_REMEMBERED, false);
+        Log.i(TAG, "Has the user been kept logged in: " + isUserRemembered);
+        return isUserRemembered;
+    }
+
+    private void proceedToActivity(Class activity) {
+        Intent intent = new Intent(this, activity);
+        Log.i(TAG, "The next activity is: " + activity);
+        startActivity(intent);
+    }
+
+    private void keepUserLoggedIn() {
+        Log.i(TAG, "The user has just been kept logged in.");
+        sharedPreferencesEditor.putBoolean(CommonConst.StatusOfUser.IS_USER_REMEMBERED, true);
     }
 }
 

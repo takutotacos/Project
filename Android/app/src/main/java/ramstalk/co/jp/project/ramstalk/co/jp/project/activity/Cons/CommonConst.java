@@ -23,4 +23,8 @@ public class CommonConst {
         public static final String LOGIN_NORMAL_PHP = APACHE_SERVER_IP + "login_normal_way.php";
 
     }
+
+    public class StatusOfUser {
+        public static final String IS_USER_REMEMBERED = "isUserRemembered";
+    }
 }

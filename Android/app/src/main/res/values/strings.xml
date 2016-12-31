@@ -11,8 +11,8 @@
     <string name="login_remember_me">Remember me</string>
     <string name="login_signup_link"><a href="#">Sign up</a></string>
     <string name="login_logo">Login here</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="login_failed">The combination of email and password does not match any record.</string>
+    <string name="logout_button">Logout</string>
     <string name="title_activity_maps">Map</string>
+
 </resources>

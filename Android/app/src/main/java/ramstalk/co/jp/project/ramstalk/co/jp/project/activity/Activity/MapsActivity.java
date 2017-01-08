@@ -11,10 +11,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import ramstalk.co.jp.project.R;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncGetInfoOnMap;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private static String TAG = CommonConst.ActivityName.TAG_MAPS_ACTIVITY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        /**
+         * @Todo
+         * 1. get where you are
+         * 2. set the distance away from where you are to get infos of
+         * 3. get the infos
+         * 4. display them
+         * 5. when user changes his or her location, update the info
+         */
     }
 
 
@@ -39,6 +51,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        AsyncGetInfoOnMap getInfoOnMap = new AsyncGetInfoOnMap(this, googleMap);
+        getInfoOnMap.execute();
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);

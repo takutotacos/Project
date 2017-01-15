@@ -47,7 +47,9 @@
             android:name=".ramstalk.co.jp.project.activity.Activity.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".ramstalk.co.jp.project.activity.Activity.RegistUserActivity" />
-        <activity android:name=".ramstalk.co.jp.project.activity.Activity.SampleActivity"></activity>
+        <activity
+            android:name=".ramstalk.co.jp.project.activity.Activity.ShowImage"
+            android:theme="@style/Theme.AppCompat.Translucent"/>
     </application>
 
 </manifest>

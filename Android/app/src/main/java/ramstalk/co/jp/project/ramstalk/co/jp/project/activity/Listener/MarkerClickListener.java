@@ -6,6 +6,8 @@ import android.content.Intent;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
+import java.util.HashMap;
+
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.ShowImage;
 
 /**
@@ -13,25 +15,24 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.ShowImage
  */
 public class MarkerClickListener implements GoogleMap.OnMarkerClickListener {
     Activity activity = null;
-    String userId = null;
-    String createDate = null;
+    HashMap<String, String> imgInfos = new HashMap<String, String>();
 
-    public MarkerClickListener(Activity activity, String userId, String createDate) {
+    public MarkerClickListener(Activity activity, HashMap<String, String> imgInfos) {
         this.activity = activity;
-        this.userId = userId;
-        this.createDate = createDate;
+        this.imgInfos = imgInfos;
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        showImageActivity(userId, createDate);
+        String tag = (String) marker.getTag();
+        showImageActivity(imgInfos, tag);
         return true;
     }
 
-    private void showImageActivity(String userId, String createDate) {
+    private void showImageActivity(HashMap<String, String> imgInfos, String tag) {
         Intent intent = new Intent(activity, ShowImage.class);
-        intent.putExtra("userId", userId);
-        intent.putExtra("createDate", createDate);
+        String imgInfo = imgInfos.get(tag);
+        intent.putExtra("imgInfo", imgInfo);
         activity.startActivity(intent);
     }
 

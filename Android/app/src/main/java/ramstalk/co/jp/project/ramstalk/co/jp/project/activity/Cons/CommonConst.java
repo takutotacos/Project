@@ -17,6 +17,8 @@ public class CommonConst {
 
         public static final String TAG_MAPS_ACTIVITY = "MapsActivity";
 
+        public static final String TAG_LOGIN_FB_FRAGMENT = "LoginFBFragment";
+
     }
 
     public class UrlForPhp {

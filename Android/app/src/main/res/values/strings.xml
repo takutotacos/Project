@@ -15,4 +15,9 @@
     <string name="logout_button">Logout</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_show_image">ShowImage</string>
+    <string name="facebook_app_id">375174456178755</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

@@ -25,13 +25,17 @@ public class AsyncLogin extends AsyncTask<Void, Void, JSONObject> {
     private AsyncResponse delegate = null;
     private String mEmail;
     private String mPassword;
+    private String mUserToken;
+    private boolean isNativeLogin;
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient client = new OkHttpClient();
 
-    public AsyncLogin(AsyncResponse delegate, String email, String password) {
+    public AsyncLogin(AsyncResponse delegate, String email, String password, String mUserToken, boolean isNativeLogin) {
         this.delegate = delegate;
         this.mEmail = email;
         this.mPassword = password;
+        this.mUserToken = mUserToken;
+        this.isNativeLogin = isNativeLogin;
     }
 
     @Override
@@ -40,13 +44,15 @@ public class AsyncLogin extends AsyncTask<Void, Void, JSONObject> {
         JSONObject jsonData = null;
         String result = null;
         try {
-
+            jsonLoginObject.put("isNativeLogin", isNativeLogin);
             jsonLoginObject.put("email", mEmail);
-            jsonLoginObject.put("password", mPassword);
-
+            if(isNativeLogin) {
+                jsonLoginObject.put("password", mPassword);
+            } else {
+                jsonLoginObject.put("userToken", mUserToken);
+            }
         } catch(JSONException e) {
             Log.e(TAG, "JSON Exception happens: " + e.getCause());
-            // @TODO null is acceptable?
             return null;
         }
         RequestBody body = RequestBody.create(JSON, jsonLoginObject.toString());
@@ -65,7 +71,6 @@ public class AsyncLogin extends AsyncTask<Void, Void, JSONObject> {
             jsonData = new JSONObject(result);
         } catch(JSONException e) {
             Log.e(TAG, "JSON Exception happens: " + e.getCause());
-            // @TODO null is acceptable?
             return null;
         }
         return jsonData;

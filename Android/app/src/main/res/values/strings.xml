@@ -15,5 +15,4 @@
     <string name="logout_button">Logout</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_show_image">ShowImage</string>
-
 </resources>

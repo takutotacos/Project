@@ -35,11 +35,10 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponse
  *
  *
  */
-public class LoginActivity extends AppCompatActivity implements AsyncResponse {
+public class LoginActivity extends AppCompatActivity implements AsyncResponse{
 
     private static String TAG = CommonConst.ActivityName.TAG_LOGIN_ACTIVITY;
     private AsyncLogin mAuthTask = null;
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;

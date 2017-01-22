@@ -49,7 +49,7 @@
         <activity android:name=".ramstalk.co.jp.project.activity.Activity.RegistUserActivity" />
         <activity
             android:name=".ramstalk.co.jp.project.activity.Activity.ShowImage"
-            android:theme="@style/Theme.AppCompat.Translucent"/>
+            android:theme="@style/Theme.AppCompat.Translucent" />
     </application>
 
 </manifest>

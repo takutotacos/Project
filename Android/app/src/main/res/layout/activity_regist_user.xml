@@ -9,5 +9,4 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ramstalk.co.jp.project.activity.Activity.RegistUserActivity">
 
-    <include layout="@layout/logout_button" />
 </RelativeLayout>

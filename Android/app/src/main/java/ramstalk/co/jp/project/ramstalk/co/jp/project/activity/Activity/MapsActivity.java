@@ -15,8 +15,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncGetInfoOnMap;
@@ -66,7 +64,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void processFinish(JSONArray result) {
-        HashMap<String, String> imgInfos = new HashMap<String, String>();
         if (result != null) {
             for (int i = 0; i < result.length(); i++) {
                 double latitude = 0.0;
@@ -82,15 +79,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     comment = data.getString("comment");
                     userId = data.getString("user_id");
                     createDate = data.getString("create_date");
-                    imgInfo = data.getString("img_info");
                 } catch (JSONException e) {
                     Log.e(TAG, "JSON Exception happens: " + e.getCause());
                 }
                 LatLng data = new LatLng(latitude, longitude);
-                mMap.addMarker(new MarkerOptions().position(data).title(comment)).setTag(userId+createDate);
-                imgInfos.put(userId+createDate, imgInfo);
+                mMap.addMarker(new MarkerOptions().position(data).title(comment)).setTag(createDate + "+" + userId);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(data));
-                mMap.setOnMarkerClickListener(new MarkerClickListener(this, imgInfos));
+                mMap.setOnMarkerClickListener(new MarkerClickListener(this));
             }
         }
     }

@@ -21,6 +21,8 @@ public class CommonConst {
 
         public static final String TAG_MAIN_ACTIVITY = "MainActivtity";
 
+        public static final String TAG_SHOW_IMAGE_ACTIVITY = "ShowImageActivity";
+
     }
 
     public class UrlForPhp {
@@ -32,6 +34,8 @@ public class CommonConst {
         public static final String GET_IMAGE_DATA = APACHE_SERVER_IP + "get_image_data.php";
 
         public static final String POSTING_INFO = APACHE_SERVER_IP + "posting_image.php";
+
+        public static final String GET_IMAGE_DETAILED_DATA = APACHE_SERVER_IP + "get_image_detailed_data.php";
 
     }
 

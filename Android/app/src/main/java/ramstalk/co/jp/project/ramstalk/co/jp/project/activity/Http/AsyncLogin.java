@@ -40,10 +40,8 @@ public class AsyncLogin extends AsyncTask<Void, Void, JSONObject> {
         JSONObject jsonData = null;
         String result = null;
         try {
-
             jsonLoginObject.put("email", mEmail);
             jsonLoginObject.put("password", mPassword);
-
         } catch(JSONException e) {
             Log.e(TAG, "JSON Exception happens: " + e.getCause());
             // @TODO null is acceptable?
@@ -52,12 +50,10 @@ public class AsyncLogin extends AsyncTask<Void, Void, JSONObject> {
         RequestBody body = RequestBody.create(JSON, jsonLoginObject.toString());
         Request request = new Request.Builder().url(CommonConst.UrlForPhp.LOGIN_NORMAL_PHP).post(body).build();
         try {
-
             Response response = client.newCall(request).execute();
             result = response.body().string();
             Log.i(TAG, result);
             response.body().close();
-
         }catch(IOException e) {
             Log.e(TAG, "IO Exception happens: " + e.getCause());
         }

@@ -14,7 +14,7 @@
   $img_info = $post['imgInfo'];
   $user_id = $post['userId'];
   $comment = $post['comment'];
-  $latitude = $post['post'];
+  $latitude = $post['latitude'];
   $longitude = $post['longitude'];
   $st = $pdo->prepare('INSERT INTO posting_trn (img_info,user_id,comment,latitude,
   	longitude,create_date,update_date,active_flg)
@@ -28,4 +28,8 @@
   $st->bindParam(':update_date',$now);
   $st->bindParam(':active_flg',$is_active);
   $st->execute();
+  $response = array();
+  $response['type'] = "regist";
+  $response['status'] = "OK";
+  echo json_encode($response);
 ?>

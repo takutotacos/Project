@@ -21,6 +21,8 @@ public class CommonConst {
 
         public static final String TAG_MAIN_ACTIVITY = "MainActivtity";
 
+        public static final String TAG_REGIST_USER_ACTIVITY = "RegistUserActivity";
+
         public static final String TAG_SHOW_IMAGE_ACTIVITY = "ShowImageActivity";
 
     }
@@ -34,6 +36,10 @@ public class CommonConst {
         public static final String GET_IMAGE_DATA = APACHE_SERVER_IP + "get_image_data.php";
 
         public static final String POSTING_INFO = APACHE_SERVER_IP + "posting_image.php";
+
+        public static final String POST_USER = APACHE_SERVER_IP + "posting_user.php";
+
+        public static final String SEARCH_USER = APACHE_SERVER_IP + "search_user.php";
 
         public static final String GET_IMAGE_DETAILED_DATA = APACHE_SERVER_IP + "get_image_detailed_data.php";
 

@@ -95,10 +95,11 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponse 
         button_post = (Button) findViewById(button_postImages);
 
         button_post.setOnClickListener(new View.OnClickListener() {
-            String comment = commentView.getText().toString();
+            String comment = null;
             String userId = sharedPreferences.getString("userId", "");
             @Override
             public void onClick(View v) {
+                comment = commentView.getText().toString();
                 //画像が選択されているか、コメントがあるかチェック
                 if(isValidValue(comment) && isValidValue(imgInfo) && isValidValue(userId)) {
                     // Android 6, API 23以上でパーミッシンの確認
@@ -246,7 +247,6 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponse 
             toast("登録したでー");
         } else {
             Log.e(TAG, "Null output is returned.");
-            // go back to the login screen with the message saying "the combination of email and password does not match any records"
             toast("失敗したでー");
         }
     }

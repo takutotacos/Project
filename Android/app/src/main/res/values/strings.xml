@@ -5,13 +5,19 @@
     <string name="login_prompt_email">Email</string>
     <string name="login_prompt_password">Password</string>
     <string name="login_sign_in">Sign in</string>
+    <string name="error_invalid_userId">This userId is invalid</string>
+    <string name="error_invalid_userId_exist">This userId already exists</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
+    <string name="error_invalid_passwordConfirm">This passwordConfirm is invalid</string>
+    <string name="error_invalid_passwordConfirm_not_match">Does not match password</string>
     <string name="error_field_required">This field is required</string>
     <string name="login_remember_me">Remember me</string>
     <string name="login_signup_link"><a href="#">Sign up</a></string>
+    <string name="login_signin_link"><a href="#">Sign in</a></string>
     <string name="login_logo">Login here</string>
     <string name="login_failed">The combination of email and password does not match any record.</string>
+    <string name="regist_failed">Sign Up Failed</string>
     <string name="logout_button">Logout</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_show_image">ShowImage</string>

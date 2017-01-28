@@ -13,16 +13,21 @@
   $post = json_decode(file_get_contents("php://input"),true);
   $email = $post['email'];
   $password = $post['password'];
-  $stmt=$pdo->prepare("SELECT * from user_mst where email = ? and password = ?");
-  $stmt->execute([$email, $password]);
+  $stmt=$pdo->prepare("SELECT * from user_mst where email = ?");
+  $stmt->execute([$email]);
   $count=$stmt->rowCount();
   if($count == 1) {
+    error_log("ONE Data found!");
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $response = array();
-    $response['status'] = "OK";
-    $response['email'] = $row['email'];
-    $response['password'] = $row['password'];
-    echo json_encode($response);
+    if(password_verify($password, $row['password'])) {
+      error_log("The password matched");
+      $response = array();
+      $response['status'] = "OK";
+      $response['userId'] = $row['user_id'];
+      echo json_encode($response);
+    } else {
+      error_log("The password did not match");
+    }
   } else {
     error_log("No data found!");
   }

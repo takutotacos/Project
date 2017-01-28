@@ -72,6 +72,13 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
                 return false;
             }
         });
+        TextView mTextSignUp = (TextView)findViewById(R.id.login_singup_link);
+        mTextSignUp.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                proceedToActivity(RegistUserActivity.class);
+            }
+        });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -191,10 +198,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     public void processFinish(JSONObject output) {
         finish();
         if(output != null) {
-            String email = null;
             String userId = null;
             try {
-                email = output.getString("email");
                 userId = output.getString("userId");
             } catch(JSONException e) {
                 Log.e(TAG, "JSON Exception happens: " + e.getCause());
@@ -203,6 +208,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
                 keepUserLoggedIn();
             }
             sharedPreferencesEditor.putString("userId", userId);
+            sharedPreferencesEditor.apply();
             proceedToActivity(MainActivity.class);
         } else {
             Log.e(TAG, "Null output is returned.");

@@ -1,9 +1,4 @@
 <?php
-  $host = "127.0.0.1";
-  $user = "root";
-  $password = "root";
-  $schema = "project";
-
   try {
     $pdo = new PDO('mysql:host=localhost;dbname=project;charset=utf8', 'root', 'root',[
       PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -23,10 +18,11 @@
       'latitude'=>$row['latitude'],
       'longitude'=>$row['longitude'],
       'comment'=>$row['comment'],
-      'img_info'=>$row['img_info']
+      'img_info'=>base64_encode($row['img_info'])
     );
   }
-  header('Content-type: application/json');
-  echo json_encode($response);
-
+  header('Content-type:image/jpg');
+  error_log("The data volume are ". count($response));
+  $json_response = json_encode($response);
+  echo $json_response;
 ?>

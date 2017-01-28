@@ -1,0 +1,60 @@
+package ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
+import ramstalk.co.jp.project.R;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
+
+public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = CommonConst.ActivityName.TAG_MAIN_ACTIVITY;
+    private Button toMapButton;
+    private Button toPostingButton;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        toMapButton = (Button) findViewById(R.id.button_to_map);
+        toPostingButton = (Button) findViewById(R.id.button_to_posting);
+        toMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                proceedToActivity(MapsActivity.class);
+            }
+        });
+        toPostingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                proceedToActivity(PostingActivity.class);
+            }
+        });
+    }
+
+    private void proceedToActivity(Class activity) {
+        Intent intent = new Intent(this, activity);
+        Log.i(TAG, "The next activity is: " + activity);
+        startActivity(intent);
+    }
+}

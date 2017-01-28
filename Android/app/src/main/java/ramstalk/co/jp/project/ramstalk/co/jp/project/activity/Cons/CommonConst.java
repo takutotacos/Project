@@ -17,6 +17,10 @@ public class CommonConst {
 
         public static final String TAG_MAPS_ACTIVITY = "MapsActivity";
 
+        public static final String TAG_POSTING_ACTIVITY = "PostingActivity";
+
+        public static final String TAG_MAIN_ACTIVITY = "MainActivtity";
+
     }
 
     public class UrlForPhp {
@@ -26,6 +30,8 @@ public class CommonConst {
         public static final String LOGIN_NORMAL_PHP = APACHE_SERVER_IP + "login_normal_way.php";
 
         public static final String GET_IMAGE_DATA = APACHE_SERVER_IP + "get_image_data.php";
+
+        public static final String POSTING_INFO = APACHE_SERVER_IP + "posting_image.php";
 
     }
 

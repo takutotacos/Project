@@ -15,5 +15,13 @@
     <string name="logout_button">Logout</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_show_image">ShowImage</string>
+    <string name="title_activity_location">LocationActivity</string>
+    <string name="title_activity_posting">PostingActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <!-- Strings to related to main -->
+    <string name="button_to_map">MapActivity</string>
+    <string name="button_to_posting">PostingActivity</string>
+
 
 </resources>

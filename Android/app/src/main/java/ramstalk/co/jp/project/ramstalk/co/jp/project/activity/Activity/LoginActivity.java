@@ -39,7 +39,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
 
     private static String TAG = CommonConst.ActivityName.TAG_LOGIN_ACTIVITY;
     private AsyncLogin mAuthTask = null;
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -193,15 +192,18 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         finish();
         if(output != null) {
             String email = null;
+            String userId = null;
             try {
                 email = output.getString("email");
+                userId = output.getString("userId");
             } catch(JSONException e) {
                 Log.e(TAG, "JSON Exception happens: " + e.getCause());
             }
             if(mCheckBox.isChecked()) {
                 keepUserLoggedIn();
             }
-            proceedToActivity(MapsActivity.class);
+            sharedPreferencesEditor.putString("userId", userId);
+            proceedToActivity(MainActivity.class);
         } else {
             Log.e(TAG, "Null output is returned.");
             // go back to the login screen with the message saying "the combination of email and password does not match any records"

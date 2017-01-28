@@ -75,7 +75,4 @@ public class AsyncLogin extends AsyncTask<Void, Void, JSONObject> {
     public void onPostExecute(JSONObject result) {
         delegate.processFinish(result);
     }
-
-
-
 }

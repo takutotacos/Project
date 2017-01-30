@@ -1,0 +1,27 @@
+%p#notice= notice
+
+%p
+  %b User:
+  = @user.user_id
+%p
+  %b Email:
+  = @user.email
+%p
+  %b User name:
+  = @user.user_name
+%p
+  %b Password digest:
+  = @user.password_digest
+%p
+  %b Icon:
+  = @user.icon
+%p
+  %b Icon content type:
+  = @user.icon_content_type
+%p
+  %b Fb account:
+  = @user.fb_account
+
+= link_to 'Edit', edit_user_path(@user)
+\|
+= link_to 'Back', users_path

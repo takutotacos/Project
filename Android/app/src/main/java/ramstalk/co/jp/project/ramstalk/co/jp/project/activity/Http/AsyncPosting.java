@@ -57,7 +57,7 @@ public class AsyncPosting extends AsyncTask<Void, Void, JSONObject> {
             return null;
         }
         RequestBody body = RequestBody.create(JSON, jsonLoginObject.toString());
-        Request request = new Request.Builder().url(CommonConst.UrlForPhp.POSTING_INFO).post(body).build();
+        Request request = new Request.Builder().url("http://localhost:3000/api/users").post(body).build();
         try {
             Response response = client.newCall(request).execute();
             result = response.body().string();

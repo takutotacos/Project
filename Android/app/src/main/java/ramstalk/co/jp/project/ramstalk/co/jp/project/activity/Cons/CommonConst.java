@@ -45,6 +45,14 @@ public class CommonConst {
 
     }
 
+    public class Api {
+        private static final String LOCAL_SERVER = "http://10.0.2.2:3000/api";
+
+        public static final String REGISTER_USER = LOCAL_SERVER + "/users";
+
+        public static final String SEARCH_USER = LOCAL_SERVER + "/users/";
+    }
+
     public class StatusOfUser {
         public static final String IS_USER_REMEMBERED = "isUserRemembered";
     }

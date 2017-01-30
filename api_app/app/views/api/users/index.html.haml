@@ -1,0 +1,33 @@
+%h1 Listing users
+
+%table
+  %thead
+    %tr
+      %th User
+      %th Email
+      %th User name
+      %th Password digest
+      %th Icon
+      %th Icon content type
+      %th Fb account
+      %th
+      %th
+      %th
+
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.user_id
+        %td= user.email
+        %td= user.user_name
+        %td= user.password_digest
+        %td= user.icon
+        %td= user.icon_content_type
+        %td= user.fb_account
+        %td= link_to 'Show', user
+        %td= link_to 'Edit', edit_user_path(user)
+        %td= link_to 'Destroy', user, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New User', new_user_path

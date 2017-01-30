@@ -52,14 +52,12 @@ public class AsyncRegistUser extends AsyncTask<Void, Void, JSONObject> {
             return null;
         }
         RequestBody body = RequestBody.create(JSON, jsonLoginObject.toString());
-        Request request = new Request.Builder().url(CommonConst.UrlForPhp.POST_USER).post(body).build();
+        Request request = new Request.Builder().url(CommonConst.Api.REGISTER_USER).post(body).build();
         try {
-
             Response response = client.newCall(request).execute();
             result = response.body().string();
             Log.i(TAG, result);
             response.body().close();
-
         }catch(IOException e) {
             Log.e(TAG, "IO Exception happens: " + e.getCause());
         }

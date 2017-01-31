@@ -27,3 +27,5 @@ gem 'jbuilder'
 gem 'byebug'
 gem 'pry-byebug'
 gem 'rb-readline'
+
+gem 'bcrypt'

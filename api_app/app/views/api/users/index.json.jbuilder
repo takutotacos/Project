@@ -1,8 +1,7 @@
-
-if @user.present?
-  json.post do |json|
-    json.status "OK"
-    json.user_id @user.user_id
-    json.email @user.email
+json.type "INDEX"
+json.status @user.present?? "1" : "-1"
+json.users do |json|
+  json.array!(@user) do |user|
+    json.partial!(user)
   end
 end

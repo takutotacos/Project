@@ -1,21 +1,20 @@
 require 'pry'
 module Api
   class UsersController < ApplicationController
-    before_action :set_user, only: [:show, :edit, :update, :destroy]
+    # before_action :set_user, only: [:show, :edit, :update, :destroy]
 
     # GET /users
     # GET /users.json
     def index
-      @user = User.first
+      @users = User.all
       render 'index', formats: 'json', handlers: 'jbuilder'
     end
 
     # GET /users/1
     # GET /users/1.json
     def show
-      print("This is the path.")
-      @user = User.find
-      binding.pry
+      @user = User.find_by(user_id: params[:id])
+      render 'show', formats: 'json', handlers: 'jbuilder'
     end
 
     # GET /users/new
@@ -71,12 +70,12 @@ module Api
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_user
-        @user = User.find(params[:id])
+        @user = User.find_by(user_id: params[:id])
       end
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def user_params
-        params.require(:user).permit(:user_id, :email, :user_name, :password_digest, :icon, :icon_content_type, :fb_account)
+        params.require(:user).permit(:user_id, :email, :user_name, :password_digest, :password,  :icon, :icon_content_type, :fb_account)
       end
   end
 end

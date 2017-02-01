@@ -29,3 +29,4 @@ gem 'pry-byebug'
 gem 'rb-readline'
 
 gem 'bcrypt'
+gem 'responders'

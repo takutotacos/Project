@@ -1,5 +1,10 @@
 require 'pry'
+require 'responders'
 module Api
+  class ApplicationController < ActionController::API
+    include ActionController::MimeResponds
+  end
+
   class UsersController < ApplicationController
     # before_action :set_user, only: [:show, :edit, :update, :destroy]
 
@@ -13,7 +18,9 @@ module Api
     # GET /users/1
     # GET /users/1.json
     def show
+      @type = "SHOW"
       @user = User.find_by(user_id: params[:id])
+      @status = @user.present?? "1" : "-1"
       render 'show', formats: 'json', handlers: 'jbuilder'
     end
 
@@ -30,15 +37,16 @@ module Api
     # POST /users.json
     def create
       @user = User.new(user_params)
-      binding.pry
-
+      @type = "CREATE"
       respond_to do |format|
         if @user.save
+          @status = 2
           format.html { redirect_to @user, notice: 'User was successfully created.' }
-          format.json { render :show, status: :created, location: @user }
+          format.json { render :show}
         else
+          @status = 3
           format.html { render :new }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
+          format.json { render :show }
         end
       end
     end
@@ -75,7 +83,7 @@ module Api
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def user_params
-        params.require(:user).permit(:user_id, :email, :user_name, :password_digest, :password,  :icon, :icon_content_type, :fb_account)
+        params.require(:user).permit(:user_id, :email, :user_name, :password_confirmation, :password,  :icon, :icon_content_type, :fb_account)
       end
   end
 end

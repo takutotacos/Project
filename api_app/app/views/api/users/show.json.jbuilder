@@ -1,7 +1,9 @@
-json.type "SHOW"
-json.status @user.present?? "1" : "-1"
-json.users do |json|
-  json.array!(@user) do |user|
-    json.partial!(user)
+json.type @type
+json.status @status
+if @status == 3
+  json.user do |json|
+    json.errors @user.errors if @status == 3
   end
+else 
+  json.partial!(@user) unless @user.nil?
 end

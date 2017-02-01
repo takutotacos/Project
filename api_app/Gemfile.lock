@@ -24,6 +24,11 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    active_model_serializers (0.10.4)
+      actionpack (>= 4.1, < 6)
+      activemodel (>= 4.1, < 6)
+      case_transform (>= 0.2)
+      jsonapi (= 0.1.1.beta6)
     activejob (5.0.1)
       activesupport (= 5.0.1)
       globalid (>= 0.3.6)
@@ -42,6 +47,8 @@ GEM
     bcrypt (3.1.11)
     builder (3.2.3)
     byebug (9.0.6)
+    case_transform (0.2)
+      activesupport
     coderay (1.1.1)
     concurrent-ruby (1.0.4)
     erubis (2.7.0)
@@ -62,9 +69,12 @@ GEM
       nokogiri (>= 1.6.0)
       ruby_parser (~> 3.5)
     i18n (0.8.0)
-    jbuilder (2.6.1)
-      activesupport (>= 3.0.0, < 5.1)
-      multi_json (~> 1.2)
+    jsonapi (0.1.1.beta6)
+      jsonapi-parser (= 0.1.1.beta3)
+      jsonapi-renderer (= 0.1.1.beta1)
+    jsonapi-parser (0.1.1.beta3)
+    jsonapi-renderer (0.1.1.beta1)
+    jwt (1.5.6)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -79,7 +89,6 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     minitest (5.10.1)
-    multi_json (1.12.1)
     mysql2 (0.4.5)
     nio4r (1.2.1)
     nokogiri (1.7.0.1)
@@ -127,7 +136,8 @@ GEM
     ruby_dep (1.5.0)
     ruby_parser (3.8.4)
       sexp_processor (~> 4.1)
-    sexp_processor (4.7.0)
+    sexp_processor (4.8.0)
+    simple_command (0.0.9)
     slop (3.6.0)
     spring (2.0.1)
       activesupport (>= 4.2)
@@ -151,16 +161,18 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers
   bcrypt
   byebug
   haml-rails
-  jbuilder
+  jwt
   listen (~> 3.1.5)
   mysql2
   pry-byebug
   rails (~> 5.0.0, >= 5.0.0.1)
   rb-readline
   responders
+  simple_command
   spring
 
 BUNDLED WITH

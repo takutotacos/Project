@@ -1,10 +1,14 @@
 require 'pry'
-require 'responders'
 module Api
   class ApplicationController < ActionController::API
     include ActionController::MimeResponds
-  end
 
+    rescue_from ActiveRecord::RecordNotFound, with: :not_found
+
+    def not_found
+      return api_error(status: 404, errors: 'Not Found')
+    end
+  end
   class UsersController < ApplicationController
     # before_action :set_user, only: [:show, :edit, :update, :destroy]
 
@@ -18,9 +22,7 @@ module Api
     # GET /users/1
     # GET /users/1.json
     def show
-      @type = "SHOW"
       @user = User.find_by(user_id: params[:id])
-      @status = @user.present?? "1" : "-1"
       render 'show', formats: 'json', handlers: 'jbuilder'
     end
 
@@ -50,6 +52,7 @@ module Api
         end
       end
     end
+
 
     # PATCH/PUT /users/1
     # PATCH/PUT /users/1.json
@@ -83,7 +86,8 @@ module Api
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def user_params
-        params.require(:user).permit(:user_id, :email, :user_name, :password_confirmation, :password,  :icon, :icon_content_type, :fb_account)
+        binding.pry
+        params.require(:user).permit(:user_id, :email, :user_name, :password_digest, :password,  :icon, :icon_content_type, :fb_account)
       end
   end
 end

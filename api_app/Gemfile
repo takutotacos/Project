@@ -15,7 +15,7 @@ gem 'mysql2'
 # gem 'bcrypt', '~> 3.1.7'
 
 # To use Jbuilder templates for JSON
-gem 'jbuilder'
+# gem 'jbuilder'
 
 # Use unicorn as the app server
 # gem 'unicorn'
@@ -30,3 +30,6 @@ gem 'rb-readline'
 
 gem 'bcrypt'
 gem 'responders'
+gem 'active_model_serializers'
+gem 'jwt'
+gem 'simple_command'

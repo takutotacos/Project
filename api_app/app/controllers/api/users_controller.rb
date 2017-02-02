@@ -1,19 +1,17 @@
 require 'pry'
 module Api
-  class ApplicationController < ActionController::API
-    include ActionController::MimeResponds
-
-    rescue_from ActiveRecord::RecordNotFound, with: :not_found
-
-    def not_found
-      return api_error(status: 404, errors: 'Not Found')
-    end
-  end
   class UsersController < ApplicationController
     # before_action :set_user, only: [:show, :edit, :update, :destroy]
 
     # GET /users
     # GET /users.json
+
+def authenticate
+  puts params[:email]
+  binding.pry
+  puts params[:password]
+end
+
     def index
       @users = User.all
       render 'index', formats: 'json', handlers: 'jbuilder'

@@ -51,9 +51,28 @@ public class CommonConst {
         public static final String REGISTER_USER = LOCAL_SERVER + "/users";
 
         public static final String SEARCH_USER = LOCAL_SERVER + "/users/";
+
+        public static final String LOGIN = LOCAL_SERVER + "/authenticate";
+
+    }
+
+    public class ApiClass {
+        public static final String SHOW = "SHOW";
+
+        public static final String REGISTER = "REGISTER";
     }
 
     public class StatusOfUser {
         public static final String IS_USER_REMEMBERED = "isUserRemembered";
+    }
+
+    public class ApiResponse {
+        public static final String USER_NOT_EXISTS = "-1";
+
+        public static final String USER_EXISTS = "1";
+
+        public static final String REGISTER_SUCCESSFUL = "2";
+
+        public static final String REGISTER_FAILED = "3";
     }
 }

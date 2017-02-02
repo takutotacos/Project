@@ -198,16 +198,16 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     public void processFinish(JSONObject output) {
         finish();
         if(output != null) {
-            String userId = null;
+            String auth_token = null;
             try {
-                userId = output.getString("userId");
+                auth_token = output.getString("auth_token");
             } catch(JSONException e) {
                 Log.e(TAG, "JSON Exception happens: " + e.getCause());
             }
             if(mCheckBox.isChecked()) {
                 keepUserLoggedIn();
             }
-            sharedPreferencesEditor.putString("userId", userId);
+            sharedPreferencesEditor.putString("auth_token", auth_token);
             sharedPreferencesEditor.apply();
             proceedToActivity(MainActivity.class);
         } else {
@@ -233,6 +233,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     private void keepUserLoggedIn() {
         Log.i(TAG, "The user has just been kept logged in.");
         sharedPreferencesEditor.putBoolean(CommonConst.StatusOfUser.IS_USER_REMEMBERED, true);
+        sharedPreferencesEditor.apply();
     }
 }
 

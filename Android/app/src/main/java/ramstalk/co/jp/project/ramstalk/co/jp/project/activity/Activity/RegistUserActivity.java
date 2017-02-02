@@ -18,21 +18,19 @@ import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncRegistUser;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponse;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncSearchUser;
 
 import static android.text.TextUtils.isEmpty;
 
 public class RegistUserActivity extends AppCompatActivity implements AsyncResponse {
-    private EditText mEditTextUserId, mEditTextPassword, mEditTextPasswordConfirm, mEditTextEmail;
+    private EditText mEditTextUserId, mEditTextPassword, mEditTextPasswordConfirmation, mEditTextEmail;
 
     private static String TAG = CommonConst.ActivityName.TAG_REGIST_USER_ACTIVITY;
     private AsyncRegistUser mAuthTask_regist = null;
-    private AsyncSearchUser mAuthTask_search = null;
 
     View focusView = null;
     String userId = null;
     String password = null;
-    String passwordConfirm = null;
+    String passwordConfirmation = null;
     String email = null;
 
     @Override
@@ -48,14 +46,13 @@ public class RegistUserActivity extends AppCompatActivity implements AsyncRespon
             }
         });
 
-
         Button mRegistButton = (Button)findViewById(R.id.buttonRegist);
         mRegistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (setUIComponent()) {//データチェック1
                     try {
-                        searchUser(userId);//データチェック2
+                        registUser(userId, email, password, passwordConfirmation);
                     }catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -67,26 +64,19 @@ public class RegistUserActivity extends AppCompatActivity implements AsyncRespon
     private boolean setUIComponent() {
         mEditTextUserId = (EditText)findViewById(R.id.editTextUserId);
         mEditTextPassword = (EditText)findViewById(R.id.editTextPassword);
-        mEditTextPasswordConfirm = (EditText)findViewById(R.id.editTextPasswordConfirm);
+        mEditTextPasswordConfirmation = (EditText)findViewById(R.id.editTextPasswordConfirm);
         mEditTextEmail = (EditText)findViewById(R.id.editTextEmail);
 
         userId = mEditTextUserId.getText().toString();
         password = mEditTextPassword.getText().toString();
-        passwordConfirm = mEditTextPasswordConfirm.getText().toString();
+        passwordConfirmation = mEditTextPasswordConfirmation.getText().toString();
         email = mEditTextEmail.getText().toString();
-        return isDataValid(userId,email,password,passwordConfirm);
+        return isDataValid(userId,email,password, passwordConfirmation);
     }
 
-
-    private void registUser(final String userId, final String password, final String email) throws Exception {
-        mAuthTask_regist = new AsyncRegistUser(this,userId, password, email);
+    private void registUser(final String userId, final String email, String password, String passwordConfirmation) throws Exception {
+        mAuthTask_regist = new AsyncRegistUser(this,userId, email, password, passwordConfirmation);
         mAuthTask_regist.execute();
-    }
-
-
-    private void searchUser(final String userId) throws Exception {
-        mAuthTask_search = new AsyncSearchUser(this,userId);
-        mAuthTask_search.execute();
     }
 
     @Override
@@ -94,31 +84,17 @@ public class RegistUserActivity extends AppCompatActivity implements AsyncRespon
         finish();
         if(output != null) {
             try {
-                //登録からの返り値
-                if("regist".equals(output.getString("type"))){
+                if(CommonConst.ApiResponse.REGISTER_SUCCESSFUL.equals(output.getString("status"))) {
                     proceedToActivity(LoginActivity.class);
-
-                    //検索からの返り値
-                }else if("search".equals(output.getString("type"))){
-                    if("OK".equals(output.getString("status"))) {
-                        try {
-                            registUser(userId, password, email);
-                            proceedToActivity(LoginActivity.class);
-                        } catch (Exception e) {
-
-                            e.printStackTrace();
-                        }
-                    }else{
-                        Log.d("debug","ERROR");
-                        mEditTextUserId.setError(getString(R.string.error_invalid_userId_exist));
-                        focusView = mEditTextUserId;
-                        Toast.makeText(this, getString(R.string.error_invalid_userId_exist), Toast.LENGTH_LONG).show();
-                    }
+                } else {
+                    Log.d(TAG,"ERROR");
+                    mEditTextUserId.setError(getString(R.string.error_invalid_userId_exist));
+                    focusView = mEditTextUserId;
+                    Toast.makeText(this, getString(R.string.error_invalid_userId_exist), Toast.LENGTH_LONG).show();
                 }
             } catch(JSONException e) {
                 Log.e(TAG, "JSON Exception happens: " + e.getCause());
             }
-
         } else {
             Log.e(TAG, "Null output is returned.");
             String message = getString(R.string.regist_failed);
@@ -153,8 +129,8 @@ public class RegistUserActivity extends AppCompatActivity implements AsyncRespon
             return true;
         }
         if(isEmpty(passwordConfirm)){
-            mEditTextPasswordConfirm.setError(getString(R.string.error_invalid_passwordConfirm));
-            focusView = mEditTextPasswordConfirm;
+            mEditTextPasswordConfirmation.setError(getString(R.string.error_invalid_passwordConfirm));
+            focusView = mEditTextPasswordConfirmation;
             return true;
         }
         if(!password.equals(passwordConfirm)){

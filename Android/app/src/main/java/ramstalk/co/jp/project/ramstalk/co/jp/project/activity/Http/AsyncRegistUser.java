@@ -26,32 +26,36 @@ public class AsyncRegistUser extends AsyncTask<Void, Void, JSONObject> {
     private String mUserId;
     private String mEmail;
     private String mPassword;
+    private String mPasswordConfirmation;
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient client = new OkHttpClient();
 
-    public AsyncRegistUser(AsyncResponse delegate, String userId, String password, String email) {
+    public AsyncRegistUser(AsyncResponse delegate, String userId, String email, String password, String mPasswordConfirmation) {
         this.delegate = delegate;
         this.mUserId = userId;
         this.mEmail = email;
         this.mPassword = password;
+        this.mPasswordConfirmation = mPasswordConfirmation;
     }
 
     @Override
     public JSONObject doInBackground(Void... params) {
-        JSONObject jsonLoginObject = new JSONObject();
+        JSONObject userObj = new JSONObject();
+        JSONObject holder = new JSONObject();
         JSONObject jsonData = null;
         String result = null;
         try {
-            jsonLoginObject.put("userId",mUserId);
-            jsonLoginObject.put("email", mEmail);
-            jsonLoginObject.put("password", mPassword);
-
+            userObj.put("user_id", mUserId);
+            userObj.put("email", mEmail);
+            userObj.put("password", mPassword);
+            userObj.put("password_confirmation", mPasswordConfirmation);
+            holder.put("user", userObj);
         } catch(JSONException e) {
             Log.e(TAG, "JSON Exception happens: " + e.getCause());
             // @TODO null is acceptable?
             return null;
         }
-        RequestBody body = RequestBody.create(JSON, jsonLoginObject.toString());
+        RequestBody body = RequestBody.create(JSON, holder.toString());
         Request request = new Request.Builder().url(CommonConst.Api.REGISTER_USER).post(body).build();
         try {
             Response response = client.newCall(request).execute();

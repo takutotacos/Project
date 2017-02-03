@@ -5,16 +5,9 @@ module Api
 
     # GET /users
     # GET /users.json
-
-def authenticate
-  puts params[:email]
-  binding.pry
-  puts params[:password]
-end
-
     def index
       @users = User.all
-      render 'index', formats: 'json', handlers: 'jbuilder'
+      render json:  @users
     end
 
     # GET /users/1

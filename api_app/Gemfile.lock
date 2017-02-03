@@ -50,6 +50,8 @@ GEM
     case_transform (0.2)
       activesupport
     coderay (1.1.1)
+    composite_primary_keys (9.0.6)
+      activerecord (~> 5.0.0)
     concurrent-ruby (1.0.4)
     erubis (2.7.0)
     ffi (1.9.17)
@@ -164,6 +166,7 @@ DEPENDENCIES
   active_model_serializers
   bcrypt
   byebug
+  composite_primary_keys
   haml-rails
   jwt
   listen (~> 3.1.5)

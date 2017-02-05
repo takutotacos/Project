@@ -1,7 +1,9 @@
 package ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,6 +18,7 @@ import org.json.JSONObject;
 
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncLogin;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncRegistUser;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponse;
 
@@ -26,6 +29,9 @@ public class RegistUserActivity extends AppCompatActivity implements AsyncRespon
 
     private static String TAG = CommonConst.ActivityName.TAG_REGIST_USER_ACTIVITY;
     private AsyncRegistUser mAuthTask_regist = null;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor sharedPreferencesEditor;
+    private AsyncLogin mAuthTask = null;
 
     View focusView = null;
     String userId = null;
@@ -37,6 +43,8 @@ public class RegistUserActivity extends AppCompatActivity implements AsyncRespon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regist_user);
+        sharedPreferences = getApplicationContext().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferencesEditor = sharedPreferences.edit();
 
         TextView mTextSignIn = (TextView)findViewById(R.id.login_singin_link);
         mTextSignIn.setOnClickListener(new View.OnClickListener(){
@@ -81,16 +89,36 @@ public class RegistUserActivity extends AppCompatActivity implements AsyncRespon
 
     @Override
     public void processFinish(JSONObject output) {
-        finish();
         if(output != null) {
             try {
-                if(CommonConst.ApiResponse.REGISTER_SUCCESSFUL.equals(output.getString("status"))) {
-                    proceedToActivity(LoginActivity.class);
-                } else {
-                    Log.d(TAG,"ERROR");
-                    mEditTextUserId.setError(getString(R.string.error_invalid_userId_exist));
-                    focusView = mEditTextUserId;
-                    Toast.makeText(this, getString(R.string.error_invalid_userId_exist), Toast.LENGTH_LONG).show();
+                if(CommonConst.ApiAction.CREATE.equals(output.getString("action"))) { // when creating a user
+                    if(CommonConst.ApiResponse.REGISTER_SUCCESSFUL.equals(output.getString("status"))) {
+                        mAuthTask = new AsyncLogin(this, email, password);
+                        mAuthTask.execute();
+                    } else {
+                        String errorUserId = output.getJSONObject("errors").getString("user_id");
+                        String errorEmail = output.getJSONObject("errors").getString("email");
+                        if(!"".equals(errorUserId)) {
+                            Log.i(TAG, errorUserId);
+                            mEditTextUserId.setError(getString(R.string.error_userId_exist));
+                            focusView = mEditTextUserId;
+                            focusView.requestFocus();
+                        }
+                        if(!"".equals(errorEmail)) {
+                            Log.i(TAG, errorEmail);
+                            mEditTextEmail.setError(getString(R.string.error_email_exist));
+                            focusView = mEditTextEmail;
+                            focusView.requestFocus();
+                        }
+                    }
+                } else { // when logging in user
+                    String auth_token =  output.getString("auth_token");
+                    String userId = output.getString("id");
+                    sharedPreferencesEditor.putString("auth_token", auth_token);
+                    sharedPreferencesEditor.putString("user_sid", userId);
+                    sharedPreferencesEditor.apply();
+                    finish();
+                    proceedToActivity(MainActivity.class);
                 }
             } catch(JSONException e) {
                 Log.e(TAG, "JSON Exception happens: " + e.getCause());
@@ -98,7 +126,6 @@ public class RegistUserActivity extends AppCompatActivity implements AsyncRespon
         } else {
             Log.e(TAG, "Null output is returned.");
             String message = getString(R.string.regist_failed);
-            startActivity(getIntent());
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
     }

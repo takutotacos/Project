@@ -8,8 +8,6 @@
     tools:context=".ramstalk.co.jp.project.activity.Activity.PostingActivity"
     android:weightSum="1">
 
-
-
     <TextView
         android:id="@+id/text_view"
         android:textColor="#000"
@@ -35,6 +33,22 @@
             android:hint="comment"
             android:id="@+id/editTextComment" />
     </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/posting_spinner_categories_text"
+            android:id="@+id/posting_spinner_categories_text"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/posting_categoies_spinner"/>
+    </LinearLayout>
 
     <Button
         android:id="@+id/button_postImages"

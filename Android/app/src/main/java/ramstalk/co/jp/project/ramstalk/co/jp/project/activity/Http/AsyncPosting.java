@@ -21,43 +21,52 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 public class AsyncPosting extends AsyncTask<Void, Void, JSONObject> {
 
     private static String TAG = CommonConst.ActivityName.TAG_POSTING_ACTIVITY;
-    private String imgInfo = null;
+    private String image = null;
     private String userId = null;
     private String comment = null;
     private double latitude = 0.0;
     private double longitude = 0.0;
+    private String categoryId = null;
+    private String token = null;
     private AsyncResponse delegate = null;
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient client = new OkHttpClient();
 
-    public AsyncPosting(AsyncResponse delegate, String imgInfo, String userId, String comment,
-                        double latitude, double longitude) {
+    public AsyncPosting(AsyncResponse delegate, String image, String userId, String comment,
+                        double latitude, double longitude, String categoryId, String token) {
         this.delegate = delegate;
-        this.imgInfo = imgInfo;
+        this.image = image;
         this.userId = userId;
         this.comment = comment;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.categoryId = categoryId;
+        this.token = token;
     }
 
     @Override
     public JSONObject doInBackground(Void... params) {
-        JSONObject jsonLoginObject = new JSONObject();
+        JSONObject jsonPostingObject = new JSONObject();
+        JSONObject holder = new JSONObject();
         JSONObject jsonData = null;
         String result = null;
         try {
-            jsonLoginObject.put("imgInfo", imgInfo);
-            jsonLoginObject.put("userId", userId);
-            jsonLoginObject.put("comment", comment);
-            jsonLoginObject.put("latitude", latitude);
-            jsonLoginObject.put("longitude", longitude);
+            jsonPostingObject.put("image", image);
+            jsonPostingObject.put("user_id", userId);
+            jsonPostingObject.put("comment", comment);
+            jsonPostingObject.put("latitude", latitude);
+            jsonPostingObject.put("longitude", longitude);
+            jsonPostingObject.put("location1", "Tokyo");
+            jsonPostingObject.put("location2", "Shinjuku St.");
+            jsonPostingObject.put("category_id", categoryId);
+            holder.put("posting", jsonPostingObject);
         } catch(JSONException e) {
             Log.e(TAG, "JSON Exception happens: " + e.getCause());
             // @TODO null is acceptable?
             return null;
         }
-        RequestBody body = RequestBody.create(JSON, jsonLoginObject.toString());
-        Request request = new Request.Builder().url("http://localhost:3000/api/users").post(body).build();
+        RequestBody body = RequestBody.create(JSON, holder.toString());
+        Request request = new Request.Builder().url(CommonConst.Api.MAKE_A_POST).post(body).addHeader("Authorization", token).build();
         try {
             Response response = client.newCall(request).execute();
             result = response.body().string();

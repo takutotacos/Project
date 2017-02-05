@@ -4,10 +4,11 @@ module Api
 
     def authenticate
       command = AuthenticateUser.call(params[:email], params[:password])
+      @type = "AUTHENTICATE"
       if command.success?
-        render json: {auth_token: command.result}
+        render json: { type: @type, id: command.get_id, auth_token: command.result }
       else
-        render json: {error: command.errors}, status: :unauthorized
+        render json: { error: command.errors }, status: :unauthorized
       end
     end
   end

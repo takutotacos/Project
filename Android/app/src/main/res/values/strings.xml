@@ -2,32 +2,40 @@
     <string name="app_name">Project</string>
 
     <!-- Strings related to login -->
-    <string name="login_prompt_email">Email</string>
-    <string name="login_prompt_password">Password</string>
+    <string name="login_prompt_email">メールアドレス</string>
+    <string name="login_prompt_password">パスワード</string>
     <string name="login_sign_in">Sign in</string>
-    <string name="error_invalid_userId">This userId is invalid</string>
-    <string name="error_invalid_userId_exist">This userId already exists</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_invalid_passwordConfirm">This passwordConfirm is invalid</string>
-    <string name="error_invalid_passwordConfirm_not_match">Does not match password</string>
-    <string name="error_field_required">This field is required</string>
+    <string name="error_field_required">この欄は入力必須です。</string>
     <string name="login_remember_me">Remember me</string>
-    <string name="login_signup_link"><a href="#">Sign up</a></string>
-    <string name="login_signin_link"><a href="#">Sign in</a></string>
+    <string name="login_signup_link"><a href="#">新規登録</a></string>
+    <string name="login_signin_link"><a href="#">ログイン</a></string>
     <string name="login_logo">Login here</string>
-    <string name="login_failed">The combination of email and password does not match any record.</string>
-    <string name="regist_failed">Sign Up Failed</string>
+    <string name="login_failed">メールアドレスとパスワードの組み合わせが正しくありません。</string>
+
     <string name="logout_button">Logout</string>
+
+    <!-- Strings related to 各画面のタイトル -->
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_show_image">ShowImage</string>
     <string name="title_activity_location">LocationActivity</string>
     <string name="title_activity_posting">PostingActivity</string>
     <string name="title_activity_main">MainActivity</string>
 
-    <!-- Strings to related to main -->
+    <!-- Strings related to main -->
     <string name="button_to_map">MapActivity</string>
     <string name="button_to_posting">PostingActivity</string>
 
 
+    <!-- Strings related to 投稿作成画面 -->
+    <string name="posting_spinner_categories_text">投稿内容のカテゴリを選択してください</string>
+
+    <!-- Strings related to ユーザ登録画面 -->
+    <string name="error_invalid_userId">ユーザIDが不正です。</string>
+    <string name="error_userId_exist">このユーザIDは使用されています。</string>
+    <string name="error_email_exist">このメールアドレスは使用されています。</string>
+    <string name="error_invalid_email">メールアドレスが不正です。</string>
+    <string name="error_invalid_passwordConfirm">パスワード確認欄の値が不正です。</string>
+    <string name="error_invalid_passwordConfirm_not_match">パスワードが一致しません。</string>
+    <string name="regist_failed">ユーザ登録に失敗しました。</string>
+    <string name="error_invalid_password">パスワードが短すぎます。</string>
 </resources>

@@ -18,21 +18,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncGetCategories;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncPosting;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponse;
 
@@ -44,74 +51,90 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponse 
     //TODO:LocationActivityのOnPause等が必要
     private static final String TAG = CommonConst.ActivityName.TAG_POSTING_ACTIVITY;
     private AsyncPosting mAsyncPosting = null;
+    private AsyncGetCategories mAsyncGetCategories = null;
     private SharedPreferences sharedPreferences;
     //投稿情報
-    private String userId = "test_user";
-    private String imgInfo = null;
+    private String token = null;
+    private String userId = null;
+    private String image = null;
     private EditText commentView = null;
     private ImageView imageView;
     private double latitude = 0.0;
     private double longitude = 0.0;
+    private String selectedCategoryId = null;
+
     private final int REQUEST_PERMISSION = 1000;
     private static final int RESULT_PICK_IMAGEFILE = 1001;
     private static final int RESULT_PICK_LOCATIONINFO = 1002;
     private Button button_get,button_post;
     private TextView dcimPath;
+    private Spinner mSpinner;
+    private ArrayList<String>categoriesForSpinner = new ArrayList<String>();
+    private HashMap<String, String> spinnerMap = new HashMap<String, String>();
+    private ArrayAdapter<String> adapter = null;
     private static Toast toast;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posting);
         sharedPreferences = getApplicationContext().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        token = sharedPreferences.getString("auth_token", "");
+        mAsyncGetCategories = new AsyncGetCategories(this, token);
+        mAsyncGetCategories.execute();
+        mSpinner = (Spinner) findViewById(R.id.posting_categoies_spinner);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Spinner spinner = (Spinner) parent;
+                String selectedCategoryName = (String) spinner.getSelectedItem();
+                selectedCategoryId = spinnerMap.get(selectedCategoryName);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         dcimPath = (TextView) findViewById(R.id.text_view);
         // ギャラリーのパスを取得する
         dcimPath.setText("ギャラリーのPath:　" + getGalleryPath());
-
         imageView = (ImageView) findViewById(R.id.image_view);
         commentView = (EditText) findViewById(R.id.editTextComment);
-
         button_get = (Button) findViewById(button_getImage);
         button_get.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file browser.
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-
                 // Filter to only show results that can be "opened", such as a
                 // file (as opposed to a list of contacts or timezones)
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
-
                 // Filter to show only images, using the image MIME data type.
                 // it would be "*/*".
                 intent.setType("image/*");
-
                 startActivityForResult(intent, RESULT_PICK_IMAGEFILE);
             }
         });
-
+        // Android 6, API 23以上でパーミッシンの確認
+        if (Build.VERSION.SDK_INT >= 23) {
+            checkPermission();
+        } else {
+            getLocationInfo();
+        }
         button_post = (Button) findViewById(button_postImages);
-
         button_post.setOnClickListener(new View.OnClickListener() {
             String comment = null;
-            String userId = sharedPreferences.getString("userId", "");
+            String userId = sharedPreferences.getString("user_id", "");
             @Override
             public void onClick(View v) {
                 comment = commentView.getText().toString();
                 //画像が選択されているか、コメントがあるかチェック
-                if(isValidValue(comment) && isValidValue(imgInfo) && isValidValue(userId)) {
-                    // Android 6, API 23以上でパーミッシンの確認
-                    if (Build.VERSION.SDK_INT >= 23) {
-                        checkPermission();
-                    } else {
-                        getLocationInfo();
-                    }
-                    Log.d(TAG,"come back");
+                if(isValidValue(comment) && isValidValue(image) && isValidValue(userId)) {
                     Log.d(TAG,"POSTED");
-                    mAsyncPosting = new AsyncPosting(PostingActivity.this, imgInfo,
-                            userId, comment, latitude, longitude);
+                    mAsyncPosting = new AsyncPosting(PostingActivity.this, image,
+                            userId, comment, latitude, longitude, selectedCategoryId, token);
                     mAsyncPosting.execute();
                 }else{
                     toast("投稿項目を入力してください もしくはユーザIDが取得できていません。管理者に連絡してください。");
@@ -123,12 +146,11 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponse 
     /*Permission関連*/
     // 位置情報許可の確認
     public void checkPermission() {
-        // 既に許可している
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
+            // 既に許可している
             getLocationInfo();
-        }
-        // 拒否していた場合
-        else{
+        } else{
+            // 拒否していた場合
             requestLocationPermission();
         }
     }
@@ -139,10 +161,8 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponse 
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
             ActivityCompat.requestPermissions(PostingActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSION);
-
         } else {
             toast("許可されないとアプリが実行できません");
-
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, REQUEST_PERMISSION);
         }
     }
@@ -154,8 +174,6 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponse 
             // 使用が許可された
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLocationInfo();
-
-
             } else {
                 // それでも拒否された時の対応
                 toast("APIへの許可が必要です");
@@ -176,7 +194,6 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponse 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-
         // The ACTION_OPEN_DOCUMENT intent was sent with the request code
         // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
         // response to some other intent, and the code below shouldn't run at all.
@@ -189,11 +206,10 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponse 
             if (resultData != null) {
                 uri = resultData.getData();
                 Log.i(TAG, "Uri: " + uri.toString());
-
                 try {
                     Bitmap bmp = getBitmapFromUri(uri);
-                    imgInfo =  encodeBase64(bmp);
-                    Log.d(TAG, "bmp encoded:" + imgInfo);
+                    image =  encodeBase64(bmp);
+                    Log.d(TAG, "bmp encoded:" + image);
                     imageView.setImageBitmap(bmp);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -201,9 +217,9 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponse 
             }
             //LocationActivityから返り値を受け取る
         }else if(requestCode == RESULT_PICK_LOCATIONINFO && resultCode == Activity.RESULT_OK){
-            System.out.println(resultData.getDoubleExtra("latitude",0.0));
-            latitude = resultData.getDoubleExtra("latitude",0.0);
-            longitude = resultData.getDoubleExtra("longitude",0.0);
+            Bundle savedData = resultData.getExtras();
+            latitude = savedData.getDouble("latitude", 0.0);
+            longitude = savedData.getDouble("longitude", 0.0);
         }
     }
 
@@ -222,7 +238,6 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponse 
         return Base64.encodeToString(byteArrayBitmapStream.toByteArray(), Base64.DEFAULT);
     }
 
-
     protected Boolean isValidValue(String target){
         return target != null && !isEmpty(target);
     }
@@ -238,16 +253,43 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponse 
     @Override
     public void processFinish(JSONObject output) {
         if(output != null) {
-            String httpStatus = null;
             try {
-                httpStatus = output.getString("httpStatus");
+                if(CommonConst.ApiAction.INDEX.equals(output.getString("action"))) {
+                    // when retrieving the all available categories
+                    JSONArray categoriesArray = output.getJSONArray("categories");
+                    for(int i = 0; i < categoriesArray.length(); i++) {
+                        JSONObject category = categoriesArray.getJSONObject(i);
+                        String categoryName = category.getString("category_name");
+                        categoriesForSpinner.add(categoryName);
+                        spinnerMap.put(categoryName, category.getString("id"));
+                    }
+                    adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categoriesForSpinner);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    mSpinner.setAdapter(adapter);
+                } else {
+                    // when registering a post
+                    String status = output.getString("status");
+                    if (CommonConst.ApiResponse.REGISTER_SUCCESSFUL.equals(status)) {
+                        toast("登録したでー");
+                        finish();
+                        proceedToActivity(MainActivity.class);
+                    } else {
+                        Log.e(TAG, "登録に失敗しました。 status: " + status);
+                        toast("失敗したでー");
+                    }
+                }
             } catch(JSONException e) {
                 Log.e(TAG, "JSON Exception happens: " + e.getCause());
             }
-            toast("登録したでー");
         } else {
             Log.e(TAG, "Null output is returned.");
             toast("失敗したでー");
         }
+    }
+
+    private void proceedToActivity(Class activity) {
+        Intent intent = new Intent(this, activity);
+        Log.i(TAG, "The next activity is: " + activity);
+        startActivity(intent);
     }
 }

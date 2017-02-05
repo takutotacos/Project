@@ -54,12 +54,17 @@ public class CommonConst {
 
         public static final String LOGIN = LOCAL_SERVER + "/authenticate";
 
+        public static final String MAKE_A_POST = LOCAL_SERVER + "/postings";
+
+        public static final String GET_ALL_CATEGORIES = LOCAL_SERVER + "/categories";
     }
 
-    public class ApiClass {
+    public class ApiAction {
         public static final String SHOW = "SHOW";
 
-        public static final String REGISTER = "REGISTER";
+        public static final String CREATE = "CREATE";
+
+        public static final String INDEX = "INDEX";
     }
 
     public class StatusOfUser {

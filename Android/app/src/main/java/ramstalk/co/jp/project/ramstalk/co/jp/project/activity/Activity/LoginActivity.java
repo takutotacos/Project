@@ -196,11 +196,12 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void processFinish(JSONObject output) {
-        finish();
         if(output != null) {
             String auth_token = null;
+            String userId = null;
             try {
                 auth_token = output.getString("auth_token");
+                userId = output.getString("id");
             } catch(JSONException e) {
                 Log.e(TAG, "JSON Exception happens: " + e.getCause());
             }
@@ -208,7 +209,9 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
                 keepUserLoggedIn();
             }
             sharedPreferencesEditor.putString("auth_token", auth_token);
+            sharedPreferencesEditor.putString("user_id", userId);
             sharedPreferencesEditor.apply();
+            finish();
             proceedToActivity(MainActivity.class);
         } else {
             Log.e(TAG, "Null output is returned.");

@@ -1,13 +1,14 @@
 require 'pry'
 module Api
   class UsersController < ApplicationController
-    # before_action :set_user, only: [:show, :edit, :update, :destroy]
+    skip_before_action :authenticate_request, :only => :create
+    before_action :set_user, only: [:show, :edit, :update, :destroy]
 
     # GET /users
     # GET /users.json
     def index
       @users = User.all
-      render json:  @users
+      render json: @users
     end
 
     # GET /users/1
@@ -17,10 +18,10 @@ module Api
       render 'show', formats: 'json', handlers: 'jbuilder'
     end
 
-    # GET /users/new
-    def new
-      @user = User.new
-    end
+    # # GET /users/new
+    # def new
+    #   @user = User.new
+    # end
 
     # GET /users/1/edit
     def edit
@@ -30,20 +31,15 @@ module Api
     # POST /users.json
     def create
       @user = User.new(user_params)
-      @type = "CREATE"
-      respond_to do |format|
-        if @user.save
-          @status = 2
-          format.html { redirect_to @user, notice: 'User was successfully created.' }
-          format.json { render :show}
-        else
-          @status = 3
-          format.html { render :new }
-          format.json { render :show }
-        end
+      @action = "CREATE"
+      if @user.save
+        @status = 2
+        render json: { action: @action, status: @status, user: @user }
+      else
+        @status = 3
+        render json: { action: @action, status: @status, errors: @user.errors }
       end
     end
-
 
     # PATCH/PUT /users/1
     # PATCH/PUT /users/1.json
@@ -77,7 +73,6 @@ module Api
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def user_params
-        binding.pry
         params.require(:user).permit(:user_id, :email, :user_name, :password_digest, :password,  :icon, :icon_content_type, :fb_account)
       end
   end

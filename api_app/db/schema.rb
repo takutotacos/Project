@@ -10,37 +10,58 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170203064703) do
+ActiveRecord::Schema.define(version: 20170203231921) do
 
-  create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "category_name"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "active_flg",    default: 1
   end
 
-  create_table "postings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
-    t.string   "user_id",                                               null: false
+  create_table "posting_trn", primary_key: ["user_id", "create_date"], force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "user_id",     limit: 256,                                           null: false
+    t.datetime "create_date",                  default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.float    "latitude",    limit: 53,                                            null: false
+    t.float    "longitude",   limit: 53,                                            null: false
+    t.string   "comment",     limit: 256
+    t.binary   "img_info",    limit: 16777215
+    t.datetime "update_date"
+    t.boolean  "active_flg",                   default: true
+  end
+
+  create_table "postings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "user_id",                                                           null: false
     t.binary   "image",       limit: 16777215
     t.string   "comment"
     t.decimal  "latitude",                     precision: 11, scale: 8
     t.decimal  "longitude",                    precision: 11, scale: 8
     t.string   "location1"
     t.string   "location2"
-    t.datetime "created_at",                                            null: false
-    t.datetime "updated_at",                                            null: false
-    t.integer  "category_id"
+    t.datetime "created_at",                                                        null: false
+    t.datetime "updated_at",                                                        null: false
+    t.string   "category_id"
+    t.integer  "active_flg",                                            default: 1
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "user_mst", primary_key: "user_id", id: :string, limit: 256, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string  "email",      limit: 256,                null: false
+    t.string  "password",   limit: 256,                null: false
+    t.boolean "active_flg",             default: true
+  end
+
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "user_id"
     t.string   "email"
-    t.binary   "icon",              limit: 65535
-    t.string   "icon_content_type"
-    t.string   "fb_account",                      default: "0"
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
     t.string   "password_digest"
+    t.binary   "icon",              limit: 4294967295
+    t.string   "icon_content_type"
+    t.string   "fb_account",                           default: "0"
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.string   "auth_token"
+    t.integer  "active_flg",                           default: 1
+    t.index ["user_id"], name: "index_users_on_user_id", using: :btree
   end
 
 end

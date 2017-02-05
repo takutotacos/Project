@@ -1,99 +1,133 @@
 package ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderApi;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
+public class LocationActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+    private String TAG = getClass().getName();
+    private GoogleApiClient mGoogleApiClient;
+    private boolean mResolvingError = false;
+    private FusedLocationProviderApi fusedLocationProviderApi;
+    private LocationRequest locationRequest;
+    private Location location;
+    private long lastLocationTime = 0;
 
-public class LocationActivity extends Activity implements LocationListener {
-    private LocationManager locationManager;
     private double latitude = 0.0;
     private double longitude = 0.0;
-    Intent intent = new Intent();
+    Intent intent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationStart();
-
-        Log.d("debug","intent");
-        intent.putExtra("latitude", latitude);
-        intent.putExtra("longitude", longitude);
-        setResult(RESULT_OK, intent);
-        finish();
-
+        Log.d(TAG, "onCreate");
+        // creating LocationRequest instance and setting its accuracy and interval
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(1000);
+        locationRequest.setFastestInterval(16);
+        fusedLocationProviderApi = LocationServices.FusedLocationApi;
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        mGoogleApiClient.connect();
     }
-    //位置情報取得
-    private void locationStart(){
-        Log.d("debug","locationStart()");
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
+    }
 
-        final boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (!gpsEnabled) {
-            // GPSを設定するように促す
-            Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(settingsIntent);
-            Log.d("debug", "gpsEnable, startActivity");
-        } else {
-            Log.d("debug", "gpsEnabled");
-        }
-
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(TAG, "onConnected");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-
-            Log.d("debug", "checkSelfPermission false");
             return;
         }
-        //GPS情報最新化
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 50, this);
+        Location currentLocation = fusedLocationProviderApi.getLastLocation(mGoogleApiClient);
+        if(currentLocation != null) {
+            intent = new Intent();
+            bundle = new Bundle();
+            bundle.putDouble("latitude", currentLocation.getLatitude());
+            bundle.putDouble("longitude", currentLocation.getLongitude());
+            intent.putExtras(bundle);
+            setResult(RESULT_OK, intent);
+            finish();
+        } else {
+            //バックグラウンドから戻ってしまうと例外が発生する場合がある
+            try {
+                fusedLocationProviderApi.requestLocationUpdates(mGoogleApiClient, locationRequest,  this);
+                // Schedule a Thread to unregister location listeners
+                Executors.newScheduledThreadPool(1).schedule(new Runnable() {
+                    @Override
+                    public void run() {
+                        fusedLocationProviderApi.removeLocationUpdates(mGoogleApiClient, LocationActivity.this);
+                    }
+                }, 60000, TimeUnit.MILLISECONDS);
+                // @TODO can we use something other than exception??? more specific one?
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                Toast toast = Toast.makeText(this, "例外が発生、位置情報のPermissionを許可していますか。", Toast.LENGTH_SHORT);
+                toast.show();
+                finish();
+            }
+        }
+
     }
 
     //位置情報が更新されると呼び出される
     @Override
     public void onLocationChanged(Location location) {
         Log.d("debug","update");
-        // 緯度取得
-        latitude = location.getLatitude();
-        // 経度取得
-        longitude = location.getLongitude();
+        intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putDouble("latitude", location.getLatitude());
+        bundle.putDouble("longitude", location.getLongitude());
+        intent.putExtras(bundle);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
-    //位置情報のステータスが更新されると呼び出される
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        switch (status) {
-            case LocationProvider.AVAILABLE:
-                Log.d("debug", "LocationProvider.AVAILABLE");
-                break;
-            case LocationProvider.OUT_OF_SERVICE:
-                Log.d("debug", "LocationProvider.OUT_OF_SERVICE");
-                break;
-            case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                Log.d("debug", "LocationProvider.TEMPORARILY_UNAVAILABLE");
-                break;
+    public void onConnectionSuspended(int i) {
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (mResolvingError) {
+            // Already attempting to resolve an error.
+            Log.d(TAG, "Already attempting to resolve an error");
+            return;
+        } else if (connectionResult.hasResolution()) {
+
+        } else {
+            mResolvingError = true;
         }
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
     }
 
 }

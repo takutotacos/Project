@@ -1,11 +1,17 @@
 require 'pry'
 module Api
   class PostingsController < ApplicationController
+
     def index
       @postings = Posting.all
       render json: @postings
       # render json: { status: @postings.present?? 1:-1, postings: @postings }
 	end
+
+    def show
+      @postings = Posting.find(params[:id])
+      render json: @postings
+    end
 
     def create
       @posting = Posting.new(posting_params)

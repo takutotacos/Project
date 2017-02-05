@@ -1,10 +1,7 @@
 package ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.google.android.gms.maps.GoogleMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,20 +18,17 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
  */
 public class AsyncGetInfoOnMap extends AsyncTask<Void, Void, JSONArray> {
     private static String TAG = CommonConst.ActivityName.TAG_LOGIN_ACTIVITY;
-    private static String URL = CommonConst.UrlForPhp.GET_IMAGE_DATA;
-    private Activity mapActivity;
+    private String token = null;
     private AsyncResponseMap delegate = null;
-    private GoogleMap mMap;
     private OkHttpClient client;
     /**
      *  if the user location or the location where the phone screen is at is needed,
      *  add the field to get from the MapsActivity when its initialized.
      */
 
-    public AsyncGetInfoOnMap(AsyncResponseMap delegate, Activity activity, GoogleMap mMap) {
+    public AsyncGetInfoOnMap(AsyncResponseMap delegate, String token) {
         this.delegate = delegate;
-        this.mapActivity = activity;
-        this.mMap = mMap;
+        this.token = token;
     }
 
     @Override
@@ -42,7 +36,7 @@ public class AsyncGetInfoOnMap extends AsyncTask<Void, Void, JSONArray> {
         JSONArray jsonData = null;
         String result = null;
         client = new OkHttpClient();
-        Request request = new Request.Builder().url(URL).get().build();
+        Request request = new Request.Builder().url(CommonConst.Api.GET_ALL_POSTINGS_ON_MAP).get().addHeader("Authorization", token).build();
         try {
             Response response = client.newCall(request).execute();
             result = response.body().string();
@@ -51,7 +45,6 @@ public class AsyncGetInfoOnMap extends AsyncTask<Void, Void, JSONArray> {
         } catch (IOException e) {
             Log.e(TAG, "IO Exception happens: " + e.getCause());
         }
-
         try {
             jsonData = new JSONArray(result);
         } catch (JSONException e) {

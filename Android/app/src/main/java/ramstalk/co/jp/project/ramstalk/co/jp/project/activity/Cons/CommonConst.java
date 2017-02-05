@@ -48,14 +48,21 @@ public class CommonConst {
     public class Api {
         private static final String LOCAL_SERVER = "http://10.0.2.2:3000/api";
 
+        public static final String LOGIN = LOCAL_SERVER + "/authenticate";
+
+        // APIs for users
         public static final String REGISTER_USER = LOCAL_SERVER + "/users";
 
         public static final String SEARCH_USER = LOCAL_SERVER + "/users/";
 
-        public static final String LOGIN = LOCAL_SERVER + "/authenticate";
-
+        // APIs for postings
         public static final String MAKE_A_POST = LOCAL_SERVER + "/postings";
 
+        public static final String GET_ALL_POSTINGS_ON_MAP = LOCAL_SERVER + "/postings";
+
+        public static final String GET_A_DETAILED_POSTING = LOCAL_SERVER + "/postings";
+
+        // APIs for categories
         public static final String GET_ALL_CATEGORIES = LOCAL_SERVER + "/categories";
     }
 

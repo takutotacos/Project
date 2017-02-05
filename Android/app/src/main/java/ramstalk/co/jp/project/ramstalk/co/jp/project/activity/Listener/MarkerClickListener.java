@@ -6,15 +6,13 @@ import android.content.Intent;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.ShowImage;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncGetImage;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.ShowImageActivity;
 
 /**
  * Created by sugitatakuto on 2017/01/15.
  */
 public class MarkerClickListener implements GoogleMap.OnMarkerClickListener {
     Activity activity = null;
-    AsyncGetImage mAsyncGetImage = null;
 
     public MarkerClickListener(Activity activity) {
         this.activity = activity;
@@ -22,20 +20,17 @@ public class MarkerClickListener implements GoogleMap.OnMarkerClickListener {
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        String tag = (String) marker.getTag();
-        if(tag == null || "".equals(tag)) {
+        String postingId = (String) marker.getTag();
+        if(postingId == null || "".equals(postingId)) {
             return false;
         }
-        String createDate = tag.substring(0, tag.indexOf("+"));
-        String userId = tag.substring(tag.indexOf("+") + 1);
-        showImageActivity(createDate, userId);
+        showImageActivity(postingId);
         return true;
     }
 
-    private void showImageActivity(String createDate, String userId) {
-        Intent intent = new Intent(activity, ShowImage.class);
-        intent.putExtra("createDate", createDate);
-        intent.putExtra("userId", userId);
+    private void showImageActivity(String postingId) {
+        Intent intent = new Intent(activity, ShowImageActivity.class);
+        intent.putExtra("postingId", postingId);
         activity.startActivity(intent);
     }
 

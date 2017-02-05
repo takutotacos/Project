@@ -1,5 +1,7 @@
 package ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -24,12 +26,17 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Listener.MarkerCli
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, AsyncResponseMap {
 
     private GoogleMap mMap;
+    private AsyncGetInfoOnMap getInfoOnMap = null;
+    private SharedPreferences sharedPreferences;
+    private String token = null;
     private static String TAG = CommonConst.ActivityName.TAG_MAPS_ACTIVITY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        sharedPreferences = getApplicationContext().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        token = sharedPreferences.getString("auth_token", "");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -58,7 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        AsyncGetInfoOnMap getInfoOnMap = new AsyncGetInfoOnMap(this, this, googleMap);
+        getInfoOnMap = new AsyncGetInfoOnMap(this, token);
         getInfoOnMap.execute();
     }
 
@@ -66,27 +73,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void processFinish(JSONArray result) {
         if (result != null) {
             for (int i = 0; i < result.length(); i++) {
-                double latitude = 0.0;
-                double longitude = 0.0;
+                String latitude = null;
+                String longitude = null;
                 String comment = null;
-                String userId = null;
-                String createDate = null;
-                String imgInfo = null;
+                String id = null;
                 try {
                     JSONObject data = result.getJSONObject(i);
-                    latitude = data.getDouble("latitude");
-                    longitude = data.getDouble("longitude");
+                    latitude = data.getString("latitude");
+                    longitude = data.getString("longitude");
                     comment = data.getString("comment");
-                    userId = data.getString("user_id");
-                    createDate = data.getString("create_date");
+                    id = data.getString("id");
                 } catch (JSONException e) {
                     Log.e(TAG, "JSON Exception happens: " + e.getCause());
                 }
-                LatLng data = new LatLng(latitude, longitude);
-                mMap.addMarker(new MarkerOptions().position(data).title(comment)).setTag(createDate + "+" + userId);
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(data));
-                mMap.setOnMarkerClickListener(new MarkerClickListener(this));
+                // A posting data has to have location data
+                if(isDouble(latitude) && isDouble(longitude)) {
+                    LatLng data = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+                    mMap.addMarker(new MarkerOptions().position(data).title(comment)).setTag(id);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(data));
+                    mMap.setOnMarkerClickListener(new MarkerClickListener(this));
+                }
             }
+        }
+    }
+
+    private boolean isDouble(String input) {
+        try {
+            Double.parseDouble(input);
+            return true;
+        } catch(NumberFormatException e) {
+            Log.e(TAG, "Number Format Exception. LatLng from DB could not be converted into number");
+            Log.e(TAG, e.getMessage());
+            return false;
         }
     }
 }

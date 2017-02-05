@@ -93,7 +93,7 @@ public class RegistUserActivity extends AppCompatActivity implements AsyncRespon
             try {
                 if(CommonConst.ApiAction.CREATE.equals(output.getString("action"))) { // when creating a user
                     if(CommonConst.ApiResponse.REGISTER_SUCCESSFUL.equals(output.getString("status"))) {
-                        mAuthTask = new AsyncLogin(this, email, password);
+                        mAuthTask = new AsyncLogin(this, email, password, null, false);
                         mAuthTask.execute();
                     } else {
                         String errorUserId = output.getJSONObject("errors").getString("user_id");

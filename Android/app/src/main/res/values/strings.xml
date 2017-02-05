@@ -17,6 +17,7 @@
     <!-- Strings related to 各画面のタイトル -->
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_show_image">ShowImage</string>
+<<<<<<< HEAD
     <string name="title_activity_location">LocationActivity</string>
     <string name="title_activity_posting">PostingActivity</string>
     <string name="title_activity_main">MainActivity</string>
@@ -28,6 +29,12 @@
 
     <!-- Strings related to 投稿作成画面 -->
     <string name="posting_spinner_categories_text">投稿内容のカテゴリを選択してください</string>
+=======
+    <string name="facebook_app_id">375174456178755</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+>>>>>>> facebook_login
 
     <!-- Strings related to ユーザ登録画面 -->
     <string name="error_invalid_userId">ユーザIDが不正です。</string>

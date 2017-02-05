@@ -25,6 +25,8 @@ public class CommonConst {
 
         public static final String TAG_SHOW_IMAGE_ACTIVITY = "ShowImageActivity";
 
+        public static final String TAG_LOGIN_FB_FRAGMENT = "LoginFBFragment";
+
     }
 
     public class UrlForPhp {

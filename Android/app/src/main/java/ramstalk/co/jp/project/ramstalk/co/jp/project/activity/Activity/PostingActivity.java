@@ -90,7 +90,6 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponse 
                 String selectedCategoryName = (String) spinner.getSelectedItem();
                 selectedCategoryId = spinnerMap.get(selectedCategoryName);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 

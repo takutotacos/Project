@@ -12,7 +12,12 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.ShowImage
  * Created by sugitatakuto on 2017/01/15.
  */
 public class MarkerClickListener implements GoogleMap.OnMarkerClickListener {
+<<<<<<< HEAD
     Activity activity = null;
+=======
+    private Activity activity = null;
+    private HashMap<String, String> imgInfos = new HashMap<String, String>();
+>>>>>>> facebook_login
 
     public MarkerClickListener(Activity activity) {
         this.activity = activity;
@@ -34,4 +39,19 @@ public class MarkerClickListener implements GoogleMap.OnMarkerClickListener {
         activity.startActivity(intent);
     }
 
+    public Activity getActivity() {
+        return this.activity;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
+    public HashMap<String, String> getImgInfos() {
+        return this.imgInfos;
+    }
+
+    public void setImgInfos(HashMap<String, String> imgInfos) {
+        this.imgInfos = imgInfos;
+    }
 }

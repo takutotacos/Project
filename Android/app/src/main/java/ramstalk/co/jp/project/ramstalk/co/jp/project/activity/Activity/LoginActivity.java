@@ -35,7 +35,7 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponse
  *
  *
  */
-public class LoginActivity extends AppCompatActivity implements AsyncResponse {
+public class LoginActivity extends AppCompatActivity implements AsyncResponse{
 
     private static String TAG = CommonConst.ActivityName.TAG_LOGIN_ACTIVITY;
     private AsyncLogin mAuthTask = null;
@@ -47,6 +47,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     private View mLoginFormView;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor sharedPreferencesEditor;
+    private Button mLoginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
                 proceedToActivity(RegistUserActivity.class);
             }
         });
-
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -87,7 +87,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
                 attemptLogin();
             }
         });
-
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -101,18 +100,14 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         if (mAuthTask != null) {
             return;
         }
-
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
-
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-
         boolean cancel = false;
         View focusView = null;
-
         // Check for a valid password, if the user entered one.
         if(TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_field_required));
@@ -122,9 +117,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
-
         }
-
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
@@ -135,7 +128,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
             focusView = mEmailView;
             cancel = true;
         }
-
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -145,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
             // perform the user login attempt.
             showProgress(true);
             Log.i(TAG, "The login process starts. Email: " + email + " password: " + TextUtils.isEmpty(password));
-            mAuthTask = new AsyncLogin(this, email, password);
+            mAuthTask = new AsyncLogin(this, email, password, null, true);
             mAuthTask.execute();
         }
     }
@@ -215,12 +207,14 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
             proceedToActivity(MainActivity.class);
         } else {
             Log.e(TAG, "Null output is returned.");
-            // go back to the login screen with the message saying "the combination of email and password does not match any records"
+            // go back to the login screen with the message saying:
+            // "the combination of email and password does not match any records"
             String message = getString(R.string.login_failed);
             startActivity(getIntent());
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
     }
+
     private boolean isUserRemembered() {
         boolean isUserRemembered = sharedPreferences.getBoolean(CommonConst.StatusOfUser.IS_USER_REMEMBERED, false);
         Log.i(TAG, "Has the user been kept logged in: " + isUserRemembered);

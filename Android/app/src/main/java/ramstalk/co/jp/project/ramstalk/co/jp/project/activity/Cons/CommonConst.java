@@ -27,6 +27,12 @@ public class CommonConst {
 
         public static final String TAG_LOGIN_FB_FRAGMENT = "LoginFBFragment";
 
+        public static final String TAG_HOME_ACTIVITY = "HomeActivity";
+
+        public static final String TAG_WALL_ACTIVITY = "WallActivity";
+
+        public static final String TAG_NOTIFICATION_ACTIVITY = "NotificationActivity";
+
     }
 
     public class UrlForPhp {

@@ -7,16 +7,12 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
-<<<<<<< HEAD
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
-=======
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
->>>>>>> facebook_login
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -59,7 +55,6 @@
             android:label="@string/title_activity_maps" />
         <activity android:name=".ramstalk.co.jp.project.activity.Activity.RegistUserActivity" />
         <activity
-<<<<<<< HEAD
             android:name=".ramstalk.co.jp.project.activity.Activity.ShowImageActivity"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
@@ -74,10 +69,6 @@
             android:name=".ramstalk.co.jp.project.activity.Activity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-=======
-            android:name=".ramstalk.co.jp.project.activity.Activity.ShowImage"
-            android:theme="@style/Theme.AppCompat.Translucent" />
->>>>>>> facebook_login
     </application>
 
 </manifest>

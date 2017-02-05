@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -21,20 +20,24 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
  */
 public class AsyncUserExists extends AsyncTask<Void, Void, JSONObject> {
 
-    String searchKey = null;
-    String searchValue = null;
+    private String TAG = getClass().getName();
+    private String searchKey = null;
+    private String searchValue = null;
+    private AsyncResponse delegate = null;
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient client = new OkHttpClient();
 
-    public AsyncUserExists(String searchKey, String searchValue) {
+    public AsyncUserExists(AsyncResponse delegate, String searchKey, String searchValue) {
         this.searchKey = searchKey;
         this.searchValue = searchValue;
+        this.delegate = delegate;
     }
 
     @Override
-    public Boolean doInBackground(Void... params) {
+    public JSONObject doInBackground(Void... params) {
         JSONObject jsonObject = new JSONObject();
-        boolean result = false;
+        String result = null;
+        JSONObject jsonData = null;
         try {
             jsonObject.put("searchKey", searchKey);
             jsonObject.put("searchValue", searchValue);
@@ -43,22 +46,29 @@ public class AsyncUserExists extends AsyncTask<Void, Void, JSONObject> {
             return null;
         }
         RequestBody body = RequestBody.create(JSON, jsonObject.toString());
-        Request request = new Request.Builder().url(CommonConst.UrlForPhp.USER_EXISTS_PHP).post(body).build();
+        // @Todo is this class even necessary???
+        Request request = new Request.Builder().url(CommonConst.Api.SEARCH_USER).post(body).build();
         try {
             Response response = client.newCall(request).execute();
-            @// TODO: 2017/01/23 How to store search result and how to retrieve it as a boolean value?
-            result = response.body().toString();
+            // @TODO: 2017/01/23 How to store search result and how to retrieve it as a boolean value?
+            result = response.body().string();
             Log.i(TAG, result);
             response.body().close();
         }catch(IOException e) {
             Log.e(TAG, "IO Exception happens: " + e.getCause());
         }
-        return result;
+        try {
+            jsonData = new JSONObject(result);
+        } catch(JSONException e) {
+            Log.e(TAG, "JSON Exception happens: " + e.getCause());
+            return null;
+        }
+        return jsonData;
     }
 
     @Override
-    public Boolean onPostExecute(JSONObject result) {
-        return result.getBoolean("email");
+    public void onPostExecute(JSONObject result) {
+        delegate.processFinish(result);
     }
 
 

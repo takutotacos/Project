@@ -64,4 +64,12 @@
         android:layout_height="300dp"
         android:layout_weight="0.16" />
 
+    <fragment
+        android:name="ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Fragment.FooterFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragment_footer"
+        android:layout_alignParentBottom="true"
+        tools:layout="@layout/fragment_footer" />
+
 </LinearLayout>

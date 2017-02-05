@@ -13,7 +13,6 @@
     android:orientation="vertical"
     app:layout_collapseParallaxMultiplier="1.0">
 
-<<<<<<< HEAD
     <TextView
         android:text="Regist User"
         android:layout_width="wrap_content"
@@ -89,6 +88,3 @@
 
 
 </LinearLayout>
-=======
-</RelativeLayout>
->>>>>>> facebook_login

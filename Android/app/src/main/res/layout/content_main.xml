@@ -11,27 +11,34 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.MainActivity"
     tools:showIn="@layout/activity_main">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_to_map"
+                android:text="@string/button_to_map"
+                android:textStyle="bold" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_to_posting"
+                android:text="@string/button_to_posting"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <fragment
+            android:name="ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Fragment.FooterFragment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/button_to_map"
-            android:text="@string/button_to_map"
-            android:textStyle="bold" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button_to_posting"
-            android:text="@string/button_to_posting"
-            android:textStyle="bold"/>
-
-
-
-
-    </LinearLayout>
+            android:id="@+id/fragment_footer"
+            android:layout_alignParentBottom="true"
+            tools:layout="@layout/fragment_footer" />
 
 </RelativeLayout>

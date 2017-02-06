@@ -1,19 +1,25 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  user_id: MyString
-  image: 
-  comment: MyString
-  latitude: 
-  longitude: 
-  location1: MyString
-  location2: MyString
+rambo:
+  user_id: 1
+  comment: "Nothing is over!!!"
+  location1: "America"
+  location2: "Some police station"
+  created_at: <%= 10.minutes.ago %>
 
-two:
-  user_id: MyString
-  image: 
-  comment: MyString
-  latitude: 
-  longitude: 
-  location1: MyString
-  location2: MyString
+Cobra:
+  user_id: 2
+  comment: "Mission completed!!!"
+  location1: "Afghanistan"
+  location2: "Some American base"
+  created_at: <%= 3.years.ago %>
+
+Rocky:
+  user_id: 3
+  comment: "Dont point figers and saying you aint where you wanna be because of him or her or anybody."
+  created_at: <%= 2.hours.ago %>
+
+most_recent:
+  user_id: 3
+  comment: "Barney Ross"
+  created_at: <%= Time.zone.now %>

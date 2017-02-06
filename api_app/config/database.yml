@@ -9,14 +9,14 @@ default: &default
   pool: 5
   timeout: 5000
   database: project
-  username: root              
+  username: root
   password: biggerbeans
   encoding: utf8
 
 development:
   <<: *default
   database: project
-  socket: /var/lib/mysql/mysql.sock #/private/tmp/mysql.sock
+  socket: /private/tmp/mysql.sock #/var/lib/mysql/mysql.sock
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

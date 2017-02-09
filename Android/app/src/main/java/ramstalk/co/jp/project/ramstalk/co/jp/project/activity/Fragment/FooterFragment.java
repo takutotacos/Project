@@ -43,7 +43,7 @@ public class FooterFragment extends Fragment {
         mMapTextView = (TextView) view.findViewById(R.id.footer_map);
         mMakingAPostingTextView = (TextView) view.findViewById(R.id.footer_making_a_posting);
 
-        mWallTextView.setOnTouchListener(new TouchListener(this.getActivity(), CommonConst.ActivityName.TAG_WALL_ACTIVITY));
+        mWallTextView.setOnTouchListener(new TouchListener(this.getActivity(), CommonConst.ActivityName.TAG_TIME_LINE_ACTIVITY));
         mNotificationTextView.setOnTouchListener(new TouchListener(this.getActivity(), CommonConst.ActivityName.TAG_NOTIFICATION_ACTIVITY));
         mHomeTextView.setOnTouchListener(new TouchListener(this.getActivity(), CommonConst.ActivityName.TAG_HOME_ACTIVITY));
         mMapTextView.setOnTouchListener(new TouchListener(this.getActivity(), CommonConst.ActivityName.TAG_MAPS_ACTIVITY));

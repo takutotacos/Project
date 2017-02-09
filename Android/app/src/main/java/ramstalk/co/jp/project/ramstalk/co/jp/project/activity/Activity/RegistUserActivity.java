@@ -20,11 +20,11 @@ import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncLogin;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncRegistUser;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponse;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonObject;
 
 import static android.text.TextUtils.isEmpty;
 
-public class RegistUserActivity extends AppCompatActivity implements AsyncResponse {
+public class RegistUserActivity extends AppCompatActivity implements AsyncResponseJsonObject {
     private EditText mEditTextUserId, mEditTextPassword, mEditTextPasswordConfirmation, mEditTextEmail;
 
     private static String TAG = CommonConst.ActivityName.TAG_REGIST_USER_ACTIVITY;
@@ -93,7 +93,7 @@ public class RegistUserActivity extends AppCompatActivity implements AsyncRespon
             try {
                 if(CommonConst.ApiAction.CREATE.equals(output.getString("action"))) { // when creating a user
                     if(CommonConst.ApiResponse.REGISTER_SUCCESSFUL.equals(output.getString("status"))) {
-                        mAuthTask = new AsyncLogin(this, email, password, null, false);
+                        mAuthTask = new AsyncLogin(this, email, password, null, true);
                         mAuthTask.execute();
                     } else {
                         String errorUserId = output.getJSONObject("errors").getString("user_id");

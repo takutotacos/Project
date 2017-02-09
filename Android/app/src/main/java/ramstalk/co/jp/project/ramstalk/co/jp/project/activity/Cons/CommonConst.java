@@ -29,7 +29,7 @@ public class CommonConst {
 
         public static final String TAG_HOME_ACTIVITY = "HomeActivity";
 
-        public static final String TAG_WALL_ACTIVITY = "WallActivity";
+        public static final String TAG_TIME_LINE_ACTIVITY = "TimeLineActivity";
 
         public static final String TAG_NOTIFICATION_ACTIVITY = "NotificationActivity";
 
@@ -69,6 +69,8 @@ public class CommonConst {
         public static final String GET_ALL_POSTINGS_ON_MAP = LOCAL_SERVER + "/postings";
 
         public static final String GET_A_DETAILED_POSTING = LOCAL_SERVER + "/postings";
+
+        public static final String GET_POSTING_BY_CATEGORIES = LOCAL_SERVER + "/users/postings/categories";
 
         // APIs for categories
         public static final String GET_ALL_CATEGORIES = LOCAL_SERVER + "/categories";

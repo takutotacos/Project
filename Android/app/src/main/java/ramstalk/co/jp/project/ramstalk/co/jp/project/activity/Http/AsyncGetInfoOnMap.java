@@ -19,14 +19,14 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 public class AsyncGetInfoOnMap extends AsyncTask<Void, Void, JSONArray> {
     private static String TAG = CommonConst.ActivityName.TAG_LOGIN_ACTIVITY;
     private String token = null;
-    private AsyncResponseMap delegate = null;
+    private AsyncResponseJsonArray delegate = null;
     private OkHttpClient client;
     /**
      *  if the user location or the location where the phone screen is at is needed,
      *  add the field to get from the MapsActivity when its initialized.
      */
 
-    public AsyncGetInfoOnMap(AsyncResponseMap delegate, String token) {
+    public AsyncGetInfoOnMap(AsyncResponseJsonArray delegate, String token) {
         this.delegate = delegate;
         this.token = token;
     }

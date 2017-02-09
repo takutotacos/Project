@@ -65,6 +65,11 @@ module Api
       end
     end
 
+    # def get_postings_by_categories
+    #   user = User.find(params[:user_id])
+    #   @postings = user.postings.
+    # end
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_user
@@ -73,7 +78,7 @@ module Api
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def user_params
-        params.require(:user).permit(:user_id, :email, :user_name, :password_digest, :password,  :icon, :icon_content_type, :fb_account)
+        params.require(:user).permit(:user_id, :email, :password_confirmation, :password, :icon, :icon_content_type, :fb_account)
       end
-  end
+    end
 end

@@ -22,7 +22,7 @@ public class AsyncLogin extends AsyncTask<Void, Void, JSONObject> {
 
     private static String TAG = CommonConst.ActivityName.TAG_LOGIN_ACTIVITY;
 
-    private AsyncResponse delegate = null;
+    private AsyncResponseJsonObject delegate = null;
     private String mEmail;
     private String mPassword;
     private String mUserToken;
@@ -30,7 +30,7 @@ public class AsyncLogin extends AsyncTask<Void, Void, JSONObject> {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient client = new OkHttpClient();
 
-    public AsyncLogin(AsyncResponse delegate, String email, String password, String mUserToken, boolean isNativeLogin) {
+    public AsyncLogin(AsyncResponseJsonObject delegate, String email, String password, String mUserToken, boolean isNativeLogin) {
         this.delegate = delegate;
         this.mEmail = email;
         this.mPassword = password;

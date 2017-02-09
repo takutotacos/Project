@@ -20,10 +20,10 @@ import org.json.JSONObject;
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncGetInfoOnMap;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseMap;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonArray;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Listener.MarkerClickListener;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, AsyncResponseMap {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, AsyncResponseJsonArray {
 
     private GoogleMap mMap;
     private AsyncGetInfoOnMap getInfoOnMap = null;

@@ -28,11 +28,11 @@ public class AsyncPosting extends AsyncTask<Void, Void, JSONObject> {
     private double longitude = 0.0;
     private String categoryId = null;
     private String token = null;
-    private AsyncResponse delegate = null;
+    private AsyncResponseJsonObject delegate = null;
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient client = new OkHttpClient();
 
-    public AsyncPosting(AsyncResponse delegate, String image, String userId, String comment,
+    public AsyncPosting(AsyncResponseJsonObject delegate, String image, String userId, String comment,
                         double latitude, double longitude, String categoryId, String token) {
         this.delegate = delegate;
         this.image = image;

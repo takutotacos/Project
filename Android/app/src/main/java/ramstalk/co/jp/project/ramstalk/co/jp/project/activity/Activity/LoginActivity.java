@@ -28,14 +28,14 @@ import org.json.JSONObject;
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncLogin;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponse;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonObject;
 
 /**
  * @author Takuto
  *
  *
  */
-public class LoginActivity extends AppCompatActivity implements AsyncResponse{
+public class LoginActivity extends AppCompatActivity implements AsyncResponseJsonObject {
 
     private static String TAG = CommonConst.ActivityName.TAG_LOGIN_ACTIVITY;
     private AsyncLogin mAuthTask = null;

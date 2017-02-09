@@ -19,14 +19,14 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
  */
 public class AsyncGetImage extends AsyncTask<Void, Void, JSONObject> {
     private final String TAG = this.getClass().getName();
-    private AsyncResponse delegate = null;
+    private AsyncResponseJsonObject delegate = null;
     private OkHttpClient client;
     private String postingId =null;
     private String url = CommonConst.Api.GET_A_DETAILED_POSTING;
     private String token = null;
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    public AsyncGetImage(AsyncResponse delegate, String postingId, String token) {
+    public AsyncGetImage(AsyncResponseJsonObject delegate, String postingId, String token) {
         this.delegate = delegate;
         this.postingId = postingId;
         this.url += "/" + postingId;

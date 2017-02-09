@@ -30,9 +30,9 @@ import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.MapsActivity;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncLogin;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponse;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonObject;
 
-public class LoginFragment extends Fragment implements AsyncResponse {
+public class LoginFragment extends Fragment implements AsyncResponseJsonObject {
     private static final String TAG = CommonConst.ActivityName.TAG_LOGIN_FB_FRAGMENT;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor sharedPreferencesEditor;
@@ -149,6 +149,4 @@ public class LoginFragment extends Fragment implements AsyncResponse {
             startActivity(intent);
         }
     }
-
-
 }

@@ -9,6 +9,7 @@ import android.view.View;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.MainActivity;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.MapsActivity;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.PostingActivity;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.TimeLineActivity;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 
 /**
@@ -42,8 +43,8 @@ public class TouchListener implements View.OnTouchListener {
 //            case CommonConst.ActivityName.TAG_HOME_ACTIVITY: // @todo make this activity
 //                return HomeActivity.class;
 //
-//            case CommonConst.ActivityName.TAG_WALL_ACTIVITY:
-//                return WallActivity.class;
+            case CommonConst.ActivityName.TAG_TIME_LINE_ACTIVITY:
+                return TimeLineActivity.class;
 //
 //            case CommonConst.ActivityName.TAG_NOTIFICATION:
 //                return NotificationActivity.class;

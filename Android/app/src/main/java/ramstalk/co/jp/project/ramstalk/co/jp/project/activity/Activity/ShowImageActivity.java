@@ -19,9 +19,9 @@ import org.json.JSONObject;
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncGetImage;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponse;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonObject;
 
-public class ShowImageActivity extends AppCompatActivity implements AsyncResponse{
+public class ShowImageActivity extends AppCompatActivity implements AsyncResponseJsonObject {
     private static final String TAG = CommonConst.ActivityName.TAG_SHOW_IMAGE_ACTIVITY;
     private SharedPreferences sharedPreferences;
     private String token = null;

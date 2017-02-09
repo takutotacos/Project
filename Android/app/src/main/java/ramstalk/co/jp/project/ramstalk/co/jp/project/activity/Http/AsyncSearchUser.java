@@ -21,12 +21,12 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 public class AsyncSearchUser extends AsyncTask<Void, Void, JSONObject> {
     private static String TAG;
 
-    private AsyncResponse delegate = null;
+    private AsyncResponseJsonObject delegate = null;
     private String mUserId;
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient client = new OkHttpClient();
 
-    public AsyncSearchUser(AsyncResponse delegate, String userId) {
+    public AsyncSearchUser(AsyncResponseJsonObject delegate, String userId) {
         this.delegate = delegate;
         this.mUserId = userId;
         TAG = getClass().getName();

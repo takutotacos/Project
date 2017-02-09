@@ -41,13 +41,13 @@ import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncGetCategories;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncPosting;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponse;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonObject;
 
 import static android.text.TextUtils.isEmpty;
 import static ramstalk.co.jp.project.R.id.button_getImage;
 import static ramstalk.co.jp.project.R.id.button_postImages;
 
-public class PostingActivity extends AppCompatActivity implements AsyncResponse {
+public class PostingActivity extends AppCompatActivity implements AsyncResponseJsonObject {
     //TODO:LocationActivityのOnPause等が必要
     private static final String TAG = CommonConst.ActivityName.TAG_POSTING_ACTIVITY;
     private AsyncPosting mAsyncPosting = null;

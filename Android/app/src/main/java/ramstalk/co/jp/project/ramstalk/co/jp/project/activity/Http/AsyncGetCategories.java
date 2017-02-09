@@ -19,11 +19,11 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 public class AsyncGetCategories extends AsyncTask<Void, Void, JSONObject> {
 
     private String TAG = this.getClass().getName();
-    private AsyncResponse delegate = null;
+    private AsyncResponseJsonObject delegate = null;
     private String token = null;
     private OkHttpClient client = new OkHttpClient();
 
-    public AsyncGetCategories(AsyncResponse delegate, String token) {
+    public AsyncGetCategories(AsyncResponseJsonObject delegate, String token) {
         this.delegate = delegate;
         this.token = token;
     }

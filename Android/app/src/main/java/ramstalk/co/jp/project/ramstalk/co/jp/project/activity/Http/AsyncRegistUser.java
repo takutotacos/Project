@@ -22,7 +22,7 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 public class AsyncRegistUser extends AsyncTask<Void, Void, JSONObject> {
     private static String TAG = CommonConst.ActivityName.TAG_REGIST_USER_ACTIVITY;
 
-    private AsyncResponse delegate = null;
+    private AsyncResponseJsonObject delegate = null;
     private String mUserId;
     private String mEmail;
     private String mPassword;
@@ -30,7 +30,7 @@ public class AsyncRegistUser extends AsyncTask<Void, Void, JSONObject> {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient client = new OkHttpClient();
 
-    public AsyncRegistUser(AsyncResponse delegate, String userId, String email, String password, String mPasswordConfirmation) {
+    public AsyncRegistUser(AsyncResponseJsonObject delegate, String userId, String email, String password, String mPasswordConfirmation) {
         this.delegate = delegate;
         this.mUserId = userId;
         this.mEmail = email;

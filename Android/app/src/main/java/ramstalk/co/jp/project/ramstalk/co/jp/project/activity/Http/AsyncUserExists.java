@@ -23,11 +23,11 @@ public class AsyncUserExists extends AsyncTask<Void, Void, JSONObject> {
     private String TAG = getClass().getName();
     private String searchKey = null;
     private String searchValue = null;
-    private AsyncResponse delegate = null;
+    private AsyncResponseJsonObject delegate = null;
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient client = new OkHttpClient();
 
-    public AsyncUserExists(AsyncResponse delegate, String searchKey, String searchValue) {
+    public AsyncUserExists(AsyncResponseJsonObject delegate, String searchKey, String searchValue) {
         this.searchKey = searchKey;
         this.searchValue = searchValue;
         this.delegate = delegate;

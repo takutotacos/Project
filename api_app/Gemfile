@@ -27,7 +27,7 @@ gem 'mysql2'
 gem 'byebug'
 gem 'pry-byebug'
 gem 'rb-readline'
-
+gem 'jbuilder'
 gem 'bcrypt'
 gem 'responders'
 gem 'active_model_serializers'

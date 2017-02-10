@@ -7,7 +7,7 @@ module Api
       @postings = @user.postings
       render json: @postings
       # render json: { status: @postings.present?? 1:-1, postings: @postings }
-	end
+	 end
 
     def show
       @postings = Posting.find(params[:id])
@@ -28,9 +28,9 @@ module Api
 
     # 本当はユーザコントローラに書くほうがいいのかも
     def get_postings_by_categories
-      category_id = params[:category_id]
-      @postings = Posting.where(category_id: category_id)
-      render json: { postings: @postings }
+      @postings = Posting.where(category_id: params[:category_id])
+      @action = "get_postings_by_categories"
+      render 'postings', formats: 'json', handlers: 'jbuilder'
     end
 
     private

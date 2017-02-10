@@ -71,6 +71,9 @@ GEM
       nokogiri (>= 1.6.0)
       ruby_parser (~> 3.5)
     i18n (0.8.0)
+    jbuilder (2.6.1)
+      activesupport (>= 3.0.0, < 5.1)
+      multi_json (~> 1.2)
     jsonapi (0.1.1.beta6)
       jsonapi-parser (= 0.1.1.beta3)
       jsonapi-renderer (= 0.1.1.beta1)
@@ -91,6 +94,7 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     minitest (5.10.1)
+    multi_json (1.12.1)
     mysql2 (0.4.5)
     nio4r (1.2.1)
     nokogiri (1.7.0.1)
@@ -168,6 +172,7 @@ DEPENDENCIES
   byebug
   composite_primary_keys
   haml-rails
+  jbuilder
   jwt
   listen (~> 3.1.5)
   mysql2

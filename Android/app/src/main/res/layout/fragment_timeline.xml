@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:id="@+id/time_line_linearlayout">
 
-    <!--<TextView-->
-        <!--android:id="@+id/id"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="@dimen/text_margin"-->
-        <!--android:textAppearance="?attr/textAppearanceListItem" />-->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/time_line_posting_image" />
 
-    <!--<TextView-->
-        <!--android:id="@+id/content"-->
-        <!--android:layout_width="wrap_content"-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/time_line_posting_user_info" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:id="@+id/time_line_posting_comment" />
+
+    </LinearLayout>
+
+    <!--<fragment-->
+        <!--android:name="ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Fragment.FooterFragment"-->
+        <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="@dimen/text_margin"-->
-        <!--android:textAppearance="?attr/textAppearanceListItem" />-->
+        <!--android:id="@+id/fragment_footer"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--tools:layout="@layout/fragment_footer" />-->
+
 </LinearLayout>

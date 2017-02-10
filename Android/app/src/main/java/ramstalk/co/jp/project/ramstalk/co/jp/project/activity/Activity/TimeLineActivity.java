@@ -16,7 +16,6 @@ import org.json.JSONObject;
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Adapter.TimeLineFragmentPagerAdapter;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Fragment.TimeLineFragment;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncGetCategories;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonObject;
 
@@ -51,12 +50,15 @@ public class TimeLineActivity extends AppCompatActivity implements AsyncResponse
             JSONArray categoriesArray = output.getJSONArray("categories");
             for (int i = 0; i < categoriesArray.length(); i++) {
                 JSONObject category = categoriesArray.getJSONObject(i);
+                String categoryId = category.getString("id");
                 String categoryName = category.getString("category_name");
-                adapter.addFragment(TimeLineFragment.newInstance(android.R.color.holo_blue_bright, categoryName), categoryName);
+                adapter.addFragment(categoryId, categoryName);
             }
         } catch(JSONException e) {
             Log.e(TAG, e.getMessage());
         }
         viewPager.setAdapter(adapter);
+        tabLayout = (TabLayout) findViewById(R.id.time_line_tab);
+        tabLayout.setupWithViewPager(viewPager);
     }
 }

@@ -35,24 +35,6 @@ public class CommonConst {
 
     }
 
-    public class UrlForPhp {
-
-        private static final String APACHE_SERVER_IP = "http://10.0.2.2/";
-
-        public static final String LOGIN_NORMAL_PHP = APACHE_SERVER_IP + "login_normal_way.php";
-
-        public static final String GET_IMAGE_DATA = APACHE_SERVER_IP + "get_image_data.php";
-
-        public static final String POSTING_INFO = APACHE_SERVER_IP + "posting_image.php";
-
-        public static final String POST_USER = APACHE_SERVER_IP + "posting_user.php";
-
-        public static final String SEARCH_USER = APACHE_SERVER_IP + "search_user.php";
-
-        public static final String GET_IMAGE_DETAILED_DATA = APACHE_SERVER_IP + "get_image_detailed_data.php";
-
-    }
-
     public class Api {
         private static final String LOCAL_SERVER = "http://10.0.2.2:3000/api";
 
@@ -70,7 +52,7 @@ public class CommonConst {
 
         public static final String GET_A_DETAILED_POSTING = LOCAL_SERVER + "/postings";
 
-        public static final String GET_POSTING_BY_CATEGORIES = LOCAL_SERVER + "/users/postings/categories";
+        public static final String GET_POSTING_BY_CATEGORIES = LOCAL_SERVER + "/postings_by_category";
 
         // APIs for categories
         public static final String GET_ALL_CATEGORIES = LOCAL_SERVER + "/categories";

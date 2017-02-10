@@ -3,7 +3,6 @@ package ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,16 +18,16 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 /**
  * Created by sugitatakuto on 2017/02/09.
  */
-public class AsyncGetPostingsByCategories extends AsyncTask<Void, Void, JSONArray> {
+public class AsyncGetPostingsByCategories extends AsyncTask<Void, Void, JSONObject> {
     private final String TAG = getClass().getName();
     private String token = null;
-    private AsyncResponseJsonArray delegate = null;
+    private AsyncResponseJsonObject delegate = null;
     private String categoryId;
     private String userId;
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient client = new OkHttpClient();
 
-    public AsyncGetPostingsByCategories(AsyncResponseJsonArray delegate, String token, String categoryId, String userId) {
+    public AsyncGetPostingsByCategories(AsyncResponseJsonObject delegate, String token, String categoryId, String userId) {
         this.delegate = delegate;
         this.token = token;
         this.categoryId = categoryId;
@@ -36,9 +35,9 @@ public class AsyncGetPostingsByCategories extends AsyncTask<Void, Void, JSONArra
     }
 
     @Override
-    protected JSONArray doInBackground(Void... params) {
+    protected JSONObject doInBackground(Void... params) {
         JSONObject jsonQueryObject = new JSONObject();
-        JSONArray jsonData = null;
+        JSONObject jsonData = null;
         String result = null;
         RequestBody body = RequestBody.create(JSON, jsonQueryObject.toString());
         Request request = new Request.Builder().url(CommonConst.Api.GET_POSTING_BY_CATEGORIES + "?user_id = " + userId + "&category_id=" + categoryId).get().addHeader("Authorization", token).build();
@@ -51,7 +50,7 @@ public class AsyncGetPostingsByCategories extends AsyncTask<Void, Void, JSONArra
             Log.e(TAG, "IO Exception happens: " + e.getCause());
         }
         try {
-            jsonData = new JSONArray(result);
+            jsonData = new JSONObject(result);
         } catch(JSONException e) {
             Log.e(TAG, "JSON Exception happens: " + e.getCause());
             // @TODO null is acceptable?
@@ -61,7 +60,7 @@ public class AsyncGetPostingsByCategories extends AsyncTask<Void, Void, JSONArra
     }
 
     @Override
-    public void onPostExecute(JSONArray result) {
+    public void onPostExecute(JSONObject result) {
         delegate.processFinish(result);
     }
 }

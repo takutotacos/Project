@@ -197,22 +197,28 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseJso
             } catch(JSONException e) {
                 Log.e(TAG, "JSON Exception happens: " + e.getCause());
             }
-            if(mCheckBox.isChecked()) {
-                keepUserLoggedIn();
+            if(auth_token != null) {
+                Log.d(TAG, "Login Successful");
+                sharedPreferencesEditor.putString("auth_token", auth_token);
+                sharedPreferencesEditor.putString("user_id", userId);
+                sharedPreferencesEditor.apply();
+                finish();
+                proceedToActivity(MainActivity.class);
+                return;
             }
-            sharedPreferencesEditor.putString("auth_token", auth_token);
-            sharedPreferencesEditor.putString("user_id", userId);
-            sharedPreferencesEditor.apply();
-            finish();
-            proceedToActivity(MainActivity.class);
+//            if(mCheckBox.isChecked()) {
+//                keepUserLoggedIn();
+//            }
+            Log.d(TAG, "Login Failed");
         } else {
             Log.e(TAG, "Null output is returned.");
-            // go back to the login screen with the message saying:
-            // "the combination of email and password does not match any records"
-            String message = getString(R.string.login_failed);
-            startActivity(getIntent());
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
+        // go back to the login screen with the message saying:
+        // "the combination of email and password does not match any records"
+        String message = getString(R.string.login_failed);
+        finish();
+        startActivity(getIntent());
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     private boolean isUserRemembered() {

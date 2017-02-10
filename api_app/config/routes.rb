@@ -4,5 +4,6 @@ Rails.application.routes.draw do
     resources :postings
     resources :categories
     post 'authenticate', to: 'authentication#authenticate'
+    get 'postings_by_category', to: 'postings#get_postings_by_categories'
   end
 end

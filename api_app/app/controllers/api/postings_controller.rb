@@ -3,7 +3,8 @@ module Api
   class PostingsController < ApplicationController
 
     def index
-      @postings = Posting.all
+      @user = User.where(user_id: parmas[user_id])
+      @postings = @user.postings
       render json: @postings
       # render json: { status: @postings.present?? 1:-1, postings: @postings }
 	end
@@ -23,6 +24,13 @@ module Api
         @status = 3
         render json: { action: @action, status: @status }
       end
+    end
+
+    # 本当はユーザコントローラに書くほうがいいのかも
+    def get_postings_by_categories
+      category_id = params[:category_id]
+      @postings = Posting.where(category_id: category_id)
+      render json: { postings: @postings }
     end
 
     private

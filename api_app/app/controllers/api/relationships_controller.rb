@@ -11,6 +11,8 @@ module Api
     end
 
     def get_followers
+      @followers = current_user.followers
+      render 'followers', formats: 'json', handlers: 'jbuilder'
     end
 
     def get_follower_numbers
@@ -20,6 +22,8 @@ module Api
     end
 
     def get_followings
+      @followings = current_user.following
+      render 'followings', formats: 'json', handlers: 'jbuilder'
     end
 
     def get_following_numbers

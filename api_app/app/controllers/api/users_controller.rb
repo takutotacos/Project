@@ -18,11 +18,6 @@ module Api
       render 'show', formats: 'json', handlers: 'jbuilder'
     end
 
-    # # GET /users/new
-    # def new
-    #   @user = User.new
-    # end
-
     # GET /users/1/edit
     def edit
     end
@@ -82,14 +77,14 @@ module Api
     end
 
     private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_user
-        @user = User.find_by(user_id: params[:id])
-      end
-
-      # Never trust parameters from the scary internet, only allow the white list through.
-      def user_params
-        params.require(:user).permit(:user_id, :email, :password_confirmation, :password, :icon, :icon_content_type, :fb_account)
-      end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = User.find_by(user_id: params[:id])
     end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def user_params
+      params.require(:user).permit(:user_id, :email, :password_confirmation, :password, :icon, :icon_content_type, :fb_account)
+    end
+  end
 end

@@ -3,11 +3,11 @@ module Api
   class PostingsController < ApplicationController
 
     def index
-      @user = User.where(user_id: parmas[user_id])
+      @action = "INDEX"
+      @user = User.find(params[:user_id])
       @postings = @user.postings
-      render json: @postings
-      # render json: { status: @postings.present?? 1:-1, postings: @postings }
-	 end
+      render 'postings', formats: 'json', handlers: 'jbuilder'
+    end
 
     def show
       @postings = Posting.find(params[:id])
@@ -19,16 +19,20 @@ module Api
       @action = "CREATE"
       if @posting.save
         @status = 2
-        render json: { action: @action, status: @status, posting: @posting }
+        render 'create', formats: 'json', handlers: 'jbuilder'
       else
         @status = 3
-        render json: { action: @action, status: @status }
+        render 'create', formats: 'json', handlers: 'jbuilder'
       end
     end
 
     # 本当はユーザコントローラに書くほうがいいのかも
+    # when retrieving data as a user's child elements
     def get_postings_by_categories
-      @postings = Posting.where(category_id: params[:category_id])
+      followings = current_user.following.select("id")
+      @postings = Posting.where(category_id: params[:category_id]) if followings.empty?
+      @postings = Posting.where('category_id = ? AND user_id IN (?)',
+      params[:category_id]. followings) unless followings.empty?
       @action = "get_postings_by_categories"
       render 'postings', formats: 'json', handlers: 'jbuilder'
     end

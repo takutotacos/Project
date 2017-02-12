@@ -14,23 +14,10 @@ public class User {
     private String email;
     private String password;
     private String passwordConfirmation;
-    private Bitmap icon;
+    private Bitmap image;
     private String iconFileType;
     private Date createdAt;
     private Date updatedAt;
-
-    public User(String id, String userId, String email, String password, String passwordConfirmation,
-                Bitmap icon, String iconFileType, Date createdAt, Date updatedAt) {
-        this.id = id;
-        this.userId = userId;
-        this.email = email;
-        this.password = password;
-        this.iconFileType = iconFileType;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.icon = icon;
-        this.passwordConfirmation = passwordConfirmation;
-    }
 
     public String getPasswordConfirmation() {
         return this.passwordConfirmation;
@@ -41,11 +28,11 @@ public class User {
     }
 
     public Bitmap getIcon() {
-        return icon;
+        return image;
     }
 
-    public void setIcon(Bitmap icon) {
-        this.icon = icon;
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 
     public Date getUpdatedAt() {

@@ -1,11 +1,14 @@
 package ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Model;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by sugitatakuto on 2017/02/09.
  */
 public class Posting {
     private String id;
     private String userId;
+    private String userDisplayId;
     private String categoryId;
     private String categoryName;
     private String comment;
@@ -15,6 +18,7 @@ public class Posting {
     private String location2;
     private String createdAt;
     private String updatedAt;
+    private Bitmap image;
 
     public String getId() {
         return id;
@@ -103,4 +107,22 @@ public class Posting {
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public String getUserDisplayId() {
+        return userDisplayId;
+    }
+
+    public void setUserDisplayId(String userDisplayId) {
+        this.userDisplayId = userDisplayId;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
+
 }

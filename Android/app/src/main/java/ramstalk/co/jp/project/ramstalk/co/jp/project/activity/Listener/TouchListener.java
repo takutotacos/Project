@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.HomeActivity;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.MainActivity;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.MapsActivity;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.PostingActivity;
@@ -40,9 +41,9 @@ public class TouchListener implements View.OnTouchListener {
             case CommonConst.ActivityName.TAG_MAIN_ACTIVITY: // @todo Delete this: this is unnecessary
                 return MainActivity.class;
 
-//            case CommonConst.ActivityName.TAG_HOME_ACTIVITY: // @todo make this activity
-//                return HomeActivity.class;
-//
+            case CommonConst.ActivityName.TAG_HOME_ACTIVITY:
+                return HomeActivity.class;
+
             case CommonConst.ActivityName.TAG_TIME_LINE_ACTIVITY:
                 return TimeLineActivity.class;
 //

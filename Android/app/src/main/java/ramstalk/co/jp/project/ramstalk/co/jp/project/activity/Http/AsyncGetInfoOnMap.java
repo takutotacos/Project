@@ -42,13 +42,14 @@ public class AsyncGetInfoOnMap extends AsyncTask<Void, Void, JSONArray> {
             result = response.body().string();
             Log.i(TAG, result);
             response.body().close();
+            jsonData = new JSONArray(result);
         } catch (IOException e) {
             Log.e(TAG, "IO Exception happens: " + e.getCause());
+            return null;
         }
-        try {
-            jsonData = new JSONArray(result);
-        } catch (JSONException e) {
+        catch (JSONException e) {
             Log.e(TAG, "JSON Exception happens: " + e.getCause());
+            return null;
         }
         return jsonData;
     }

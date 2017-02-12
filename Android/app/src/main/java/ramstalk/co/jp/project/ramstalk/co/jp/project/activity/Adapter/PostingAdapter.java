@@ -46,6 +46,8 @@ public class PostingAdapter extends ArrayAdapter<Posting> {
         onePostingLineUserInfo.setText(posting.getUserId());
 
         ImageView onePostingLineImage = (ImageView) view.findViewById(R.id.time_line_posting_image);
+        onePostingLineImage.setImageBitmap(posting.getImage());
+
         return view;
     }
 }

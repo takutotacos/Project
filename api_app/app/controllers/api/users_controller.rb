@@ -65,10 +65,21 @@ module Api
       end
     end
 
-    # def get_postings_by_categories
-    #   user = User.find(params[:user_id])
-    #   @postings = user.postings.
-    # end
+    def get_own_postings
+      @user = current_user
+      @user = User.find(params[:id]) unless params[:id].nil?
+      @user.postings
+      render 'get_own_postings', formats: 'json', handlers: 'jbuilder'
+    end
+
+    def like_user_id_query
+      @action = "6"
+      followings = current_user.following.select("id")
+      @users = User.where("user_id LIKE ?", "%#{params[:user_id]}%") if followings.empty?
+      @users = User.where("id NOT IN (?) and user_id LIKE ?",
+       followings, "%#{params[:user_id]}%") unless followings.empty?
+      render 'users', formats: 'json', handlers: 'jbuilder'
+    end
 
     private
       # Use callbacks to share common setup or constraints between actions.

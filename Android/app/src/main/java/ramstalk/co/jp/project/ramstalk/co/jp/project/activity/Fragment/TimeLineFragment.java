@@ -2,13 +2,14 @@ package ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -22,7 +23,6 @@ import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Adapter.PostingAdapter;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncGetPostingsByCategories;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonArray;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonObject;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Model.Posting;
 
@@ -34,12 +34,10 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Model.Posting;
  */
 public class TimeLineFragment extends Fragment implements AsyncResponseJsonObject {
     private String TAG = getClass().getName();
-    private final static String BACKGROUND_COLOR = "background_color";
     private final static String CATEGORY_ID = "cateogry";
     private AsyncGetPostingsByCategories asyncGetPostingsByCategories = null;
     private SharedPreferences sharedPreferences;
     private ListView listView;
-
 
     public TimeLineFragment() {
     }
@@ -65,7 +63,7 @@ public class TimeLineFragment extends Fragment implements AsyncResponseJsonObjec
         sharedPreferences = getActivity().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String token = sharedPreferences.getString("auth_token", "");
         String userId = sharedPreferences.getString("user_id", "");
-        // execute getting postings whose category is category given
+        // execute getting postings whose category is the category given
         asyncGetPostingsByCategories = new AsyncGetPostingsByCategories(this, token, categoryId, userId);
         asyncGetPostingsByCategories.execute();
         return listView;
@@ -81,13 +79,11 @@ public class TimeLineFragment extends Fragment implements AsyncResponseJsonObjec
                     JSONObject postingJsonObject = postingsArray.getJSONObject(i);
                     Posting posting = new Posting();
                     posting.setId(postingJsonObject.getString("id"));
-                    posting.setUserId(postingJsonObject.getString("user_id"));
+                    posting.setUserId(postingJsonObject.getJSONObject("user").getString("id"));
+                    posting.setUserDisplayId(postingJsonObject.getJSONObject("user").getString("user_id"));
                     posting.setComment(postingJsonObject.getString("comment"));
-                    posting.setLocation1(postingJsonObject.getString("location1"));
-                    posting.setLocation2(postingJsonObject.getString("location2"));
-                    posting.setCreatedAt(postingJsonObject.getString("created_at"));
-                    posting.setUpdatedAt(postingJsonObject.getString("updated_at"));
-                    // @todo add image field to Posting and here
+                    byte[] decodedString = Base64.decode(postingJsonObject.getString("image"), Base64.DEFAULT);
+                    posting.setImage(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
                     postings.add(posting);
                 }
             } catch(JSONException e) {
@@ -96,8 +92,6 @@ public class TimeLineFragment extends Fragment implements AsyncResponseJsonObjec
             PostingAdapter adapter = new PostingAdapter(
                     getContext(), R.layout.fragment_timeline, postings);
             listView.setAdapter(adapter);
-        } else {
-
         }
     }
 }

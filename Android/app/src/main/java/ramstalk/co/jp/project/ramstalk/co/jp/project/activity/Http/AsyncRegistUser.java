@@ -62,14 +62,13 @@ public class AsyncRegistUser extends AsyncTask<Void, Void, JSONObject> {
             result = response.body().string();
             Log.i(TAG, result);
             response.body().close();
+            jsonData = new JSONObject(result);
         }catch(IOException e) {
             Log.e(TAG, "IO Exception happens: " + e.getCause());
+            return null;
         }
-        try {
-            jsonData = new JSONObject(result);
-        } catch(JSONException e) {
+        catch(JSONException e) {
             Log.e(TAG, "JSON Exception happens: " + e.getCause());
-            // @TODO null is acceptable?
             return null;
         }
         return jsonData;

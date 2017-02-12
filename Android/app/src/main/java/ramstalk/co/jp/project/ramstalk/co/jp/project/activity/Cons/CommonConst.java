@@ -33,6 +33,11 @@ public class CommonConst {
 
         public static final String TAG_NOTIFICATION_ACTIVITY = "NotificationActivity";
 
+        public static final String TAG_ADD_FOLLOWING_ACTIVITY = "AddFollowingActivity";
+
+        public static final String TAG_LIST_FOLLOWINGS_ACTIVITY = "ListFollowingsActivity";
+
+        public static final String TAG_LIST_FOLLOWERS_ACTIVITY = "ListFollowersActivity";
     }
 
     public class Api {
@@ -43,7 +48,7 @@ public class CommonConst {
         // APIs for users
         public static final String REGISTER_USER = LOCAL_SERVER + "/users";
 
-        public static final String SEARCH_USER = LOCAL_SERVER + "/users/";
+        public static final String SEARCH_USER = LOCAL_SERVER + "/like_user_id_query";
 
         // APIs for postings
         public static final String MAKE_A_POST = LOCAL_SERVER + "/postings";
@@ -54,16 +59,36 @@ public class CommonConst {
 
         public static final String GET_POSTING_BY_CATEGORIES = LOCAL_SERVER + "/postings_by_category";
 
-        // APIs for categories
+        // APIs for categoriesaa
         public static final String GET_ALL_CATEGORIES = LOCAL_SERVER + "/categories";
+
+        //APIs for relationships
+        public static final String GET_FOLLOWINGS_WITH_DETAIL = LOCAL_SERVER + "/followings";
+
+        public static final String GET_FOLLOWERS_WITH_DETAIL = LOCAL_SERVER + "/followers";
+
+        public static final String GET_FOLLOWING_NUMBERS = LOCAL_SERVER + "/following_numbers";
+
+        public static final String GET_FOLLOWER_NUMBERS = LOCAL_SERVER + "/follower_numbers";
+
+        public static final String ADD_TO_FOLLOWINGS = LOCAL_SERVER + "/relationships";
+
     }
 
     public class ApiAction {
-        public static final String SHOW = "SHOW";
+        public static final String SHOW = "1";
 
         public static final String CREATE = "CREATE";
 
         public static final String INDEX = "INDEX";
+
+        public static final String GET_FOLLOWINGS = "4";
+
+        public static final String GET_FOLLOWERS = "5";
+
+        public static final String LIKE_USER_QUERY = "6";
+
+        public static final String ADD_FOLLOWING = "7";
     }
 
     public class StatusOfUser {
@@ -71,12 +96,19 @@ public class CommonConst {
     }
 
     public class ApiResponse {
-        public static final String USER_NOT_EXISTS = "-1";
+        public static final String NOT_EXISTS = "-1";
 
-        public static final String USER_EXISTS = "1";
+        public static final String EXISTS = "1";
 
         public static final String REGISTER_SUCCESSFUL = "2";
 
         public static final String REGISTER_FAILED = "3";
+
+        public static final String NULL = "null";
+
+        public static final String ADD_SUCCESS = "4";
+
+        public static final String ADD_FAILED = "5";
     }
+
 }

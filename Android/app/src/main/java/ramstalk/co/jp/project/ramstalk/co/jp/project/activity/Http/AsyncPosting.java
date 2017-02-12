@@ -60,26 +60,19 @@ public class AsyncPosting extends AsyncTask<Void, Void, JSONObject> {
             jsonPostingObject.put("location2", "Shinjuku St.");
             jsonPostingObject.put("category_id", categoryId);
             holder.put("posting", jsonPostingObject);
-        } catch(JSONException e) {
-            Log.e(TAG, "JSON Exception happens: " + e.getCause());
-            // @TODO null is acceptable?
-            return null;
-        }
-        RequestBody body = RequestBody.create(JSON, holder.toString());
-        Request request = new Request.Builder().url(CommonConst.Api.MAKE_A_POST).post(body).addHeader("Authorization", token).build();
-        try {
+            RequestBody body = RequestBody.create(JSON, holder.toString());
+            Request request = new Request.Builder().url(CommonConst.Api.MAKE_A_POST).post(body).addHeader("Authorization", token).build();
             Response response = client.newCall(request).execute();
             result = response.body().string();
             Log.i(TAG, result);
             response.body().close();
+            jsonData = new JSONObject(result);
         }catch(IOException e) {
             Log.e(TAG, "IO Exception happens: " + e.getCause());
+            return null;
         }
-        try {
-            jsonData = new JSONObject(result);
-        } catch(JSONException e) {
+        catch(JSONException e) {
             Log.e(TAG, "JSON Exception happens: " + e.getCause());
-            // @TODO null is acceptable?
             return null;
         }
         return jsonData;

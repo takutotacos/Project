@@ -5,17 +5,14 @@ module Api
     def index
       @categories = Category.where(active_flg: 1)
       @action = "INDEX"
-      render json: { action: @action, status: @categories.present?? 1: -1, categories: @categories}
+      render 'categories', formats: 'json', handlers: 'jbuilder'
     end
 
     def create
       @category = Category.new(category_params)
       @action = "CREATE"
-      if @category.save
-        render json: { action: @action, status: 2, category: @category }
-      else
-        render json: { action: @action, status: 3, errors: @category.errors }
-      end
+      @category.save
+      render 'category', formats: 'json', handlers: 'jbuilder'
     end
 
     def destroy

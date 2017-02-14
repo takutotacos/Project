@@ -10,13 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170206213111) do
+ActiveRecord::Schema.define(version: 20170214082814) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "category_name"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.integer  "active_flg",    default: 1
+  end
+
+  create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer  "user_id"
+    t.integer  "posting_id"
+    t.string   "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["posting_id"], name: "index_comments_on_posting_id", using: :btree
+    t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
   end
 
   create_table "postings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -65,4 +75,6 @@ ActiveRecord::Schema.define(version: 20170206213111) do
     t.integer  "active_flg",                      default: 1
   end
 
+  add_foreign_key "comments", "postings"
+  add_foreign_key "comments", "users"
 end

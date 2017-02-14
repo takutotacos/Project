@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   namespace :api, { format: 'json' } do
     resources :users
-    resources :postings
+    resources :postings 
+    resources :comments
     resources :categories
     resources :relationships
     post 'authenticate', to: 'authentication#authenticate'
@@ -12,6 +13,5 @@ Rails.application.routes.draw do
     get 'follower_numbers', to: 'relationships#get_follower_numbers'
     get 'following_numbers', to: 'relationships#get_following_numbers'
     get 'like_user_id_query', to: 'users#like_user_id_query'
-    
   end
 end

@@ -32,7 +32,7 @@ module Api
       followings = current_user.following.select("id")
       @postings = Posting.where(category_id: params[:category_id]) if followings.empty?
       @postings = Posting.where('category_id = ? AND user_id IN (?)',
-      params[:category_id]. followings) unless followings.empty?
+      params[:category_id], followings) unless followings.empty?
       @action = "get_postings_by_categories"
       render 'postings', formats: 'json', handlers: 'jbuilder'
     end

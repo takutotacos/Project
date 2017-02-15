@@ -4,7 +4,6 @@ module Api
 
     def create
       @action = "7"
-      binding.pry
       current_user.follow(User.find(params[:id]))
       @following_numbers = current_user.following.count
       render 'following_numbers', formats: 'json', handlers: 'jbuilder'

@@ -1,7 +1,7 @@
 json.action @action
 json.status @comment.errors.empty?? 2 : 3
 if @comment.errors.present?
-	json.errors @commnet.errors
+	json.errors @comment.errors
 else
 	json.comment do
 		json.id @comment.id

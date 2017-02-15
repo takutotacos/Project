@@ -5,6 +5,8 @@ unless @postings.empty? then
     json.id posting.id
     json.comment posting.comment
     json.image posting.image
+    json.likes_count posting.likes_count
+    json.comments_count posting.comments.count
     json.user do
       json.id posting.user.id
       json.user_id posting.user.user_id

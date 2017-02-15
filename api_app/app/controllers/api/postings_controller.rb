@@ -4,8 +4,9 @@ module Api
 
     def index
       @action = "INDEX"
-      @user = User.find(params[:user_id])
-      @postings = @user.postings
+      # @user = User.find(params[:user_id])
+      # @postings = @user.postings
+      @postings = current_user.postings
       render 'postings', formats: 'json', handlers: 'jbuilder'
     end
 
@@ -19,10 +20,10 @@ module Api
       @action = "CREATE"
       if @posting.save
         @status = 2
-        render 'create', formats: 'json', handlers: 'jbuilder'
+        render 'posting', formats: 'json', handlers: 'jbuilder'
       else
         @status = 3
-        render 'create', formats: 'json', handlers: 'jbuilder'
+        render 'posting', formats: 'json', handlers: 'jbuilder'
       end
     end
 

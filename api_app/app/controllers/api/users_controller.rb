@@ -29,7 +29,6 @@ module Api
       @action = "CREATE"
       @user.save
       render 'user', formats: 'json', handlers: 'jbuilder'
-        # render json: { action: @action, status: @status, errors: @user.errors }
     end
 
     # PATCH/PUT /users/1

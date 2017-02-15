@@ -11,6 +11,11 @@ module Api
 			render 'comment', formats: 'json', handlers: 'jbuilder'
 		end
 
+		def edit
+		end
+
+		def destroy
+		end
 
 		private
 	    # Never trust parameters from the scary internet, only allow the white list through.

@@ -74,7 +74,15 @@
             android:name=".ramstalk.co.jp.project.activity.Activity.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/MyMaterialTheme.Base" />
-        <activity android:name=".ramstalk.co.jp.project.activity.Activity.AddFollowingActivity"></activity>
+        <activity android:name=".ramstalk.co.jp.project.activity.Activity.AddFollowingActivity" />
+        <activity
+            android:name=".ramstalk.co.jp.project.activity.Activity.FollowingsListActivity"
+            android:label="@string/title_activity_followings_list"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".ramstalk.co.jp.project.activity.Activity.FollowersListActivity"
+            android:label="@string/title_activity_followers_list"
+            android:theme="@style/MyMaterialTheme.Base"></activity>
     </application>
 
 </manifest>

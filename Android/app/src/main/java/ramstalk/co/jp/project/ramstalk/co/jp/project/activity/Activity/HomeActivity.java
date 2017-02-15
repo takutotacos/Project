@@ -46,8 +46,8 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponseJson
         mAsyncGetRealationships = new AsyncGetRelationships(this, authToken, CommonConst.ApiAction.GET_FOLLOWINGS, true);
         mAsyncGetRealationships.execute();
         addFollowingImgButton.setOnClickListener(new ViewClickListener(HomeActivity.this, AddFollowingActivity.class));
-//        followingsButton.setOnClickListener(new ViewClickListener(HomeActivity.this, FollowingsListActivity.class));
-//        followersButton.setOnClickListener(new ViewClickListener(HomeActivity.this, FollowersListActivity.class));
+        followingsButton.setOnClickListener(new ViewClickListener(HomeActivity.this, FollowingsListActivity.class));
+        followersButton.setOnClickListener(new ViewClickListener(HomeActivity.this, FollowersListActivity.class));
     }
 
     @Override

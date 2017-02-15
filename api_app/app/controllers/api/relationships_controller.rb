@@ -11,6 +11,8 @@ module Api
 
     def get_followers
       @followers = current_user.followers
+        .where("user_id LIKE ?", "%#{params[:user_id]}%") unless params[:user_id].nil?
+      @followers = current_user.followers if params[:user_id].nil?
       render 'followers', formats: 'json', handlers: 'jbuilder'
     end
 
@@ -22,6 +24,8 @@ module Api
 
     def get_followings
       @followings = current_user.following
+        .where("user_id LIKE ?", "%#{params[:user_id]}%") unless params[:user_id].nil?
+      @followings = current_user.following if params[:user_id].nil?
       render 'followings', formats: 'json', handlers: 'jbuilder'
     end
 

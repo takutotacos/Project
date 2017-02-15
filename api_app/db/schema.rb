@@ -12,14 +12,14 @@
 
 ActiveRecord::Schema.define(version: 20170215044813) do
 
-  create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "category_name"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.integer  "active_flg",    default: 1
   end
 
-  create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
     t.integer  "posting_id"
     t.string   "content"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20170215044813) do
     t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
   end
 
-  create_table "likes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "likes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
     t.integer  "posting_id"
     t.datetime "created_at", null: false
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20170215044813) do
     t.index ["user_id"], name: "index_likes_on_user_id", using: :btree
   end
 
-  create_table "postings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "postings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "user_id",                                                           null: false
     t.binary   "image",       limit: 16777215
     t.string   "comment"
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 20170215044813) do
     t.integer  "likes_count",                                           default: 0
   end
 
-  create_table "reactions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "reactions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "posting_id"
     t.string   "user_id"
     t.integer  "like"
@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 20170215044813) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "relationships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "relationships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "follower_id"
     t.integer  "followed_id"
     t.datetime "created_at",  null: false
@@ -72,17 +72,18 @@ ActiveRecord::Schema.define(version: 20170215044813) do
     t.index ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "user_id"
     t.string   "email"
-    t.binary   "icon",              limit: 65535
-    t.string   "icon_content_type"
-    t.string   "fb_account",                      default: "0"
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
     t.string   "password_digest"
+    t.binary   "icon",              limit: 4294967295
+    t.string   "icon_content_type"
+    t.string   "fb_account",                           default: "0"
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.string   "auth_token"
-    t.integer  "active_flg",                      default: 1
+    t.integer  "active_flg",                           default: 1
+    t.index ["user_id"], name: "index_users_on_user_id", using: :btree
   end
 
   add_foreign_key "comments", "postings"

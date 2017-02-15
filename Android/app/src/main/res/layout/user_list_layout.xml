@@ -10,12 +10,12 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/user_id"
         android:layout_weight="0.00">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/user_id"
             android:id="@+id/edit_text_user_id" />
 
     </android.support.design.widget.TextInputLayout>

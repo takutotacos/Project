@@ -60,4 +60,6 @@
     <!-- Strings related to ユーザフォロー画面 -->
     <string name="user_not_exists">ユーザが見つかりません。</string>
     <string name="user_add_success">フォローしました。</string>
+    <string name="title_activity_followings_list">FollowingsListActivity</string>
+    <string name="title_activity_followers_list">FollowersListActivity</string>
 </resources>

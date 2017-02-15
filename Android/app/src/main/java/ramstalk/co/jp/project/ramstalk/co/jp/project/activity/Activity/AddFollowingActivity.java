@@ -47,11 +47,13 @@ public class AddFollowingActivity extends AppCompatActivity implements AsyncResp
         userList = (ListView) findViewById(R.id.user_list_layout).findViewById(R.id.user_list);
         editTextUserId = (EditText) findViewById(R.id.user_list_layout).findViewById(R.id.edit_text_user_id);
         searchButton = (ImageButton) findViewById(R.id.user_list_layout).findViewById(R.id.search_button);
+        mAsyncSearchUser = new AsyncSearchUser(AddFollowingActivity.this, authToken, "", CommonConst.ApiAction.LIKE_USER_QUERY);
+        mAsyncSearchUser.execute();
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String userId = editTextUserId.getText().toString();
-                mAsyncSearchUser = new AsyncSearchUser(AddFollowingActivity.this, authToken, userId);
+                mAsyncSearchUser = new AsyncSearchUser(AddFollowingActivity.this, authToken, userId, CommonConst.ApiAction.LIKE_USER_QUERY);
                 mAsyncSearchUser.execute();
             }
         });
@@ -63,23 +65,21 @@ public class AddFollowingActivity extends AppCompatActivity implements AsyncResp
             try {
                 if(CommonConst.ApiAction.LIKE_USER_QUERY.equals(output.getString("action"))) { // when searching for users
                     List<User> users = new ArrayList<User>();
-                    JSONArray usersArray = output.getJSONArray("users");
                     if (CommonConst.ApiResponse.EXISTS.equals(output.getString("status"))) {
+                        JSONArray usersArray = output.getJSONArray("users");
                         for (int i = 0; i < usersArray.length(); i++) {
                             JSONObject userJsonObject = usersArray.getJSONObject(i);
                             User user = new User();
                             user.setId(userJsonObject.getString("id"));
                             user.setUserId(userJsonObject.getString("user_id"));
-                            // @todo add image field to Posting and here
                             //                    user.setImage(userJsonObject.getString("comment"));
                             users.add(user);
                         }
                         UserAdapter adapter = new UserAdapter(
-                                getBaseContext(), R.layout.user_list_item, users, authToken, AddFollowingActivity.this);
+                                getBaseContext(), R.layout.user_list_item, users, authToken, AddFollowingActivity.this, CommonConst.ActivityName.TAG_ADD_FOLLOWING_ACTIVITY);
                         userList.setAdapter(adapter);
                     } else {
-                        toast("ユーザが見つかりませんでした。" +
-                                "");
+                        toast("ユーザが見つかりませんでした。");
                     }
                 } else { // when adding a following
                     toast("フォローしました。");

@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -26,6 +27,13 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,12 +55,15 @@ import static android.text.TextUtils.isEmpty;
 import static ramstalk.co.jp.project.R.id.button_getImage;
 import static ramstalk.co.jp.project.R.id.button_postImages;
 
-public class PostingActivity extends AppCompatActivity implements AsyncResponseJsonObject {
+public class PostingActivity extends AppCompatActivity implements AsyncResponseJsonObject,
+        GoogleApiClient.OnConnectionFailedListener {
     //TODO:LocationActivityのOnPause等が必要
     private static final String TAG = CommonConst.ActivityName.TAG_POSTING_ACTIVITY;
     private AsyncPosting mAsyncPosting = null;
     private AsyncGetCategories mAsyncGetCategories = null;
     private SharedPreferences sharedPreferences;
+    private GoogleApiClient mGoogleApiClient;
+
     //投稿情報
     private String token = null;
     private String userId = null;
@@ -61,6 +72,9 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponseJ
     private ImageView imageView;
     private double latitude = 0.0;
     private double longitude = 0.0;
+    private String address = null;
+    private String placeName = null;
+    private String placeCategory = null;
     private String selectedCategoryId = null;
 
     private final int REQUEST_PERMISSION = 1000;
@@ -132,12 +146,33 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponseJ
                 //画像が選択されているか、コメントがあるかチェック
                 if(isValidValue(comment) && isValidValue(image) && isValidValue(userId)) {
                     Log.d(TAG,"POSTED");
-                    mAsyncPosting = new AsyncPosting(PostingActivity.this, image,
-                            userId, comment, latitude, longitude, selectedCategoryId, token);
+                    mAsyncPosting = new AsyncPosting(PostingActivity.this, image, userId, comment,
+                            latitude, longitude, address, placeName, placeCategory, selectedCategoryId, token);
                     mAsyncPosting.execute();
                 }else{
-                    toast("投稿項目を入力してください もしくはユーザIDが取得できていません。管理者に連絡してください。");
+                    toast("投稿項目を入力してください。");
                 }
+            }
+        });
+
+        PlaceAutocompleteFragment autocompleteFragment =
+                (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        autocompleteFragment.setHint("Add location");
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                latitude = place.getLatLng().latitude;
+                longitude = place.getLatLng().longitude;
+                placeName = String.valueOf(place.getName());
+                address = String.valueOf(place.getAddress());
+//                @todo do some research on how to get the placeTypes in strings not ids
+                placeCategory = String.valueOf(place.getPlaceTypes());
+                Log.i(TAG, "Place: " + place.getName());
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.e(TAG, "An error occurred: " + status);
             }
         });
     }
@@ -280,9 +315,6 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponseJ
             } catch(JSONException e) {
                 Log.e(TAG, "JSON Exception happens: " + e.getCause());
             }
-        } else {
-            Log.e(TAG, "Null output is returned.");
-            toast("失敗したでー");
         }
     }
 
@@ -290,5 +322,10 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponseJ
         Intent intent = new Intent(this, activity);
         Log.i(TAG, "The next activity is: " + activity);
         startActivity(intent);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

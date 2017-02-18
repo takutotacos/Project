@@ -17,48 +17,72 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageButton
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/home_add_following_button"
-            android:background="@android:drawable/ic_input_add"
-            />
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/home_add_following_button"
+                android:background="@android:drawable/ic_input_add"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/home_user_id"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/home_following_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/home_following_number_text_view"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                />
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:orientation="vertical">
 
-            <Button
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/home_following_number"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/following"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_follower_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/home_following_list_button"
-                android:text="@string/following"/>
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/home_follower_number_text_view" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/home_follower_number"
+                    android:layout_gravity="center"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/home_follower_list_button"
-                android:text="@string/follower"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/follower"/>
 
+            </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
 </RelativeLayout>

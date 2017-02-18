@@ -111,4 +111,8 @@ public class CommonConst {
         public static final String ADD_FAILED = "5";
     }
 
+    public class ApiKey {
+        public static final String GOOLGLE_API_KEY = "AIzaSyAPQgLrviezS8Phw0oKzPQ47tu6G-7Z4FM\t";
+    }
+
 }

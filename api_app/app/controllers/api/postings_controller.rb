@@ -42,7 +42,7 @@ module Api
     # Never trust parameters from the scary internet, only allow the white list through.
     def posting_params
       params.require(:posting).permit(:user_id, :image, :comment, :latitude, :longitude,
-      :location1, :location2, :category_id)
+      :address, :placeName, :placeCategory, :category_id)
     end
   end
 end

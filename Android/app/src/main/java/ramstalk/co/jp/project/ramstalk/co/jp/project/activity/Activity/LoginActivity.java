@@ -17,7 +17,6 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +41,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseJso
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private CheckBox mCheckBox;
     private View mProgressView;
     private View mLoginFormView;
     private SharedPreferences sharedPreferences;
@@ -56,11 +54,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseJso
         // Set up the login form.
         sharedPreferences = getApplicationContext().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         sharedPreferencesEditor = sharedPreferences.edit();
-        if(isUserRemembered()){
-            Log.i(TAG, "The user has been kept logged in.");
-            proceedToActivity(MapsActivity.class);
-        }
-        mCheckBox = (CheckBox) findViewById(R.id.login_remember_checkbox);
         mEmailView = (AutoCompleteTextView) findViewById(R.id.login_email);
         mPasswordView = (EditText) findViewById(R.id.login_password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -206,12 +199,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseJso
                 proceedToActivity(MainActivity.class);
                 return;
             }
-//            if(mCheckBox.isChecked()) {
-//                keepUserLoggedIn();
-//            }
             Log.d(TAG, "Login Failed");
-        } else {
-            Log.e(TAG, "Null output is returned.");
         }
         // go back to the login screen with the message saying:
         // "the combination of email and password does not match any records"
@@ -219,12 +207,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseJso
         finish();
         startActivity(getIntent());
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
-
-    private boolean isUserRemembered() {
-        boolean isUserRemembered = sharedPreferences.getBoolean(CommonConst.StatusOfUser.IS_USER_REMEMBERED, false);
-        Log.i(TAG, "Has the user been kept logged in: " + isUserRemembered);
-        return isUserRemembered;
     }
 
     private void proceedToActivity(Class activity) {

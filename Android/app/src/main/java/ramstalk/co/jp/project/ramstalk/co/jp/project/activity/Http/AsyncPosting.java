@@ -26,6 +26,9 @@ public class AsyncPosting extends AsyncTask<Void, Void, JSONObject> {
     private String comment = null;
     private double latitude = 0.0;
     private double longitude = 0.0;
+    private String address = null;
+    private String placeName = null;
+    private String placeCategory = null;
     private String categoryId = null;
     private String token = null;
     private AsyncResponseJsonObject delegate = null;
@@ -33,13 +36,17 @@ public class AsyncPosting extends AsyncTask<Void, Void, JSONObject> {
     private OkHttpClient client = new OkHttpClient();
 
     public AsyncPosting(AsyncResponseJsonObject delegate, String image, String userId, String comment,
-                        double latitude, double longitude, String categoryId, String token) {
+                        double latitude, double longitude, String address, String placeName,
+                        String placeCategory, String categoryId, String token) {
         this.delegate = delegate;
         this.image = image;
         this.userId = userId;
         this.comment = comment;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.address = address;
+        this.placeName = placeName;
+        this.placeCategory = placeCategory;
         this.categoryId = categoryId;
         this.token = token;
     }
@@ -56,8 +63,9 @@ public class AsyncPosting extends AsyncTask<Void, Void, JSONObject> {
             jsonPostingObject.put("comment", comment);
             jsonPostingObject.put("latitude", latitude);
             jsonPostingObject.put("longitude", longitude);
-            jsonPostingObject.put("location1", "Tokyo");
-            jsonPostingObject.put("location2", "Shinjuku St.");
+            jsonPostingObject.put("address", address);
+            jsonPostingObject.put("placeName", placeName);
+            jsonPostingObject.put("placeCategory", placeCategory);
             jsonPostingObject.put("category_id", categoryId);
             holder.put("posting", jsonPostingObject);
             RequestBody body = RequestBody.create(JSON, holder.toString());

@@ -9,56 +9,63 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Adapter.TimeLineFragmentPagerAdapter;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncGetCategories;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonObject;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Categories;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Category;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Interface.ApiService;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Manager.ApiManager;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class TimeLineActivity extends AppCompatActivity implements AsyncResponseJsonObject {
-    private String TAG = getClass().getName();
+public class TimeLineActivity extends AppCompatActivity {
+    private String TAG = TimeLineActivity.class.getSimpleName();
     private Toolbar mToolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private AsyncGetCategories mAsyncGetCategories;
     private SharedPreferences sharedPreferences;
     private TimeLineFragmentPagerAdapter adapter;
-    private String token = null;
+    private String authToken = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_line);
-        mToolbar = (Toolbar)findViewById(R.id.time_line_toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.time_line_toolbar);
         sharedPreferences = getApplicationContext().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        token = sharedPreferences.getString("auth_token", "");
+        authToken = sharedPreferences.getString("auth_token", "");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.time_line_viewpager);
-        mAsyncGetCategories = new AsyncGetCategories(this, token);
-        mAsyncGetCategories.execute();
-    }
 
-    @Override
-    public void processFinish(JSONObject output) {
         adapter = new TimeLineFragmentPagerAdapter(getSupportFragmentManager());
-        try {
-            JSONArray categoriesArray = output.getJSONArray("categories");
-            for (int i = 0; i < categoriesArray.length(); i++) {
-                JSONObject category = categoriesArray.getJSONObject(i);
-                String categoryId = category.getString("id");
-                String categoryName = category.getString("category_name");
-                adapter.addFragment(categoryId, categoryName);
-            }
-        } catch(JSONException e) {
-            Log.e(TAG, e.getMessage());
-        }
-        viewPager.setAdapter(adapter);
-        tabLayout = (TabLayout) findViewById(R.id.time_line_tab);
-        tabLayout.setupWithViewPager(viewPager);
+        ApiService apiService = ApiManager.getApiService();
+        Observable<Categories> categories = apiService.getAllCategories(authToken);
+        categories.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Categories>() {
+                    @Override
+                    public void onCompleted() {
+                        viewPager.setAdapter(adapter);
+                        tabLayout = (TabLayout) findViewById(R.id.time_line_tab);
+                        tabLayout.setupWithViewPager(viewPager);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "ERROR : " + e.toString());
+                    }
+
+                    @Override
+                    public void onNext(Categories categories) {
+                        for (Category category : categories.getCategories()) {
+                            adapter.addFragment(category.getId(), category.getCategoryName());
+                        }
+                    }
+                });
+
     }
 }

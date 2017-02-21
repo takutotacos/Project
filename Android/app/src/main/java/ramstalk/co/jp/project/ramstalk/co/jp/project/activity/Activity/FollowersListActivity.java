@@ -12,21 +12,23 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Adapter.UserAdapter;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonObject;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.User;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Users;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncSearchUser;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Model.User;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Interface.ApiService;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Manager.ApiManager;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class FollowersListActivity extends AppCompatActivity implements AsyncResponseJsonObject {
+public class FollowersListActivity extends AppCompatActivity {
     private String TAG = CommonConst.ActivityName.TAG_LIST_FOLLOWERS_ACTIVITY;
     private EditText editTextUserId;
     private ImageButton searchButton;
@@ -46,51 +48,65 @@ public class FollowersListActivity extends AppCompatActivity implements AsyncRes
         setSupportActionBar(toolbar);
         userList = (ListView) findViewById(R.id.user_list_layout).findViewById(R.id.user_list);
         editTextUserId = (EditText) findViewById(R.id.user_list_layout).findViewById(R.id.edit_text_user_id);
+
+        final List<User> users = new ArrayList<User>();
+        final ApiService apiService = ApiManager.getApiService();
+        Observable<Users> followerList = apiService.getFollowers(authToken, "");
+        followerList.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Users>() {
+                    @Override
+                    public void onCompleted() {
+                        UserAdapter adapter = new UserAdapter(
+                                getBaseContext(), R.layout.user_list_item, users, authToken,
+                                CommonConst.ActivityName.TAG_LIST_FOLLOWERS_ACTIVITY);
+                        userList.setAdapter(adapter);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "ERROR :" + e.toString());
+                    }
+
+                    @Override
+                    public void onNext(Users followerList) {
+                        for (User user : followerList.getUsers()) {
+                            users.add(user);
+                        }
+                    }
+                });
+
         searchButton = (ImageButton) findViewById(R.id.user_list_layout).findViewById(R.id.search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                users.clear();
                 String userId = editTextUserId.getText().toString();
-                mAsyncSearchUser = new AsyncSearchUser(FollowersListActivity.this, authToken, userId, CommonConst.ApiAction.GET_FOLLOWERS);
-                mAsyncSearchUser.execute();
+                Observable<Users> followerList = apiService.getFollowers(authToken, userId);
+                followerList.subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Users>() {
+                            @Override
+                            public void onCompleted() {
+                                UserAdapter adapter = new UserAdapter(
+                                        getBaseContext(), R.layout.user_list_item, users, authToken,
+                                        CommonConst.ActivityName.TAG_LIST_FOLLOWERS_ACTIVITY);
+                                userList.setAdapter(adapter);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e(TAG, "ERROR :" + e.toString());
+                            }
+
+                            @Override
+                            public void onNext(Users followerList) {
+                                for (User user : followerList.getUsers()) {
+                                    users.add(user);
+                                }
+                            }
+                        });
             }
         });
-    }
-
-    @Override
-    public void processFinish(JSONObject output) {
-        if (output != null) {
-            try {
-                if (CommonConst.ApiAction.GET_FOLLOWERS.equals(output.getString("action"))) { // when searching for users
-                    List<User> users = new ArrayList<User>();
-                    if (CommonConst.ApiResponse.EXISTS.equals(output.getString("status"))) {
-                        JSONArray usersArray = output.getJSONArray("followers");
-                        for (int i = 0; i < usersArray.length(); i++) {
-                            JSONObject userJsonObject = usersArray.getJSONObject(i);
-                            User user = new User();
-                            user.setId(userJsonObject.getString("id"));
-                            user.setUserId(userJsonObject.getString("user_id"));
-                            // @todo add image field to Posting and here
-                            //user.setImage(userJsonObject.getString("comment"));
-                            users.add(user);
-                        }
-                        UserAdapter adapter = new UserAdapter(
-                                getBaseContext(), R.layout.user_list_item, users, authToken, FollowersListActivity.this, CommonConst.ActivityName.TAG_LIST_FOLLOWERS_ACTIVITY);
-                        userList.setAdapter(adapter);
-                    } else {
-                        toast("ユーザが見つかりませんでした。");
-                    }
-                }
-            } catch (JSONException e) {
-                Log.e(TAG, e.getMessage());
-            }
-        }
-    }
-    public void toast(String message) {
-        if(toast != null) {
-            toast.cancel();
-        }
-        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        toast.show();
     }
 }

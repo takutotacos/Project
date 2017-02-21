@@ -3,10 +3,12 @@ json.status @status
 if @status == 2 then
   json.posting do
     json.id @posting.id
-    json.comment @posting.comment
+    json.content @posting.content
     json.image @posting.image
-    json.likes_count @posting.likes_count
-    json.comments_count @posting.comments.count
+    json.like_counts @posting.likes_count
+    json.comment_counts @posting.comments.count
+    json.can_like @posting.can_like
+    json.like_id @posting.like_id
     json.user do
       json.id @posting.user.id
       json.user_id @posting.user.user_id

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170217071801) do
+ActiveRecord::Schema.define(version: 20170220233417) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "category_name"
@@ -39,19 +39,19 @@ ActiveRecord::Schema.define(version: 20170217071801) do
   end
 
   create_table "postings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "user_id",                                                             null: false
-    t.binary   "image",         limit: 16777215
-    t.string   "comment"
-    t.decimal  "latitude",                       precision: 11, scale: 8
-    t.decimal  "longitude",                      precision: 11, scale: 8
+    t.string   "user_id",                                                              null: false
+    t.binary   "image",          limit: 16777215
+    t.string   "content"
+    t.decimal  "latitude",                        precision: 11, scale: 8
+    t.decimal  "longitude",                       precision: 11, scale: 8
     t.string   "address"
-    t.string   "placeName"
-    t.datetime "created_at",                                                          null: false
-    t.datetime "updated_at",                                                          null: false
+    t.string   "place_name"
+    t.datetime "created_at",                                                           null: false
+    t.datetime "updated_at",                                                           null: false
     t.string   "category_id"
-    t.integer  "active_flg",                                              default: 1
-    t.integer  "likes_count",                                             default: 0
-    t.string   "placeCategory"
+    t.integer  "active_flg",                                               default: 1
+    t.integer  "likes_count",                                              default: 0
+    t.string   "place_category"
   end
 
   create_table "reactions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

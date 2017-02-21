@@ -40,39 +40,33 @@ public class CommonConst {
         public static final String TAG_LIST_FOLLOWERS_ACTIVITY = "ListFollowersActivity";
     }
 
-    public class Api {
+    public static class Api {
         private static final String LOCAL_SERVER = "http://10.0.2.2:3000/api";
 
-        public static final String LOGIN = LOCAL_SERVER + "/authenticate";
-
-        // APIs for users
-        public static final String REGISTER_USER = LOCAL_SERVER + "/users";
-
-        public static final String SEARCH_USER = LOCAL_SERVER + "/like_user_id_query";
+        public static final String LOCAL_SERVER_FOR_RX = LOCAL_SERVER + "/";
 
         // APIs for postings
-        public static final String MAKE_A_POST = LOCAL_SERVER + "/postings";
-
         public static final String GET_ALL_POSTINGS_ON_MAP = LOCAL_SERVER + "/postings";
 
         public static final String GET_A_DETAILED_POSTING = LOCAL_SERVER + "/postings";
 
-        public static final String GET_POSTING_BY_CATEGORIES = LOCAL_SERVER + "/postings_by_category";
+        // APIs for likes
+        public static String LIKE_A_POSTING(String postingId) {
+            return LOCAL_SERVER + "/postings/" + postingId + "/likes";
+        }
 
-        // APIs for categoriesaa
-        public static final String GET_ALL_CATEGORIES = LOCAL_SERVER + "/categories";
+        public static String DELETE_A_LIKE_FROM_POSTING(String postingId, String likeId) {
+            return LOCAL_SERVER + "/postings/" + postingId + "/likes/" + likeId;
+        }
 
-        //APIs for relationships
-        public static final String GET_FOLLOWINGS_WITH_DETAIL = LOCAL_SERVER + "/followings";
+        // APIs for comments
+        public static String CREATE_A_COMMENT(String postingId) {
+            return LOCAL_SERVER + "/postings/" + postingId + "/comments";
+        }
 
-        public static final String GET_FOLLOWERS_WITH_DETAIL = LOCAL_SERVER + "/followers";
-
-        public static final String GET_FOLLOWING_NUMBERS = LOCAL_SERVER + "/following_numbers";
-
-        public static final String GET_FOLLOWER_NUMBERS = LOCAL_SERVER + "/follower_numbers";
-
-        public static final String ADD_TO_FOLLOWINGS = LOCAL_SERVER + "/relationships";
-
+        public static String GET_COMMENTS(String postingId) {
+            return LOCAL_SERVER + "/postings/" + postingId + "/comments";
+        }
     }
 
     public class ApiAction {
@@ -89,6 +83,10 @@ public class CommonConst {
         public static final String LIKE_USER_QUERY = "6";
 
         public static final String ADD_FOLLOWING = "7";
+
+        public static final String LIKE_A_POST = "8";
+
+        public static final String DELETE_A_LIKE = "9";
     }
 
     public class StatusOfUser {

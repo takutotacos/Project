@@ -35,10 +35,6 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -47,25 +43,28 @@ import java.util.HashMap;
 
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncGetCategories;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncPosting;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonObject;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Categories;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Category;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Posting;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Interface.ApiService;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Manager.ApiManager;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.text.TextUtils.isEmpty;
 import static ramstalk.co.jp.project.R.id.button_getImage;
 import static ramstalk.co.jp.project.R.id.button_postImages;
 
-public class PostingActivity extends AppCompatActivity implements AsyncResponseJsonObject,
-        GoogleApiClient.OnConnectionFailedListener {
+public class PostingActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     //TODO:LocationActivityのOnPause等が必要
-    private static final String TAG = CommonConst.ActivityName.TAG_POSTING_ACTIVITY;
-    private AsyncPosting mAsyncPosting = null;
-    private AsyncGetCategories mAsyncGetCategories = null;
+    private static final String TAG = PostingActivity.class.getSimpleName();
     private SharedPreferences sharedPreferences;
     private GoogleApiClient mGoogleApiClient;
 
     //投稿情報
-    private String token = null;
+    private String authToken = null;
     private String userId = null;
     private String image = null;
     private EditText commentView = null;
@@ -93,9 +92,37 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponseJ
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posting);
         sharedPreferences = getApplicationContext().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        token = sharedPreferences.getString("auth_token", "");
-        mAsyncGetCategories = new AsyncGetCategories(this, token);
-        mAsyncGetCategories.execute();
+        authToken = sharedPreferences.getString("auth_token", "");
+        userId = sharedPreferences.getString("user_id", "");
+
+        final ApiService apiService = ApiManager.getApiService();
+        Observable<Categories> categories = apiService.getAllCategories(authToken);
+        categories.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Categories> () {
+                    @Override
+                    public void onCompleted() {
+                        adapter = new ArrayAdapter<String>(getApplicationContext(),
+                                android.R.layout.simple_spinner_item, categoriesForSpinner);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mSpinner.setAdapter(adapter);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "ERROR : " + e.toString());
+                    }
+
+                    @Override
+                    public void onNext(Categories categories) {
+                        // @Todo there should be different ways of implementing this part..... hhhhhmmmmm
+                        for(Category category: categories.getCategories()) {
+                            categoriesForSpinner.add(category.getCategoryName());
+                            spinnerMap.put(category.getCategoryName(), category.getId());
+                        }
+                    }
+                });
+
         mSpinner = (Spinner) findViewById(R.id.posting_categoies_spinner);
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -138,17 +165,38 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponseJ
         }
         button_post = (Button) findViewById(button_postImages);
         button_post.setOnClickListener(new View.OnClickListener() {
-            String comment = null;
-            String userId = sharedPreferences.getString("user_id", "");
             @Override
             public void onClick(View v) {
-                comment = commentView.getText().toString();
+                String comment = commentView.getText().toString();
                 //画像が選択されているか、コメントがあるかチェック
                 if(isValidValue(comment) && isValidValue(image) && isValidValue(userId)) {
                     Log.d(TAG,"POSTED");
-                    mAsyncPosting = new AsyncPosting(PostingActivity.this, image, userId, comment,
-                            latitude, longitude, address, placeName, placeCategory, selectedCategoryId, token);
-                    mAsyncPosting.execute();
+                    Posting posting = new Posting(null,userId, selectedCategoryId, comment,
+                            String.valueOf(latitude), String.valueOf(longitude),
+                            address, placeName, image);
+                    HashMap<String, Posting> postingMap = new HashMap<String, Posting>();
+                    postingMap.put("posting", posting);
+                    Observable<Posting> postingCreated = apiService.createOnePosting(authToken, postingMap);
+                    postingCreated.subscribeOn(Schedulers.newThread())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<Posting> () {
+                                @Override
+                                public void onCompleted() {
+                                    toast("登録したでー");
+                                    finish();
+                                    proceedToActivity(MainActivity.class);
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Log.e(TAG, "登録に失敗しました。 :" + e.toString());
+                                    toast("失敗したでー");
+                                }
+
+                                @Override
+                                public void onNext(Posting posting) {
+                                }
+                            });
                 }else{
                     toast("投稿項目を入力してください。");
                 }
@@ -282,40 +330,6 @@ public class PostingActivity extends AppCompatActivity implements AsyncResponseJ
         }
         toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.show();
-    }
-
-    @Override
-    public void processFinish(JSONObject output) {
-        if(output != null) {
-            try {
-                if(CommonConst.ApiAction.INDEX.equals(output.getString("action"))) {
-                    // when retrieving the all available categories
-                    JSONArray categoriesArray = output.getJSONArray("categories");
-                    for(int i = 0; i < categoriesArray.length(); i++) {
-                        JSONObject category = categoriesArray.getJSONObject(i);
-                        String categoryName = category.getString("category_name");
-                        categoriesForSpinner.add(categoryName);
-                        spinnerMap.put(categoryName, category.getString("id"));
-                    }
-                    adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categoriesForSpinner);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    mSpinner.setAdapter(adapter);
-                } else {
-                    // when registering a post
-                    String status = output.getString("status");
-                    if (CommonConst.ApiResponse.REGISTER_SUCCESSFUL.equals(status)) {
-                        toast("登録したでー");
-                        finish();
-                        proceedToActivity(MainActivity.class);
-                    } else {
-                        Log.e(TAG, "登録に失敗しました。 status: " + status);
-                        toast("失敗したでー");
-                    }
-                }
-            } catch(JSONException e) {
-                Log.e(TAG, "JSON Exception happens: " + e.getCause());
-            }
-        }
     }
 
     private void proceedToActivity(Class activity) {

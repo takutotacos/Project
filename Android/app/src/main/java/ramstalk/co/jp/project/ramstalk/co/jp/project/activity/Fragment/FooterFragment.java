@@ -16,7 +16,7 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Listener.TouchList
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FooterFragment.OnFragmentInteractionListener} interface
+ * {@link FooterFragment.OnFragmentInteractionListener} Interface
  * to handle interaction events.
  * Use the {@link FooterFragment#newInstance} factory method to
  * create an instance of this fragment.

@@ -38,6 +38,7 @@
     <string name="regist_failed">ユーザ登録に失敗しました。</string>
     <string name="error_invalid_password">パスワードが短すぎます。</string>
     <string name="login_signin_link"><a href="#">ログイン</a></string>
+    <string name="error_422">指定したユーザIDもしくはメールアドレスは使用されています。</string>
 
     <!-- Strings related to FB SDK -->
     <string name="facebook_app_id">375174456178755</string>
@@ -62,4 +63,11 @@
     <string name="user_add_success">フォローしました。</string>
     <string name="title_activity_followings_list">FollowingsListActivity</string>
     <string name="title_activity_followers_list">FollowersListActivity</string>
+
+
+    <!-- Strings related to 投稿画面 -->
+    <string name="likes">Likes</string>
+    <string name="comments">Comments</string>
+    <string name="comment_here">コメントを入力してください</string>
+    <string name="comment_button">コメントする</string>
 </resources>

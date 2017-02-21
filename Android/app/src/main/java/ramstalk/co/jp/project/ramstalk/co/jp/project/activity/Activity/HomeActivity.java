@@ -10,23 +10,24 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncGetRelationships;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonObject;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Users;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Interface.ApiService;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Listener.ViewClickListener;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Manager.ApiManager;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class HomeActivity extends AppCompatActivity implements AsyncResponseJsonObject {
-    private String TAG = CommonConst.ActivityName.TAG_HOME_ACTIVITY;
+public class HomeActivity extends AppCompatActivity {
+    private String TAG = HomeActivity.class.getSimpleName();
     private ImageButton addFollowingImgButton;
     private TextView followingNumber, followerNumber;
     private LinearLayout followings, followers;
     private SharedPreferences sharedPreferences;
-    private String authToken = null;
-    private AsyncGetRelationships mAsyncGetRealationships = null;
+    private String authToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,31 +42,48 @@ public class HomeActivity extends AppCompatActivity implements AsyncResponseJson
         followerNumber = (TextView) findViewById(R.id.home_follower_number);
         followings = (LinearLayout) findViewById(R.id.home_following_list);
         followers = (LinearLayout) findViewById(R.id.home_follower_list);
-        mAsyncGetRealationships = new AsyncGetRelationships(this, authToken, CommonConst.ApiAction.GET_FOLLOWERS, true);
-        mAsyncGetRealationships.execute();
-        mAsyncGetRealationships = new AsyncGetRelationships(this, authToken, CommonConst.ApiAction.GET_FOLLOWINGS, true);
-        mAsyncGetRealationships.execute();
+
+        ApiService apiService = ApiManager.getApiService();
+        Observable<Users> followerList = apiService.getFollowers(authToken, "");
+        followerList.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Users>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "ERROR :" + e.toString());
+                    }
+
+                    @Override
+                    public void onNext(Users followerList) {
+                        String number = String.valueOf(followerList.getUsers().size());
+                        followerNumber.setText(number);
+                    }
+                });
+
+        Observable<Users> followingList = apiService.getFollowings(authToken, "");
+        followingList.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Users>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(Users followingList) {
+                        String number = String.valueOf(followingList.getUsers().size());
+                        followingNumber.setText(number);
+                    }
+                });
         addFollowingImgButton.setOnClickListener(new ViewClickListener(HomeActivity.this, AddFollowingActivity.class));
         followings.setOnClickListener(new ViewClickListener(HomeActivity.this, FollowingsListActivity.class));
         followers.setOnClickListener(new ViewClickListener(HomeActivity.this, FollowersListActivity.class));
-    }
-
-    @Override
-    public void processFinish(JSONObject output) {
-        if(output != null) {
-            String number = null;
-            try {
-                String action = output.getString("action");
-                if (CommonConst.ApiAction.GET_FOLLOWERS.equals(action)) {
-                    number = CommonConst.ApiResponse.NULL.equals(output.getString("follower_numbers"))? "0" : output.getString("follower_numbers");
-                    followerNumber.setText(number);
-                } else {
-                    number = CommonConst.ApiResponse.NULL.equals(output.getString("following_numbers"))? "0" : output.getString("following_numbers");
-                    followingNumber.setText(number);
-                }
-            } catch (JSONException e) {
-                Log.e(TAG, e.getMessage());
-            }
-        }
     }
 }

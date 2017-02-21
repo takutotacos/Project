@@ -31,9 +31,13 @@ module Api
     # when retrieving data as a user's child elements
     def get_postings_by_categories
       followings = current_user.following.select("id")
-      @postings = Posting.where(category_id: params[:category_id]) if followings.empty?
       @postings = Posting.where('category_id = ? AND user_id IN (?)',
-      params[:category_id], followings) unless followings.empty?
+      params[:category_id], followings)
+      @postings.each do |posting|
+        posting.likes.build
+        posting.user_can_like(current_user.id)
+        posting.get_like_id(current_user.id)
+      end
       @action = "get_postings_by_categories"
       render 'postings', formats: 'json', handlers: 'jbuilder'
     end
@@ -41,8 +45,8 @@ module Api
     private
     # Never trust parameters from the scary internet, only allow the white list through.
     def posting_params
-      params.require(:posting).permit(:user_id, :image, :comment, :latitude, :longitude,
-      :address, :placeName, :placeCategory, :category_id)
+      params.require(:posting).permit(:user_id, :image, :content, :latitude, :longitude,
+      :address, :place_name, :place_category, :category_id)
     end
   end
 end

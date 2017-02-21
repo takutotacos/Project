@@ -6,8 +6,9 @@ module Api
 		def create
 			@comment = @posting.comments.build(comment_params)
 			@comment.user_id = current_user.id
-			@action = "CREATTE"
+			@action = "10"
 			@comment.save
+			@posting.comments
 			render 'comment', formats: 'json', handlers: 'jbuilder'
 		end
 
@@ -24,8 +25,8 @@ module Api
 	    end
 
 	    def set_posting
-	    	# Todo is this the right way to refer to the posting_id?
-	    		@posting = Posting.find(params[:posting_id])
-	    	end
+    	# Todo is this the right way to refer to the posting_id?
+    		@posting = Posting.find(params[:posting_id])
+    	end
 	end
 end

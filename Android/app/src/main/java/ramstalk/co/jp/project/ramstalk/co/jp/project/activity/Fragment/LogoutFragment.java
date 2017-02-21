@@ -18,7 +18,7 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link LogoutFragment.OnFragmentInteractionListener} interface
+ * {@link LogoutFragment.OnFragmentInteractionListener} Interface
  * to handle interaction events.
  * Use the {@link LogoutFragment#newInstance} factory method to
  * create an instance of this fragment.

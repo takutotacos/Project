@@ -26,9 +26,9 @@ module Api
     # POST /users.json
     def create
       @user = User.new(user_params)
-      @action = "CREATE"
       @user.save
-      render 'user', formats: 'json', handlers: 'jbuilder'
+      render 'user', formats: 'json', handlers: 'jbuilder' unless @user.errors.present?
+      head 422 if @user.errors.present?
     end
 
     # PATCH/PUT /users/1
@@ -64,10 +64,10 @@ module Api
 
     def like_user_id_query
       @action = "6"
-      followings = current_user.following.select("id")
-      @users = User.where("user_id LIKE ?", "%#{params[:user_id]}%") if followings.empty?
-      @users = User.where("id NOT IN (?) and user_id LIKE ?",
-       followings, "%#{params[:user_id]}%") unless followings.empty?
+      @following = current_user.following.select("id")
+      @users = User.where("id NOT IN (?) AND id NOT IN (?)", @following, current_user.id) if params[:user_id].empty?
+      @users = User.where("user_id LIKE ? AND id NOT IN (?) AND id NOT IN (?)",
+       "%#{params[:user_id]}%", current_user.id, @following) unless params[:user_id].empty?
       render 'users', formats: 'json', handlers: 'jbuilder'
     end
 

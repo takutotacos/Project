@@ -21,23 +21,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncLogin;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonObject;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.User;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Interface.ApiService;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Manager.ApiManager;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * @author Takuto
  *
  *
  */
-public class LoginActivity extends AppCompatActivity implements AsyncResponseJsonObject {
+public class LoginActivity extends AppCompatActivity {
 
     private static String TAG = CommonConst.ActivityName.TAG_LOGIN_ACTIVITY;
-    private AsyncLogin mAuthTask = null;
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -90,9 +91,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseJso
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -130,8 +128,35 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseJso
             // perform the user login attempt.
             showProgress(true);
             Log.i(TAG, "The login process starts. Email: " + email + " password: " + TextUtils.isEmpty(password));
-            mAuthTask = new AsyncLogin(this, email, password, null, true);
-            mAuthTask.execute();
+
+            ApiService apiService = ApiManager.getApiService();
+            Observable<User> user = apiService.authenticate(email, password);
+            user.subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<User>() {
+                        @Override
+                        public void onCompleted() {
+                            Log.d(TAG, "Login Successful");
+                            finish();
+                            proceedToActivity(TimeLineActivity.class);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            String message = getString(R.string.login_failed);
+                            finish();
+                            startActivity(getIntent());
+                            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+                            Log.e(TAG, "ERROR : " + e.toString());
+                        }
+
+                        @Override
+                        public void onNext(User user) {
+                            sharedPreferencesEditor.putString("auth_token", user.getAuthToken());
+                            sharedPreferencesEditor.putString("user_id", user.getId());
+                            sharedPreferencesEditor.apply();
+                        }
+                    });
         }
     }
 
@@ -179,46 +204,10 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseJso
         }
     }
 
-    @Override
-    public void processFinish(JSONObject output) {
-        if(output != null) {
-            String auth_token = null;
-            String userId = null;
-            try {
-                auth_token = output.getString("auth_token");
-                userId = output.getString("id");
-            } catch(JSONException e) {
-                Log.e(TAG, "JSON Exception happens: " + e.getCause());
-            }
-            if(auth_token != null) {
-                Log.d(TAG, "Login Successful");
-                sharedPreferencesEditor.putString("auth_token", auth_token);
-                sharedPreferencesEditor.putString("user_id", userId);
-                sharedPreferencesEditor.apply();
-                finish();
-                proceedToActivity(MainActivity.class);
-                return;
-            }
-            Log.d(TAG, "Login Failed");
-        }
-        // go back to the login screen with the message saying:
-        // "the combination of email and password does not match any records"
-        String message = getString(R.string.login_failed);
-        finish();
-        startActivity(getIntent());
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
-
     private void proceedToActivity(Class activity) {
         Intent intent = new Intent(this, activity);
         Log.i(TAG, "The next activity is: " + activity);
         startActivity(intent);
-    }
-
-    private void keepUserLoggedIn() {
-        Log.i(TAG, "The user has just been kept logged in.");
-        sharedPreferencesEditor.putBoolean(CommonConst.StatusOfUser.IS_USER_REMEMBERED, true);
-        sharedPreferencesEditor.apply();
     }
 }
 

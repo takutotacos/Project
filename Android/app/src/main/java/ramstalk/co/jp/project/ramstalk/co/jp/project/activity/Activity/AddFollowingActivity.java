@@ -12,28 +12,28 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Adapter.UserAdapter;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonObject;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncSearchUser;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Model.User;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.User;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Users;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Interface.ApiService;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Manager.ApiManager;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class AddFollowingActivity extends AppCompatActivity implements AsyncResponseJsonObject {
+public class AddFollowingActivity extends AppCompatActivity {
     private String TAG = CommonConst.ActivityName.TAG_ADD_FOLLOWING_ACTIVITY;
     private SharedPreferences sharedPreferences = null;
-    private String authToken = null;
+    private String authToken;
     private EditText editTextUserId;
     private ImageButton searchButton;
-    private AsyncSearchUser mAsyncSearchUser;
-    private ListView userList;
+    private ListView userListView;
     private Toast toast;
 
     @Override
@@ -44,50 +44,66 @@ public class AddFollowingActivity extends AppCompatActivity implements AsyncResp
         authToken = sharedPreferences.getString("auth_token", "");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        userList = (ListView) findViewById(R.id.user_list_layout).findViewById(R.id.user_list);
+        userListView = (ListView) findViewById(R.id.user_list_layout).findViewById(R.id.user_list);
         editTextUserId = (EditText) findViewById(R.id.user_list_layout).findViewById(R.id.edit_text_user_id);
         searchButton = (ImageButton) findViewById(R.id.user_list_layout).findViewById(R.id.search_button);
-        mAsyncSearchUser = new AsyncSearchUser(AddFollowingActivity.this, authToken, "", CommonConst.ApiAction.LIKE_USER_QUERY);
-        mAsyncSearchUser.execute();
+
+        final List<User> userList = new ArrayList<User>();
+        final ApiService apiService = ApiManager.getApiService();
+        Observable<Users> users = apiService.searchUsersWithUserId(authToken, "");
+        users.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Users>() {
+                    @Override
+                    public void onCompleted() {
+                        UserAdapter adapter = new UserAdapter(
+                                getBaseContext(), R.layout.user_list_item, userList, authToken, CommonConst.ActivityName.TAG_ADD_FOLLOWING_ACTIVITY);
+                        userListView.setAdapter(adapter);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "ERROR :" + e.toString());
+                    }
+
+                    @Override
+                    public void onNext(Users users) {
+                        for(User user : users.getUsers()) {
+                            userList.add(user);
+                        }
+                    }
+                });
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                userList.clear();
                 String userId = editTextUserId.getText().toString();
-                mAsyncSearchUser = new AsyncSearchUser(AddFollowingActivity.this, authToken, userId, CommonConst.ApiAction.LIKE_USER_QUERY);
-                mAsyncSearchUser.execute();
+                Observable<Users> users = apiService.searchUsersWithUserId(authToken, userId);
+                users.subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Users>() {
+                            @Override
+                            public void onCompleted() {
+                                UserAdapter adapter = new UserAdapter(
+                                        getBaseContext(), R.layout.user_list_item, userList, authToken, CommonConst.ActivityName.TAG_ADD_FOLLOWING_ACTIVITY);
+                                userListView.setAdapter(adapter);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e(TAG, "ERROR :" + e.toString());
+                            }
+
+                            @Override
+                            public void onNext(Users users) {
+                                for(User user : users.getUsers()) {
+                                    userList.add(user);
+                                }
+                            }
+                        });
             }
         });
-    }
-
-    @Override
-    public void processFinish(JSONObject output) {
-        if(output != null) {
-            try {
-                if(CommonConst.ApiAction.LIKE_USER_QUERY.equals(output.getString("action"))) { // when searching for users
-                    List<User> users = new ArrayList<User>();
-                    if (CommonConst.ApiResponse.EXISTS.equals(output.getString("status"))) {
-                        JSONArray usersArray = output.getJSONArray("users");
-                        for (int i = 0; i < usersArray.length(); i++) {
-                            JSONObject userJsonObject = usersArray.getJSONObject(i);
-                            User user = new User();
-                            user.setId(userJsonObject.getString("id"));
-                            user.setUserId(userJsonObject.getString("user_id"));
-                            //                    user.setImage(userJsonObject.getString("comment"));
-                            users.add(user);
-                        }
-                        UserAdapter adapter = new UserAdapter(
-                                getBaseContext(), R.layout.user_list_item, users, authToken, AddFollowingActivity.this, CommonConst.ActivityName.TAG_ADD_FOLLOWING_ACTIVITY);
-                        userList.setAdapter(adapter);
-                    } else {
-                        toast("ユーザが見つかりませんでした。");
-                    }
-                } else { // when adding a following
-                    toast("フォローしました。");
-                }
-            } catch(JSONException e) {
-                Log.e(TAG, e.getMessage());
-            }
-        }
     }
 
     public void toast(String message) {

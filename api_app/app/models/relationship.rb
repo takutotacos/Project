@@ -7,6 +7,6 @@ class Relationship < ApplicationRecord
 	after_create :create_posting
 
 	def create_posting
-		followed.postings.create!(user_id: "system", comment: "#{follower.user_id}があなたをフォローしました。")
+		followed.postings.create!(user_id: "system", content: "#{follower.user_id}があなたをフォローしました。")
 	end
 end

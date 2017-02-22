@@ -28,7 +28,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class FollowingsListActivity extends AppCompatActivity {
-    private String TAG = CommonConst.ActivityName.TAG_LIST_FOLLOWINGS_ACTIVITY;
+    private String TAG = FollowingsListActivity.class.getSimpleName();
     private EditText editTextUserId;
     private ImageButton searchButton;
     private SharedPreferences sharedPreferences;

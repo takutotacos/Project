@@ -28,9 +28,8 @@ import rx.schedulers.Schedulers;
 import static android.text.TextUtils.isEmpty;
 
 public class RegistUserActivity extends AppCompatActivity {
-    private EditText mEditTextUserId, mEditTextPassword, mEditTextPasswordConfirmation, mEditTextEmail;
-
     private static String TAG = RegistUserActivity.class.getSimpleName();
+    private EditText mEditTextUserId, mEditTextPassword, mEditTextPasswordConfirmation, mEditTextEmail;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor sharedPreferencesEditor;
 

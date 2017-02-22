@@ -28,7 +28,7 @@ public class TimeLineActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private SharedPreferences sharedPreferences;
     private TimeLineFragmentPagerAdapter adapter;
-    private String authToken = null;
+    private String authToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +60,8 @@ public class TimeLineActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(Categories categories) {
-                        for (Category category : categories.getCategories()) {
+                    public void onNext(Categories cates) {
+                        for (Category category : cates.getCategories()) {
                             adapter.addFragment(category.getId(), category.getCategoryName());
                         }
                     }

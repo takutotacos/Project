@@ -11,8 +11,8 @@ module Api
     end
 
     def show
-      @postings = Posting.find(params[:id])
-      render json: @postings
+      @posting = Posting.find(params[:id])
+        render 'posting', formats: 'json', handlers: 'jbuilder'
     end
 
     def create

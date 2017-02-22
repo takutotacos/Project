@@ -30,7 +30,6 @@ public class UserAdapter extends ArrayAdapter<User> {
     private LayoutInflater inflater = null;
     private List<User> users;
     private String authToken = null;
-    // private AsyncDeleteFollowing mAsyncDeleteFollowing
     private String activityName;
 
 

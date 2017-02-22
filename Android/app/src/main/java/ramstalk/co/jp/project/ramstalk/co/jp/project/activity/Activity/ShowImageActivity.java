@@ -13,63 +13,65 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncGetImage;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncResponseJsonObject;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Posting;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Interface.ApiService;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Manager.ApiManager;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class ShowImageActivity extends AppCompatActivity implements AsyncResponseJsonObject {
-    private static final String TAG = CommonConst.ActivityName.TAG_SHOW_IMAGE_ACTIVITY;
+public class ShowImageActivity extends AppCompatActivity {
+    private static final String TAG = ShowImageActivity.class.getSimpleName();
     private SharedPreferences sharedPreferences;
-    private String token = null;
-    private String postingId = null;
-    private String imgInfo = null;
-    private String comment = null;
-    private Bitmap decodedByte = null;
+    private String authToken;
+    private String postingId;
+    private Bitmap decodedByte;
     private TextView textViewUserId;
     private TextView textViewCreateDate;
-
     private ImageView imageView;
-    AsyncGetImage mAsyncGetImage = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_image);
         sharedPreferences = getApplicationContext().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        token = sharedPreferences.getString("auth_token", "");
+        authToken = sharedPreferences.getString("auth_token", "");
         imageView = (ImageView) findViewById(R.id.show_image_image);
         textViewUserId= (TextView) findViewById(R.id.show_image_user_id);
         textViewCreateDate = (TextView) findViewById(R.id.show_image_create_date);
         Intent incomingIntent = getIntent();
         postingId = incomingIntent.getStringExtra("postingId");
-        if (!"".equals(postingId)) {
-            mAsyncGetImage = new AsyncGetImage(this, postingId, token);
-            mAsyncGetImage.execute();
-        }
-    }
 
-    @Override
-    public void processFinish(JSONObject result) {
-        if(result != null) {
-            try {
-                String location1 = result.getString("location1");
-                comment = result.getString("comment");
-                // @Todo Do some research what this does.
-                String imgInfo = result.getString("image");
-                byte[] decodedString = Base64.decode(imgInfo, Base64.DEFAULT);
-                decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                imageView.setImageBitmap(decodedByte);
-                textViewCreateDate.setText(location1);
-                textViewCreateDate.setTextColor(Color.RED);
-                textViewUserId.setText(comment);
-                textViewUserId.setTextColor(Color.RED);
-            } catch(JSONException e) {
-                Log.e(TAG, "The Json Exception occured: " + e.getCause());
-            }
-        }
+        ApiService apiService = ApiManager.getApiService();
+        Observable<Posting> posting = apiService.getPosting(authToken, postingId);
+        posting.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Posting>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "ERROR : " + e.toString());
+                    }
+
+                    @Override
+                    public void onNext(Posting posting) {
+                        String content = posting.getContent();
+                        String image = posting.getImage();
+                        String id = posting.getId();
+                        byte[] decodedString = Base64.decode(image, Base64.DEFAULT);
+                        decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        textViewCreateDate.setText(id);
+                        textViewCreateDate.setTextColor(Color.RED);
+                        textViewUserId.setText(content);
+                        textViewUserId.setTextColor(Color.RED);
+                        imageView.setImageBitmap(decodedByte);
+                    }
+                });
     }
 }

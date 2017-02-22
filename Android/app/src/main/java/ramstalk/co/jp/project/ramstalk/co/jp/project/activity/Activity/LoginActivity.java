@@ -38,7 +38,7 @@ import rx.schedulers.Schedulers;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    private static String TAG = CommonConst.ActivityName.TAG_LOGIN_ACTIVITY;
+    private static String TAG = LoginActivity.class.getSimpleName();
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;

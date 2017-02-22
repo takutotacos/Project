@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class LocationActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
-    private String TAG = getClass().getName();
+    private String TAG = LocationActivity.class.getSimpleName();
     private GoogleApiClient mGoogleApiClient;
     private boolean mResolvingError = false;
     private FusedLocationProviderApi fusedLocationProviderApi;

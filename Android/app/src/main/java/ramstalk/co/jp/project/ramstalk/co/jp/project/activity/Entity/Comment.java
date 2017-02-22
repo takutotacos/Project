@@ -16,6 +16,17 @@ public class Comment {
 
     private String content;
 
+    public Comment() {}
+
+    public Comment(String content) {
+        this.content = content;
+    }
+
+    public Comment(String id, String userId, String content) {
+        this.id = id;
+        this.userId = userId;
+        this.content = content;
+    }
     public String getId() {
         return id;
     }

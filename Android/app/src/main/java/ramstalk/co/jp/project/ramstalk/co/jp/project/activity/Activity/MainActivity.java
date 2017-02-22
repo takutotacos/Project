@@ -9,11 +9,10 @@ import android.view.View;
 import android.widget.Button;
 
 import ramstalk.co.jp.project.R;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = CommonConst.ActivityName.TAG_MAIN_ACTIVITY;
+    private static final String TAG = MainActivity.class.getSimpleName();
     private Button toMapButton;
     private Button toPostingButton;
 

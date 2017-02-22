@@ -9,6 +9,8 @@ unless @postings.empty? then
     json.comment_counts posting.comments.count
     json.can_like posting.can_like
     json.like_id posting.like_id
+    json.latitude posting.latitude
+    json.longitude posting.longitude
     json.user do
       json.id posting.user.id
       json.user_id posting.user.user_id

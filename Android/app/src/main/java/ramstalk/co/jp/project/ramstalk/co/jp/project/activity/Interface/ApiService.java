@@ -3,16 +3,19 @@ package ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Interface;
 import java.util.HashMap;
 
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Categories;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Comment;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Posting;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Postings;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.User;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Users;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -37,6 +40,9 @@ public interface ApiService {
     @GET("postings_by_category")
     Observable<Postings> getPostingsByCategories(@Header("Authorization") String authToken, @Query("category_id") String categoryId);
 
+    @GET("postings/{posting_id}")
+    Observable<Posting> getPosting(@Header("Authorization") String authToken, @Path("posting_id") String posting_id);
+
     @GET("followings")
     Observable<Users> getFollowings(@Header("Authorization") String authToken, @Query("user_id") String user_id);
 
@@ -50,4 +56,18 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("relationships")
     Observable<Void> addToFollowing(@Header("Authorization") String authToken, @Field("id") String idToAdd);
+
+    @POST("postings/{posting_id}/comments")
+    Observable<Posting> addComment(@Header("Authorization") String authToken,
+                                   @Path("posting_id") String posting_id,
+                                   @Body HashMap<String, Comment> commentHashMap);
+
+    @POST("postings/{posting_id}/likes")
+    Observable<Posting> addLike(@Header("Authorization") String authToken, @Path("posting_id") String posting_id);
+
+    @DELETE("postings/{posting_id}/likes/{like_id}")
+    Observable<Posting> deleteLike(@Header("Authorization") String authToken,
+                                   @Path("posting_id") String posting_id,
+                                   @Path("like_id") String like_id);
+
 }

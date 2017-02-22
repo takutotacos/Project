@@ -20,7 +20,6 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Adapter.UserAdapte
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.User;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Users;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Http.AsyncSearchUser;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Interface.ApiService;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Manager.ApiManager;
 import rx.Observable;
@@ -29,12 +28,11 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class FollowersListActivity extends AppCompatActivity {
-    private String TAG = CommonConst.ActivityName.TAG_LIST_FOLLOWERS_ACTIVITY;
+    private String TAG = FollowersListActivity.class.getSimpleName();
     private EditText editTextUserId;
     private ImageButton searchButton;
     private SharedPreferences sharedPreferences;
     private String authToken;
-    private AsyncSearchUser mAsyncSearchUser;
     private ListView userList;
     private Toast toast;
 

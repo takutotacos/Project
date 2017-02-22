@@ -21,11 +21,7 @@ public class CommonConst {
 
         public static final String TAG_MAIN_ACTIVITY = "MainActivtity";
 
-        public static final String TAG_REGIST_USER_ACTIVITY = "RegistUserActivity";
-
         public static final String TAG_SHOW_IMAGE_ACTIVITY = "ShowImageActivity";
-
-        public static final String TAG_LOGIN_FB_FRAGMENT = "LoginFBFragment";
 
         public static final String TAG_HOME_ACTIVITY = "HomeActivity";
 
@@ -41,32 +37,7 @@ public class CommonConst {
     }
 
     public static class Api {
-        private static final String LOCAL_SERVER = "http://10.0.2.2:3000/api";
-
-        public static final String LOCAL_SERVER_FOR_RX = LOCAL_SERVER + "/";
-
-        // APIs for postings
-        public static final String GET_ALL_POSTINGS_ON_MAP = LOCAL_SERVER + "/postings";
-
-        public static final String GET_A_DETAILED_POSTING = LOCAL_SERVER + "/postings";
-
-        // APIs for likes
-        public static String LIKE_A_POSTING(String postingId) {
-            return LOCAL_SERVER + "/postings/" + postingId + "/likes";
-        }
-
-        public static String DELETE_A_LIKE_FROM_POSTING(String postingId, String likeId) {
-            return LOCAL_SERVER + "/postings/" + postingId + "/likes/" + likeId;
-        }
-
-        // APIs for comments
-        public static String CREATE_A_COMMENT(String postingId) {
-            return LOCAL_SERVER + "/postings/" + postingId + "/comments";
-        }
-
-        public static String GET_COMMENTS(String postingId) {
-            return LOCAL_SERVER + "/postings/" + postingId + "/comments";
-        }
+        public static final String LOCAL_SERVER_FOR_RX = "http://10.0.2.2:3000/api/";
     }
 
     public class ApiAction {

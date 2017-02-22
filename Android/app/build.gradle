@@ -30,6 +30,7 @@ repositories {
 
 
 
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
@@ -39,19 +40,10 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
-
-    //Retrofit
     compile 'com.squareup.retrofit2:retrofit:latest.release'
-
-    //RxAndroid
     compile 'io.reactivex:rxandroid:latest.release'
     compile 'io.reactivex:rxjava:latest.release'
-
-    //Gson
     compile 'com.google.code.gson:gson:latest.release'
-
     compile 'com.squareup.retrofit2:adapter-rxjava:latest.release'
     compile 'com.squareup.retrofit2:converter-gson:latest.release'
-
-
 }

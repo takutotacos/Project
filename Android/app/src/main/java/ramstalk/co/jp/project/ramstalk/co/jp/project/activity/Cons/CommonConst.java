@@ -19,8 +19,6 @@ public class CommonConst {
 
         public static final String TAG_POSTING_ACTIVITY = "PostingActivity";
 
-        public static final String TAG_MAIN_ACTIVITY = "MainActivtity";
-
         public static final String TAG_SHOW_IMAGE_ACTIVITY = "ShowImageActivity";
 
         public static final String TAG_HOME_ACTIVITY = "HomeActivity";

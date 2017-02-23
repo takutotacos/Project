@@ -107,4 +107,17 @@ public class FollowersListActivity extends AppCompatActivity {
             }
         });
     }
+
+    // @TODO: 2017/02/24 以下の記述が必要か？
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        TAG = null;
+//        editTextUserId = null;
+//        searchButton = null;
+//        sharedPreferences = null;
+//        authToken = null;
+//        userList = null;
+//
+//    }
 }

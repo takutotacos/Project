@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170220233417) do
+ActiveRecord::Schema.define(version: 20170223092715) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "category_name"
@@ -36,6 +36,21 @@ ActiveRecord::Schema.define(version: 20170220233417) do
     t.datetime "updated_at", null: false
     t.index ["posting_id"], name: "index_likes_on_posting_id", using: :btree
     t.index ["user_id"], name: "index_likes_on_user_id", using: :btree
+  end
+
+  create_table "notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "user_id"
+    t.integer  "notified_by_id"
+    t.integer  "posting_id"
+    t.integer  "comment_id"
+    t.string   "notice_type"
+    t.boolean  "read",           default: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.index ["comment_id"], name: "fk_rails_9268535f02", using: :btree
+    t.index ["notified_by_id"], name: "index_notifications_on_notified_by_id", using: :btree
+    t.index ["posting_id"], name: "index_notifications_on_posting_id", using: :btree
+    t.index ["user_id"], name: "index_notifications_on_user_id", using: :btree
   end
 
   create_table "postings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -91,4 +106,8 @@ ActiveRecord::Schema.define(version: 20170220233417) do
   add_foreign_key "comments", "users"
   add_foreign_key "likes", "postings"
   add_foreign_key "likes", "users"
+  add_foreign_key "notifications", "comments"
+  add_foreign_key "notifications", "postings"
+  add_foreign_key "notifications", "users"
+  add_foreign_key "notifications", "users", column: "notified_by_id"
 end

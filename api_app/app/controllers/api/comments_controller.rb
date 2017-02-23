@@ -7,7 +7,9 @@ module Api
 			@comment = @posting.comments.build(comment_params)
 			@comment.user_id = current_user.id
 			@action = "10"
-			@comment.save
+			if @comment.save
+				create_notification @posting, @comment
+			end
 			@posting.comments
 			render 'comment', formats: 'json', handlers: 'jbuilder'
 		end
@@ -28,5 +30,12 @@ module Api
     	# Todo is this the right way to refer to the posting_id?
     		@posting = Posting.find(params[:posting_id])
     	end
+
+		def create_notification(posting, comment)
+			return if posting.user.id == current_user.id
+			Notification.create(user_id: posting.user.id, notified_by_id: current_user.id,
+									posting_id: posting.id, comment_id: comment.id,
+									notice_type: 'comment')
+		end
 	end
 end

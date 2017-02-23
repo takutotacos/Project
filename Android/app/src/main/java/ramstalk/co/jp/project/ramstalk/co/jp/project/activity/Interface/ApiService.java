@@ -8,6 +8,9 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Posting;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Postings;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.User;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Users;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Notification;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Notifications;
+
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
@@ -70,4 +73,9 @@ public interface ApiService {
                                    @Path("posting_id") String posting_id,
                                    @Path("like_id") String like_id);
 
+    @GET("notifications")
+    Observable<Notifications> getNotifications(@Header("Authorization") String authToken);
+
+    @POST("notifications/{notification_id}/")
+    Observable<Notification> showNotification(@Header("Authorization") String authToken, @Path("notification_id") String notification_id);
 }

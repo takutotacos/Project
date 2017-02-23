@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.HomeActivity;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.MainActivity;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.NotificationActivity;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.MapsActivity;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.PostingActivity;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.TimeLineActivity;
@@ -17,7 +17,7 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
  * Created by sugitatakuto on 2017/02/05.
  */
 public class TouchListener implements View.OnTouchListener {
-    private String TAG = getClass().getName();
+    private String TAG = getClass().getSimpleName();
     private Activity activity;
     private String selectedActivity;
 
@@ -38,17 +38,14 @@ public class TouchListener implements View.OnTouchListener {
 
     private Class getActivityFromSelection(String selectedActivity) {
         switch (selectedActivity) {
-            case CommonConst.ActivityName.TAG_MAIN_ACTIVITY: // @todo Delete this: this is unnecessary
-                return MainActivity.class;
-
             case CommonConst.ActivityName.TAG_HOME_ACTIVITY:
                 return HomeActivity.class;
 
             case CommonConst.ActivityName.TAG_TIME_LINE_ACTIVITY:
                 return TimeLineActivity.class;
-//
-//            case CommonConst.ActivityName.TAG_NOTIFICATION:
-//                return NotificationActivity.class;
+
+            case CommonConst.ActivityName.TAG_NOTIFICATION_ACTIVITY:
+                return NotificationActivity.class;
 
             case CommonConst.ActivityName.TAG_MAPS_ACTIVITY:
                 return MapsActivity.class;
@@ -58,7 +55,7 @@ public class TouchListener implements View.OnTouchListener {
 
             default:
                 Log.e(TAG, "Unexpected screen transition.");
-                return MainActivity.class;
+                return NotificationActivity.class;
         }
     }
 }

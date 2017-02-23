@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,6 @@ public class AddFollowingActivity extends AppCompatActivity {
     private EditText editTextUserId;
     private ImageButton searchButton;
     private ListView userListView;
-    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,13 +102,5 @@ public class AddFollowingActivity extends AppCompatActivity {
                         });
             }
         });
-    }
-
-    public void toast(String message) {
-        if(toast != null) {
-            toast.cancel();
-        }
-        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        toast.show();
     }
 }

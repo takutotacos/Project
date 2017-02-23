@@ -23,7 +23,6 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Listener.TouchList
  */
 public class FooterFragment extends Fragment {
     private TextView mWallTextView, mNotificationTextView, mHomeTextView, mMapTextView, mMakingAPostingTextView;
-//    private OnFragmentInteractionListener mListener;
 
     public FooterFragment() {
         // Required empty public constructor
@@ -45,7 +44,7 @@ public class FooterFragment extends Fragment {
 
         mWallTextView.setOnTouchListener(new TouchListener(this.getActivity(), CommonConst.ActivityName.TAG_TIME_LINE_ACTIVITY));
         mNotificationTextView.setOnTouchListener(new TouchListener(this.getActivity(), CommonConst.ActivityName.TAG_NOTIFICATION_ACTIVITY));
-        mHomeTextView.setOnTouchListener(new TouchListener(this.getActivity(), CommonConst.ActivityName.TAG_HOME_ACTIVITY));
+        mHomeTextView.setOnTouchListener(new TouchListener(this.getActivity(), CommonConst.ActivityName.TAG_NOTIFICATION_ACTIVITY));
         mMapTextView.setOnTouchListener(new TouchListener(this.getActivity(), CommonConst.ActivityName.TAG_MAPS_ACTIVITY));
         mMakingAPostingTextView.setOnTouchListener(new TouchListener(this.getActivity(), CommonConst.ActivityName.TAG_POSTING_ACTIVITY));
         return view;

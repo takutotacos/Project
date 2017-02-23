@@ -184,7 +184,7 @@ public class PostingActivity extends AppCompatActivity implements GoogleApiClien
                                 public void onCompleted() {
                                     toast("登録したでー");
                                     finish();
-                                    proceedToActivity(MainActivity.class);
+                                    proceedToActivity(NotificationActivity.class);
                                 }
 
                                 @Override

@@ -70,4 +70,11 @@
     <string name="comments">Comments</string>
     <string name="comment_here">コメントを入力してください</string>
     <string name="comment_button">コメントする</string>
+
+    <!-- Strings related to 通知画面 -->
+    <string name="notification_notified_by_id">Someone</string>
+    <string name="notification_posting_id">あなたの投稿に</string>
+    <string name="notification_notice_type_like">「いいね」しました。</string>
+    <string name="notification_notice_type_comment">「コメント」しました。</string>
+    <string name="notification_created_at">at some time</string>
 </resources>

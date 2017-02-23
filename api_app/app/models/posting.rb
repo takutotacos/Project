@@ -3,6 +3,7 @@ class Posting < ApplicationRecord
   belongs_to :category
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :notifications, dependent: :destroy
   default_scope -> { order(created_at: :desc) }
   attr_accessor :can_like, :like_id
 

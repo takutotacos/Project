@@ -2,7 +2,6 @@ package ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.HashMap;
 import java.util.List;
@@ -58,9 +59,15 @@ public class PostingAdapter extends ArrayAdapter<Posting> {
         TextView onePostingLineUserInfo = (TextView) view.findViewById(R.id.time_line_posting_user_id);
         onePostingLineUserInfo.setText(posting.getUser().getUserId());
 
-        ImageView onePostingLineImage = (ImageView) view.findViewById(R.id.time_line_posting_image);
-        byte[] decodedString = Base64.decode(posting.getImage(), Base64.DEFAULT);
-        onePostingLineImage.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+        if(posting.getImage() != null) {
+            ImageView onePostingLineImage = (ImageView) view.findViewById(R.id.time_line_posting_image);
+            byte[] decodedString = Base64.decode(posting.getImage(), Base64.DEFAULT);
+            Glide.with(getContext())
+                    .load(decodedString)
+                    .fitCenter()
+                    .placeholder(android.R.drawable.spinner_background)
+                    .into(onePostingLineImage);
+        }
 
         likeNumber = (TextView) view.findViewById(R.id.like_number);
         likeNumber.setText(posting.getLikeCounts());

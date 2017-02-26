@@ -29,8 +29,8 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST("authenticate")
-    Observable<User> authenticate(@Field("email") String email, @Field("password") String password);
-
+    Observable<User> authenticate(@Field("email") String email,
+                                  @Field("password") String password);
     @POST("users")
     Observable<User> registerUser(@Body HashMap<String, User> user);
 
@@ -38,44 +38,48 @@ public interface ApiService {
     Observable<Categories> getAllCategories(@Header("Authorization") String authToken);
 
     @POST("postings")
-    Observable<Posting> createOnePosting(@Header("Authorization") String authToken, @Body HashMap<String, Posting> posting);
-
+    Observable<Posting> createOnePosting(@Header("Authorization") String authToken,
+                                         @Body HashMap<String, Posting> posting);
     @GET("postings_by_category")
-    Observable<Postings> getPostingsByCategories(@Header("Authorization") String authToken, @Query("category_id") String categoryId);
-
+    Observable<Postings> getPostingsByCategories(@Header("Authorization") String authToken,
+                                                 @Query("category_id") String categoryId);
+    @GET("find_within_certain_distance")
+    Observable<Postings> getPostingsWithinCertainDistance(@Header("Authorization") String authToken,
+                                                          @Query("category_id") String categoryId,
+                                                          @Query("latitude") String latitude,
+                                                          @Query("longitude") String longitude);
     @GET("postings/{posting_id}")
-    Observable<Posting> getPosting(@Header("Authorization") String authToken, @Path("posting_id") String posting_id);
-
+    Observable<Posting> getPosting(@Header("Authorization") String authToken,
+                                   @Path("posting_id") String posting_id);
     @GET("followings")
-    Observable<Users> getFollowings(@Header("Authorization") String authToken, @Query("user_id") String user_id);
-
+    Observable<Users> getFollowings(@Header("Authorization") String authToken,
+                                    @Query("user_id") String user_id);
     @GET("followers")
-    Observable<Users> getFollowers(@Header("Authorization") String authToken, @Query("user_id") String user_id);
-
+    Observable<Users> getFollowers(@Header("Authorization") String authToken,
+                                   @Query("user_id") String user_id);
     // search users a user is not following yet
     @GET("like_user_id_query")
-    Observable<Users> searchUsersWithUserId(@Header("Authorization") String authToken, @Query("user_id") String user_id);
-
+    Observable<Users> searchUsersWithUserId(@Header("Authorization") String authToken,
+                                            @Query("user_id") String user_id);
     @FormUrlEncoded
     @POST("relationships")
-    Observable<Void> addToFollowing(@Header("Authorization") String authToken, @Field("id") String idToAdd);
-
+    Observable<Void> addToFollowing(@Header("Authorization") String authToken,
+                                    @Field("id") String idToAdd);
     @POST("postings/{posting_id}/comments")
     Observable<Posting> addComment(@Header("Authorization") String authToken,
                                    @Path("posting_id") String posting_id,
                                    @Body HashMap<String, Comment> commentHashMap);
-
     @POST("postings/{posting_id}/likes")
-    Observable<Posting> addLike(@Header("Authorization") String authToken, @Path("posting_id") String posting_id);
-
+    Observable<Posting> addLike(@Header("Authorization") String authToken,
+                                @Path("posting_id") String posting_id);
     @DELETE("postings/{posting_id}/likes/{like_id}")
     Observable<Posting> deleteLike(@Header("Authorization") String authToken,
                                    @Path("posting_id") String posting_id,
                                    @Path("like_id") String like_id);
-
     @GET("notifications")
     Observable<Notifications> getNotifications(@Header("Authorization") String authToken);
 
     @POST("notifications/{notification_id}/")
-    Observable<Notification> showNotification(@Header("Authorization") String authToken, @Path("notification_id") String notification_id);
+    Observable<Notification> showNotification(@Header("Authorization") String authToken,
+                                              @Path("notification_id") String notification_id);
 }

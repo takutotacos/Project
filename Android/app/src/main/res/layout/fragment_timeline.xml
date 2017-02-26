@@ -28,6 +28,16 @@
             android:id="@+id/time_line_posting_image" />
 
     </LinearLayout>
+
+    <!-- posting's comment(content?) -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:id="@+id/time_line_posting_comment" />
+
     <!--like and comment button image-->
     <LinearLayout
         android:layout_width="match_parent"
@@ -112,14 +122,5 @@
             android:text="@string/comment_button"/>
 
     </LinearLayout>
-
-    <!-- posting's comment(content?) -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:textSize="20dp"
-        android:id="@+id/time_line_posting_comment" />
 
 </LinearLayout>

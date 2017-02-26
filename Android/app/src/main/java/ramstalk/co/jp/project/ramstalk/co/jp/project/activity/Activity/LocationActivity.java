@@ -27,11 +27,8 @@ public class LocationActivity extends FragmentActivity implements GoogleApiClien
     private boolean mResolvingError = false;
     private FusedLocationProviderApi fusedLocationProviderApi;
     private LocationRequest locationRequest;
-    private Location location;
     private long lastLocationTime = 0;
 
-    private double latitude = 0.0;
-    private double longitude = 0.0;
     Intent intent = null;
 
     @Override
@@ -66,7 +63,8 @@ public class LocationActivity extends FragmentActivity implements GoogleApiClien
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "onConnected");
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         Location currentLocation = fusedLocationProviderApi.getLastLocation(mGoogleApiClient);
@@ -97,7 +95,6 @@ public class LocationActivity extends FragmentActivity implements GoogleApiClien
                 finish();
             }
         }
-
     }
 
     //位置情報が更新されると呼び出される

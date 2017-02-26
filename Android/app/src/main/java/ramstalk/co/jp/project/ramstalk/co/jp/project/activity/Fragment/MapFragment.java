@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,6 +38,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private SharedPreferences sharedPreferences;
     private GoogleMap mMap;
     private MapView mMapView;
+    private Toast toast;
 
     public MapFragment() {
     }
@@ -76,17 +78,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         String categoryId = getArguments().getString(CATEGORY_ID);
         sharedPreferences = getActivity().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String authToken = sharedPreferences.getString("auth_token", "");
+        String latitude = sharedPreferences.getString("latitude", "");
+        String longitude = sharedPreferences.getString("longitude", "");
 
         ApiService apiService = ApiManager.getApiService();
-        /**
-         * @Todo
-         * 1. get where you are
-         * 2. set the distance away from where you are to get infos of
-         * 3. get the infos
-         * 4. display them
-         * 5. when user changes his or her location, update the info
-         */
-        Observable<Postings> postings = apiService.getPostingsByCategories(authToken, categoryId);
+        Observable<Postings> postings = apiService.getPostingsWithinCertainDistance(
+                authToken, categoryId, latitude, longitude);
         postings.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Postings>() {
@@ -101,7 +98,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     @Override
                     public void onNext(Postings postings) {
-                        if (postings != null) {
+                        if (postings.getPostings() != null) {
                             for (Posting posting : postings.getPostings()) {
                                 String comment = posting.getContent();
                                 String id = posting.getId();
@@ -111,7 +108,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 if (lat != null & lng != null) {
                                     LatLng latlng = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
                                     mMap.addMarker(new MarkerOptions().position(latlng).title(comment)).setTag(id);
-                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
                                     mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                         @Override
                                         public boolean onMarkerClick(Marker marker) {
@@ -124,6 +121,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                     });
                                 }
                             }
+                        } else {
+                            toast("近くに閲覧可能なデータがありません。");
                         }
                     }
                 });
@@ -151,5 +150,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+    public void toast(String message) {
+        if(toast != null) {
+            toast.cancel();
+        }
+        toast = Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

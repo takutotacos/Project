@@ -58,15 +58,16 @@ public class PostingAdapter extends ArrayAdapter<Posting> {
 
         TextView onePostingLineUserInfo = (TextView) view.findViewById(R.id.time_line_posting_user_id);
         onePostingLineUserInfo.setText(posting.getUser().getUserId());
+        ImageView onePostingLineImage = (ImageView) view.findViewById(R.id.time_line_posting_image);
 
         if(posting.getImage() != null) {
-            ImageView onePostingLineImage = (ImageView) view.findViewById(R.id.time_line_posting_image);
             byte[] decodedString = Base64.decode(posting.getImage(), Base64.DEFAULT);
             Glide.with(getContext())
                     .load(decodedString)
                     .fitCenter()
-                    .placeholder(android.R.drawable.spinner_background)
                     .into(onePostingLineImage);
+        } else {
+            onePostingLineImage.setVisibility(View.GONE);
         }
 
         likeNumber = (TextView) view.findViewById(R.id.like_number);

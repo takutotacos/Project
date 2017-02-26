@@ -1,4 +1,7 @@
 class Posting < ApplicationRecord
+  acts_as_mappable :default_units => :kms,
+:lat_column_name => :latitude,
+:lng_column_name => :longitude
   belongs_to :user
   belongs_to :category
   has_many :comments, dependent: :destroy

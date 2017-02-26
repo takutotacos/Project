@@ -85,7 +85,7 @@ public class PostingActivity extends AppCompatActivity implements GoogleApiClien
     private ArrayList<String>categoriesForSpinner = new ArrayList<String>();
     private HashMap<String, String> spinnerMap = new HashMap<String, String>();
     private ArrayAdapter<String> adapter = null;
-    private static Toast toast;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,12 +157,14 @@ public class PostingActivity extends AppCompatActivity implements GoogleApiClien
                 startActivityForResult(intent, RESULT_PICK_IMAGEFILE);
             }
         });
+
         // Android 6, API 23以上でパーミッシンの確認
         if (Build.VERSION.SDK_INT >= 23) {
             checkPermission();
         } else {
             getLocationInfo();
         }
+
         button_post = (Button) findViewById(button_postImages);
         button_post.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -270,10 +272,6 @@ public class PostingActivity extends AppCompatActivity implements GoogleApiClien
         startActivityForResult( intent, requestCode );
     }
 
-    private String getGalleryPath() {
-        return Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DCIM + "/";
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         // The ACTION_OPEN_DOCUMENT intent was sent with the request code
@@ -303,6 +301,10 @@ public class PostingActivity extends AppCompatActivity implements GoogleApiClien
             latitude = savedData.getDouble("latitude", 0.0);
             longitude = savedData.getDouble("longitude", 0.0);
         }
+    }
+
+    private String getGalleryPath() {
+        return Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DCIM + "/";
     }
 
     private Bitmap getBitmapFromUri(Uri uri) throws IOException {

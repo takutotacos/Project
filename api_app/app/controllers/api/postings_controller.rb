@@ -42,6 +42,14 @@ module Api
       render 'postings', formats: 'json', handlers: 'jbuilder'
     end
 
+    def find_within_certain_distance
+      followings = current_user.following.select("id")
+      @postings = Posting.within(0.2, :origin => [params[:latitude], params[:longitude]])
+      @postings002 = @postings.where('category_id = ? AND user_id IN (?)',
+       params[:category_id], followings)
+      render 'postings', formats: 'json', handlers: 'jbuilder'
+    end
+
     private
     # Never trust parameters from the scary internet, only allow the white list through.
     def posting_params

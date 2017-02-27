@@ -41,7 +41,7 @@ import rx.schedulers.Schedulers;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    private static String TAG = LoginActivity.class.getSimpleName();
+    private String TAG = LoginActivity.class.getSimpleName();
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor sharedPreferencesEditor;
     private final int REQUEST_PERMISSION = 1000;
-    private static final int RESULT_PICK_LOCATIONINFO = 1002;
+    private final int RESULT_PICK_LOCATIONINFO = 1002;
     private Toast toast;
 
 

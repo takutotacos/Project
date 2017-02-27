@@ -29,7 +29,7 @@ import rx.schedulers.Schedulers;
  */
 public class NotificationAdapter extends ArrayAdapter<Notification> {
 
-    private String TAG = NotificationAdapter.class.getSimpleName();
+    private final String TAG = NotificationAdapter.class.getSimpleName();
     private int resourceId;
     private LayoutInflater inflater;
     private List<Notification> notifications;

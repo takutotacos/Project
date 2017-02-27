@@ -27,9 +27,7 @@ public class LocationActivity extends FragmentActivity implements GoogleApiClien
     private boolean mResolvingError = false;
     private FusedLocationProviderApi fusedLocationProviderApi;
     private LocationRequest locationRequest;
-    private long lastLocationTime = 0;
-
-    Intent intent = null;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -3,6 +3,7 @@ package ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import rx.schedulers.Schedulers;
 public class TimeLineActivity extends AppCompatActivity {
     private String TAG = TimeLineActivity.class.getSimpleName();
     private Toolbar mToolbar;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private SharedPreferences sharedPreferences;
@@ -35,6 +37,8 @@ public class TimeLineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_line);
         mToolbar = (Toolbar) findViewById(R.id.time_line_toolbar);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        mCollapsingToolbarLayout.setTitleEnabled(false);
         sharedPreferences = getApplicationContext().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         authToken = sharedPreferences.getString("auth_token", "");
         setSupportActionBar(mToolbar);
@@ -60,8 +64,8 @@ public class TimeLineActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(Categories cates) {
-                        for (Category category : cates.getCategories()) {
+                    public void onNext(Categories categories) {
+                        for (Category category : categories.getCategories()) {
                             adapter.addFragment(category.getId(), category.getCategoryName());
                         }
                     }

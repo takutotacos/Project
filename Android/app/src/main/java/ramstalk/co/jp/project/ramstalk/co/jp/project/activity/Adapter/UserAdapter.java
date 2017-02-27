@@ -25,7 +25,7 @@ import rx.schedulers.Schedulers;
  * Created by sugitatakuto on 2017/02/12.
  */
 public class UserAdapter extends ArrayAdapter<User> {
-    private String TAG = UserAdapter.class.getSimpleName();
+    private final String TAG = UserAdapter.class.getSimpleName();
     private int resourceId;
     private LayoutInflater inflater = null;
     private List<User> users;

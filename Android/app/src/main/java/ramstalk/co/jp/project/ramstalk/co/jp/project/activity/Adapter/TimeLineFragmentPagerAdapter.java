@@ -13,8 +13,8 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Fragment.TimeLineF
  * Created by sugitatakuto on 2017/02/08.
  */
 public class TimeLineFragmentPagerAdapter extends FragmentPagerAdapter {
-    private final List<TimeLineFragment> mFragmentList = new ArrayList<>();
-    private final List<String> mFragmentTitleList = new ArrayList<>();
+    private List<TimeLineFragment> mFragmentList = new ArrayList<>();
+    private List<String> mFragmentTitleList = new ArrayList<>();
 
     public TimeLineFragmentPagerAdapter(FragmentManager fm) {
         super(fm);

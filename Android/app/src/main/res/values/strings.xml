@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Project</string>
+    <string name="app_name">Qst!</string>
 
     <!-- Strings related to login -->
     <string name="login_prompt_email">メールアドレス</string>

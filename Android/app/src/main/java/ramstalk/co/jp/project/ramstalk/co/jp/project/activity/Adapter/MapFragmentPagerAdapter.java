@@ -13,8 +13,8 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Fragment.MapFragme
  * Created by sugitatakuto on 2017/02/22.
  */
 public class MapFragmentPagerAdapter extends FragmentPagerAdapter {
-    private final List<MapFragment> mFragmentList = new ArrayList<>();
-    private final List<String> mFragmentTitleList = new ArrayList<>();
+    private List<MapFragment> mFragmentList = new ArrayList<>();
+    private List<String> mFragmentTitleList = new ArrayList<>();
 
     public MapFragmentPagerAdapter(FragmentManager fm) {
         super(fm);

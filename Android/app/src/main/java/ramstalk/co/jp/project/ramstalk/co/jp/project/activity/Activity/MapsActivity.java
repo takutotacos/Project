@@ -3,6 +3,7 @@ package ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -22,8 +23,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class MapsActivity extends AppCompatActivity {
-    private static String TAG = MapsActivity.class.getSimpleName();
+    private String TAG = MapsActivity.class.getSimpleName();
     private Toolbar mToolbar;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private SharedPreferences sharedPreferences;
@@ -35,6 +37,8 @@ public class MapsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         mToolbar = (Toolbar) findViewById(R.id.map_toolbar);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        mCollapsingToolbarLayout.setTitleEnabled(false);
         sharedPreferences = getApplicationContext().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         authToken = sharedPreferences.getString("auth_token", "");
         setSupportActionBar(mToolbar);

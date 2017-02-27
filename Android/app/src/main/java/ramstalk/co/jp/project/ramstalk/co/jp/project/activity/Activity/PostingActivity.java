@@ -16,6 +16,7 @@ import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -59,7 +60,7 @@ import static ramstalk.co.jp.project.R.id.button_postImages;
 
 public class PostingActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     //TODO:LocationActivityのOnPause等が必要
-    private static final String TAG = PostingActivity.class.getSimpleName();
+    private final String TAG = PostingActivity.class.getSimpleName();
     private SharedPreferences sharedPreferences;
     private GoogleApiClient mGoogleApiClient;
 
@@ -77,8 +78,8 @@ public class PostingActivity extends AppCompatActivity implements GoogleApiClien
     private String selectedCategoryId = null;
 
     private final int REQUEST_PERMISSION = 1000;
-    private static final int RESULT_PICK_IMAGEFILE = 1001;
-    private static final int RESULT_PICK_LOCATIONINFO = 1002;
+    private final int RESULT_PICK_IMAGEFILE = 1001;
+    private final int RESULT_PICK_LOCATIONINFO = 1002;
     private Button button_get,button_post;
     private TextView dcimPath;
     private Spinner mSpinner;
@@ -94,6 +95,8 @@ public class PostingActivity extends AppCompatActivity implements GoogleApiClien
         sharedPreferences = getApplicationContext().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         authToken = sharedPreferences.getString("auth_token", "");
         userId = sharedPreferences.getString("user_id", "");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         final ApiService apiService = ApiManager.getApiService();
         Observable<Categories> categories = apiService.getAllCategories(authToken);
@@ -186,7 +189,7 @@ public class PostingActivity extends AppCompatActivity implements GoogleApiClien
                                 public void onCompleted() {
                                     toast("登録したでー");
                                     finish();
-                                    proceedToActivity(NotificationActivity.class);
+                                    proceedToActivity(TimeLineActivity.class);
                                 }
 
                                 @Override

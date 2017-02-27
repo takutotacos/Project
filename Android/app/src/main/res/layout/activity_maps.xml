@@ -1,12 +1,11 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <android.support.design.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.MapsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -20,6 +19,7 @@
             android:layout_weight="1"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
+            app:title="@string/app_name"
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
             <android.support.v7.widget.Toolbar
@@ -28,7 +28,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+                app:popupTheme="@style/MyMaterialTheme.Base.PopupOverlay" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -44,14 +44,13 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
     <android.support.v4.view.ViewPager
         android:id="@+id/map_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:tabMode="scrollable"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    </android.support.design.widget.CoordinatorLayout>
 
     <fragment
         android:name="ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Fragment.FooterFragment"
@@ -60,4 +59,4 @@
         android:id="@+id/fragment_footer"
         android:layout_gravity="bottom" />
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

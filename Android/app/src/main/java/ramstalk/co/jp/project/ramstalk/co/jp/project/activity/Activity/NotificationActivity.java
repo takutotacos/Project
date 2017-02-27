@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ListView;
 
@@ -23,7 +24,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class NotificationActivity extends AppCompatActivity {
-    private static final String TAG = NotificationActivity.class.getSimpleName();
+    private final String TAG = NotificationActivity.class.getSimpleName();
     private SharedPreferences sharedPreferences;
     private String authToken;
     private ListView notificationListView;
@@ -34,6 +35,8 @@ public class NotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification);
         sharedPreferences = getApplicationContext().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         authToken = sharedPreferences.getString("auth_token", "");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         notificationListView = (ListView) findViewById(R.id.notification_list_layout).findViewById(R.id.notification_list);
 
         final List<Notification> notificationList = new ArrayList<Notification>();

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -35,7 +36,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class ShowImageActivity extends AppCompatActivity {
-    private static final String TAG = ShowImageActivity.class.getSimpleName();
+    private String TAG = ShowImageActivity.class.getSimpleName();
     private SharedPreferences sharedPreferences;
     private String authToken;
     private String postingId;
@@ -46,7 +47,6 @@ public class ShowImageActivity extends AppCompatActivity {
     private ImageView imageView;
     private ImageView commentImage;
     private LinearLayout commentInputComponent;
-    private LinearLayout commentDisplaySwitcher;
     private EditText commentInput;
     private TextView commentInputButton;
     private ListView commentListView;
@@ -55,6 +55,8 @@ public class ShowImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_image);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         sharedPreferences = getApplicationContext().getSharedPreferences(CommonConst.FileName.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         authToken = sharedPreferences.getString("auth_token", "");
         imageView = (ImageView) findViewById(R.id.content_show_image).findViewById(R.id.show_image_image);
@@ -63,7 +65,6 @@ public class ShowImageActivity extends AppCompatActivity {
         likeNumber = (TextView) findViewById(R.id.content_show_image).findViewById(R.id.like_number);
         commentNumber = (TextView) findViewById(R.id.content_show_image).findViewById(R.id.comment_number);
         commentInputComponent = (LinearLayout) findViewById(R.id.content_show_image).findViewById(R.id.comment_input_component);
-        commentDisplaySwitcher = (LinearLayout) findViewById(R.id.content_show_image).findViewById(R.id.comment_display_switch);
         commentImage = (ImageView) findViewById(R.id.content_show_image).findViewById(R.id.comment_button);
         commentInput = (EditText) findViewById(R.id.content_show_image).findViewById(R.id.comment_input);
         commentInputButton = (TextView) findViewById(R.id.content_show_image).findViewById(R.id.comment_input_button);
@@ -72,7 +73,6 @@ public class ShowImageActivity extends AppCompatActivity {
         final CommentAdapter adapter = new CommentAdapter(
                 getApplicationContext(), R.layout.comment_list_item, commentList);
 
-//        commentListView.setVisibility(View.GONE);
         commentInputComponent.setVisibility(View.GONE);
         Intent incomingIntent = getIntent();
         postingId = incomingIntent.getStringExtra("postingId");
@@ -135,17 +135,6 @@ public class ShowImageActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-//        commentDisplaySwitcher.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (commentListView.getVisibility() == View.GONE) {
-//                    commentListView.setVisibility(View.VISIBLE);
-//                } else {
-//                    commentListView.setVisibility(View.GONE);
-//                }
-//            }
-//        });
 
         commentImage.setOnClickListener(new View.OnClickListener() {
             @Override

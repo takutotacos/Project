@@ -35,9 +35,9 @@ import rx.schedulers.Schedulers;
  * Created by sugitatakuto on 2017/02/10.
  */
 public class PostingAdapter extends ArrayAdapter<Posting> {
-    private String TAG = PostingAdapter.class.getSimpleName();
+    private final String TAG = PostingAdapter.class.getSimpleName();
     private int resourceId;
-    private final List<Posting> postings;
+    private List<Posting> postings;
     private LayoutInflater inflater;
     private SharedPreferences sharedPreferences;
     private TextView likeNumber;

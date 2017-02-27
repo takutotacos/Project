@@ -68,9 +68,12 @@ public class ShowImageActivity extends AppCompatActivity {
         commentInput = (EditText) findViewById(R.id.content_show_image).findViewById(R.id.comment_input);
         commentInputButton = (TextView) findViewById(R.id.content_show_image).findViewById(R.id.comment_input_button);
         commentListView = (ListView) findViewById(R.id.content_show_image).findViewById(R.id.comment_list);
+        final List<Comment> commentList = new ArrayList<>();
+        final CommentAdapter adapter = new CommentAdapter(
+                getApplicationContext(), R.layout.comment_list_item, commentList);
+
 //        commentListView.setVisibility(View.GONE);
         commentInputComponent.setVisibility(View.GONE);
-        final List<Comment> commentList = new ArrayList<>();
         Intent incomingIntent = getIntent();
         postingId = incomingIntent.getStringExtra("postingId");
 
@@ -116,8 +119,7 @@ public class ShowImageActivity extends AppCompatActivity {
                 .subscribe(new Observer<Comments>() {
                     @Override
                     public void onCompleted() {
-                        final CommentAdapter adapter = new CommentAdapter(
-                                getApplicationContext(), R.layout.comment_list_item, commentList);
+                        adapter.notifyDataSetChanged();
                         commentListView.setAdapter(adapter);
                     }
 
@@ -176,6 +178,12 @@ public class ShowImageActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onNext(Posting postingTarget) {
+                                    for(int i = 0; i < Integer.parseInt(postingTarget.getCommentCounts()); i++) {
+                                        if(i + 1 == Integer.parseInt(postingTarget.getCommentCounts())) {
+                                            commentList.add(postingTarget.getComments().get(i));
+                                        }
+                                    }
+                                    adapter.notifyDataSetChanged();
                                     commentNumber.setText(postingTarget.getCommentCounts());
                                     commentInputComponent.setVisibility(View.GONE);
                                 }

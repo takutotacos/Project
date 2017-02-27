@@ -99,10 +99,6 @@
             android:name=".ramstalk.co.jp.project.activity.Activity.FollowersListActivity"
             android:label="@string/title_activity_followers_list"
             android:theme="@style/MyMaterialTheme.Base" />
-        <activity
-            android:name=".ramstalk.co.jp.project.activity.Activity.ShowCommentListActivity"
-            android:label="@string/title_activity_show_comment_list"
-            android:theme="@style/MyMaterialTheme.Base"></activity>
     </application>
 
 </manifest>

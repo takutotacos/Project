@@ -1,6 +1,7 @@
 package ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Base64;
 import android.util.Log;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ramstalk.co.jp.project.R;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.ShowImageActivity;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Comment;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Posting;
@@ -53,13 +55,16 @@ public class PostingAdapter extends ArrayAdapter<Posting> {
         View view = (convertView != null)? convertView : this.inflater.inflate(this.resourceId, null);
         final Posting posting = this.postings.get(position);
 
+        // setting comment
         TextView onePostingLineComment = (TextView)view.findViewById(R.id.time_line_posting_comment);
         onePostingLineComment.setText(posting.getContent());
 
+        // setting userId
         TextView onePostingLineUserId = (TextView) view.findViewById(R.id.time_line_posting_user_id);
         onePostingLineUserId.setText(posting.getUser().getUserId());
-        ImageView onePostingLineImage = (ImageView) view.findViewById(R.id.time_line_posting_image);
 
+        // setting posting image
+        ImageView onePostingLineImage = (ImageView) view.findViewById(R.id.time_line_posting_image);
         if(posting.getImage() != null) {
             byte[] decodedString = Base64.decode(posting.getImage(), Base64.DEFAULT);
             Glide.with(getContext())
@@ -70,6 +75,7 @@ public class PostingAdapter extends ArrayAdapter<Posting> {
             onePostingLineImage.setVisibility(View.GONE);
         }
 
+        // setting number of likes
         likeNumber = (TextView) view.findViewById(R.id.like_number);
         likeNumber.setText(posting.getLikeCounts());
         final ApiService apiService = ApiManager.getApiService();
@@ -109,8 +115,11 @@ public class PostingAdapter extends ArrayAdapter<Posting> {
                 }
         });
 
+        // setting number of comments
         TextView commentNumber = (TextView) view.findViewById(R.id.comment_number);
         commentNumber.setText(posting.getCommentCounts());
+
+        // setting comment input layout visibility
         final LinearLayout commentInputComponent = (LinearLayout) view.findViewById(R.id.comment_input_component);
         commentInputComponent.setVisibility(View.GONE);
         ImageView commentImage = (ImageView) view.findViewById(R.id.comment_button);
@@ -120,7 +129,6 @@ public class PostingAdapter extends ArrayAdapter<Posting> {
                 commentInputComponent.setVisibility(View.VISIBLE);
             }
         });
-
         EditText commentInput = (EditText) view.findViewById(R.id.comment_input);
         final String comment = commentInput.getText().toString();
         TextView commentInputButton = (TextView) view.findViewById(R.id.comment_input_button);
@@ -152,6 +160,16 @@ public class PostingAdapter extends ArrayAdapter<Posting> {
                                 }
                             });
                 }
+            }
+        });
+
+        LinearLayout commentDisplaySwitcher = (LinearLayout) view.findViewById(R.id.comment_display_switch);
+        commentDisplaySwitcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ShowImageActivity.class);
+                intent.putExtra("postingId", posting.getId());
+                getContext().startActivity(intent);
             }
         });
         return view;

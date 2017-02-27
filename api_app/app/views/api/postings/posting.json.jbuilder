@@ -14,3 +14,14 @@ json.category do
   json.id @posting.category.id
   json.category_name @posting.category.category_name
 end
+if @posting.comments.present?
+  json.comments @posting.comments do |comment|
+    json.id comment.id
+    json.content comment.content
+    json.created_at comment.created_at
+    json.user do
+      json.id comment.user.id
+      json.user_id comment.user.user_id
+    end
+  end
+end

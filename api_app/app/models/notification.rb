@@ -4,5 +4,5 @@ class Notification < ApplicationRecord
   belongs_to :posting
   belongs_to :comment
 
-  validates :user_id, :notified_by_id, :posting_id, :comment_id, :notice_type, presence: true
+  validates :user_id, :notified_by_id, :posting_id, :notice_type, presence: true
 end

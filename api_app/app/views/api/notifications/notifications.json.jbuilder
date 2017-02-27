@@ -10,9 +10,11 @@ json.notifications @notifications do |notification|
     json.id notification.notified_by.id
     json.user_id notification.notified_by.user_id
   end
-  json.comment do
-    json.id notification.comment.id
-    json.content notification.comment.content
+  if notification.comment.present?
+    json.comment do
+      json.id notification.comment.id
+      json.content notification.comment.content
+    end
   end
   json.posting do
     json.id notification.posting.id

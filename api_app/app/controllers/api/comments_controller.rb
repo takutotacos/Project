@@ -3,6 +3,11 @@ module Api
 	class CommentsController < ApplicationController
 		before_action :set_posting
 
+		def index
+			@comments = @posting.comments
+			render 'comments', formats: 'json', handlers: 'jbuilder'
+		end
+
 		def create
 			@comment = @posting.comments.build(comment_params)
 			@comment.user_id = current_user.id

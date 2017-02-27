@@ -43,10 +43,8 @@ module Api
     end
 
     def find_within_certain_distance
-      followings = current_user.following.select("id")
       @postings = Posting.within(0.2, :origin => [params[:latitude], params[:longitude]])
-      @postings002 = @postings.where('category_id = ? AND user_id IN (?)',
-       params[:category_id], followings)
+      @postings002 = @postings.where('category_id = ?', params[:category_id])
       render 'postings', formats: 'json', handlers: 'jbuilder'
     end
 

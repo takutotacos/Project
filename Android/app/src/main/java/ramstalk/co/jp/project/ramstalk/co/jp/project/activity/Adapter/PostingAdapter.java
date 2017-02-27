@@ -56,8 +56,8 @@ public class PostingAdapter extends ArrayAdapter<Posting> {
         TextView onePostingLineComment = (TextView)view.findViewById(R.id.time_line_posting_comment);
         onePostingLineComment.setText(posting.getContent());
 
-        TextView onePostingLineUserInfo = (TextView) view.findViewById(R.id.time_line_posting_user_id);
-        onePostingLineUserInfo.setText(posting.getUser().getUserId());
+        TextView onePostingLineUserId = (TextView) view.findViewById(R.id.time_line_posting_user_id);
+        onePostingLineUserId.setText(posting.getUser().getUserId());
         ImageView onePostingLineImage = (ImageView) view.findViewById(R.id.time_line_posting_image);
 
         if(posting.getImage() != null) {

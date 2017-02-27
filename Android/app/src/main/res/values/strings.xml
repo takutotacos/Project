@@ -19,7 +19,12 @@
     <string name="title_activity_show_image">ShowImage</string>
     <string name="title_activity_location">LocationActivity</string>
     <string name="title_activity_posting">PostingActivity</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_notification">NotificationActivity</string>
+    <string name="title_activity_add_following">AddFollowingActivity</string>
+    <string name="title_activity_followings_list">FollowingsListActivity</string>
+    <string name="title_activity_followers_list">FollowersListActivity</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_time_line">TimeLineActivity</string>
 
     <!-- Strings related to main -->
     <string name="button_to_map">MapActivity</string>
@@ -51,7 +56,6 @@
     <string name="footer_home">設定</string>
     <string name="footer_wall">一覧</string>
     <string name="footer_making_a_posting">投稿</string>
-    <string name="title_activity_home">HomeActivity</string>
 
     <!-- Strings related to ホーム画面 -->
     <string name="follower">Followers</string>
@@ -61,9 +65,6 @@
     <!-- Strings related to ユーザフォロー画面 -->
     <string name="user_not_exists">ユーザが見つかりません。</string>
     <string name="user_add_success">フォローしました。</string>
-    <string name="title_activity_followings_list">FollowingsListActivity</string>
-    <string name="title_activity_followers_list">FollowersListActivity</string>
-
 
     <!-- Strings related to 投稿画面 -->
     <string name="likes">Likes</string>
@@ -77,4 +78,5 @@
     <string name="notification_notice_type_like">「いいね」しました。</string>
     <string name="notification_notice_type_comment">「コメント」しました。</string>
     <string name="notification_created_at">at some time</string>
+    <string name="title_activity_show_comment_list">ShowCommentListActivity</string>
 </resources>

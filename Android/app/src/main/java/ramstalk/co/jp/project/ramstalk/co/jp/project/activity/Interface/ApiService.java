@@ -4,13 +4,12 @@ import java.util.HashMap;
 
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Categories;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Comment;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Comments;
+import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Notifications;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Posting;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Postings;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.User;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Users;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Notification;
-import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity.Notifications;
-
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
@@ -80,6 +79,9 @@ public interface ApiService {
     Observable<Notifications> getNotifications(@Header("Authorization") String authToken);
 
     @POST("notifications/{notification_id}/")
-    Observable<Notification> showNotification(@Header("Authorization") String authToken,
+    Observable<Void> showNotification(@Header("Authorization") String authToken,
                                               @Path("notification_id") String notification_id);
+    @GET("postings/{posting_id}/comments")
+    Observable<Comments> getComments(@Header("Authorization") String authToken,
+                                     @Path("posting_id") String posting_id);
 }

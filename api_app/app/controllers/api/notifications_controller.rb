@@ -11,7 +11,7 @@ module Api
       @notification = Notification.find(params[:id])
       @notification.update read: true
       # @notification.posting
-      render 'notification', formats: 'json', handlers: 'jbuilder'
+      # render 'notification', formats: 'json', handlers: 'jbuilder'
     end
 
   end

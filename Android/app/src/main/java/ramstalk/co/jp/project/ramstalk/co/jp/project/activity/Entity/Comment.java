@@ -1,6 +1,7 @@
 package ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Entity;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.Date;
 
 /**
  * Created by sugitatakuto on 2017/02/21.
@@ -15,6 +16,16 @@ public class Comment {
     private String postingId;
 
     private String content;
+
+    @SerializedName("created_at")
+    private Date createdAt;
+
+    @SerializedName("updated_at")
+    private Date updatedAt;
+
+    private User user;
+
+    private Posting posting;
 
     public Comment() {}
 
@@ -57,5 +68,37 @@ public class Comment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Posting getPosting() {
+        return posting;
+    }
+
+    public void setPosting(Posting posting) {
+        this.posting = posting;
     }
 }

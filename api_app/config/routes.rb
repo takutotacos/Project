@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     resources :users
     resources :postings do
         resources :likes, only: [:create, :destroy]
-        resources :comments, only: [:create, :destroy, :edit]
+        resources :comments, only: [:index, :create, :destroy, :edit]
     end
     resources :categories
     resources :relationships
@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     get 'followings', to: 'relationships#get_followings'
     get 'follower_numbers', to: 'relationships#get_follower_numbers'
     get 'following_numbers', to: 'relationships#get_following_numbers'
-    get 'notifications/:id/', to: 'notifications#show'
+    post 'notifications/:id/', to: 'notifications#show'
     get 'notifications', to: 'notifications#index'
   end
 end

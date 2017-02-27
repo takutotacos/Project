@@ -10,9 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +25,6 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * Interface.
- */
 public class TimeLineFragment extends Fragment {
     private String TAG = TimeLineFragment.class.getSimpleName();
     private final static String CATEGORY_ID = "cateogry";
@@ -84,8 +75,10 @@ public class TimeLineFragment extends Fragment {
 
                     @Override
                     public void onNext(Postings postings) {
-                        for (Posting posting : postings.getPostings()) {
-                            postingList.add(posting);
+                        if(postings.getPostings() != null) {
+                            for (Posting posting : postings.getPostings()) {
+                                postingList.add(posting);
+                            }
                         }
                     }
                 });

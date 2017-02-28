@@ -3,9 +3,14 @@ module Api
   class RelationshipsController < ApplicationController
 
     def create
-      @action = "7"
       current_user.follow(User.find(params[:id]))
       @following_numbers = current_user.following.count
+    end
+
+    def destroy
+      current_user.unfollow(User.find(params[:id]))
+      @followings = current_user.following
+      render 'followings', formats: 'json', handlers: 'jbuilder'
     end
 
     def get_followers

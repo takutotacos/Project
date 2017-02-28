@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     get 'like_user_id_query', to: 'users#like_user_id_query'
     get 'followers', to: 'relationships#get_followers'
     get 'followings', to: 'relationships#get_followings'
+    post 'delete_followings', to: 'relationships#destroy'
     get 'follower_numbers', to: 'relationships#get_follower_numbers'
     get 'following_numbers', to: 'relationships#get_following_numbers'
     post 'notifications/:id/', to: 'notifications#show'

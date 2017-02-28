@@ -53,6 +53,10 @@ public interface ApiService {
     @GET("followings")
     Observable<Users> getFollowings(@Header("Authorization") String authToken,
                                     @Query("user_id") String user_id);
+    @FormUrlEncoded
+    @POST("delete_followings")
+    Observable<Void> deleteFromFollowing(@Header("Authorization") String authToken,
+                                          @Field("id") String idToDelete);
     @GET("followers")
     Observable<Users> getFollowers(@Header("Authorization") String authToken,
                                    @Query("user_id") String user_id);

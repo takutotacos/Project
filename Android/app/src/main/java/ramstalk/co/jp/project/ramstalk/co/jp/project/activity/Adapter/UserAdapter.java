@@ -61,15 +61,18 @@ public class UserAdapter extends ArrayAdapter<User> {
         return view;
     }
 
-    private void setUpButton(String activityName, ImageButton userListButton, final int position) {
+    private void setUpButton(final String activityName, ImageButton userListButton, final int position) {
+        if(CommonConst.ActivityName.TAG_LIST_FOLLOWINGS_ACTIVITY.equals(activityName)) {
+            userListButton.setBackgroundResource(android.R.drawable.ic_menu_close_clear_cancel);
+        }
         final ApiService apiService = ApiManager.getApiService();
-        if(CommonConst.ActivityName.TAG_ADD_FOLLOWING_ACTIVITY.equals(activityName)) { // when adding a user to a following list
-            userListButton.setOnClickListener(new View.OnClickListener() {
+        final String userId = users.get(position).getId();
+        userListButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String idToAdd = users.get(position).getId();
-                    Observable<Void> addToFollowing = apiService.addToFollowing(authToken, idToAdd);
-                    addToFollowing.subscribeOn(Schedulers.newThread())
+                Observable<Void> relationships = (CommonConst.ActivityName.TAG_LIST_FOLLOWINGS_ACTIVITY.equals(activityName))?
+                        apiService.deleteFromFollowing(authToken, userId) : apiService.addToFollowing(authToken, userId);
+                    relationships.subscribeOn(Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<Void>() {
                                 @Override
@@ -89,28 +92,5 @@ public class UserAdapter extends ArrayAdapter<User> {
                             });
                 }
             });
-        } else {
-            userListButton.setBackgroundResource(android.R.drawable.ic_menu_close_clear_cancel);
-            if(CommonConst.ActivityName.TAG_LIST_FOLLOWERS_ACTIVITY.equals(activityName)) {
-                //@TODO add delete follower or following task
-//                userListButton.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        mAsyncAddFollowing = new AsyncAddFollowing(delegate, authToken, users, position);
-//                        mAsyncAddFollowing.execute();
-//                    }
-//                });
-            } else {
-//                userListButton.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        mAsyncAddFollowing = new AsyncAddFollowing(delegate, authToken, users, position);
-//                        mAsyncAddFollowing.execute();
-//                    }
-//                });
-            }
-
-        }
     }
-
 }

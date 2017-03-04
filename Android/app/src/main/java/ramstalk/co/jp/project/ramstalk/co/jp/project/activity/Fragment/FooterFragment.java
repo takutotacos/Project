@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
 import ramstalk.co.jp.project.R;
 import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Activity.HomeActivity;
@@ -20,8 +20,11 @@ import ramstalk.co.jp.project.ramstalk.co.jp.project.activity.Cons.CommonConst;
 
 public class FooterFragment extends Fragment {
     private static String TAG = FooterFragment.class.getSimpleName();
-    private TextView mWallTextView, mNotificationTextView, mHomeTextView, mMapTextView, mMakingAPostingTextView;
-
+    private Button mNotificationButton;
+    private Button mHomeButton;
+    private Button mMakingAPostingButton;
+    private Button mTimelineButton;
+    private Button mMapButton;
     public FooterFragment() {
         // Required empty public constructor
     }
@@ -34,17 +37,17 @@ public class FooterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_footer, null);
-        mWallTextView = (TextView) view.findViewById(R.id.footer_wall);
-        mNotificationTextView = (TextView) view.findViewById(R.id.footer_notification);
-        mHomeTextView = (TextView) view.findViewById(R.id.footer_home);
-        mMapTextView = (TextView) view.findViewById(R.id.footer_map);
-        mMakingAPostingTextView = (TextView) view.findViewById(R.id.footer_making_a_posting);
+        mTimelineButton= (Button) view.findViewById(R.id.footer_timeline);
+        mNotificationButton = (Button) view.findViewById(R.id.footer_notification);
+        mHomeButton = (Button) view.findViewById(R.id.footer_home);
+        mMapButton = (Button) view.findViewById(R.id.footer_map);
+        mMakingAPostingButton = (Button) view.findViewById(R.id.footer_making_a_posting);
 
-        mWallTextView.setOnTouchListener(new TouchListener(CommonConst.ActivityName.TAG_TIME_LINE_ACTIVITY));
-        mNotificationTextView.setOnTouchListener(new TouchListener(CommonConst.ActivityName.TAG_NOTIFICATION_ACTIVITY));
-        mHomeTextView.setOnTouchListener(new TouchListener(CommonConst.ActivityName.TAG_HOME_ACTIVITY));
-        mMapTextView.setOnTouchListener(new TouchListener(CommonConst.ActivityName.TAG_MAPS_ACTIVITY));
-        mMakingAPostingTextView.setOnTouchListener(new TouchListener(CommonConst.ActivityName.TAG_POSTING_ACTIVITY));
+        mTimelineButton.setOnTouchListener(new TouchListener(CommonConst.ActivityName.TAG_TIME_LINE_ACTIVITY));
+        mNotificationButton.setOnTouchListener(new TouchListener(CommonConst.ActivityName.TAG_NOTIFICATION_ACTIVITY));
+        mHomeButton.setOnTouchListener(new TouchListener(CommonConst.ActivityName.TAG_HOME_ACTIVITY));
+        mMapButton.setOnTouchListener(new TouchListener(CommonConst.ActivityName.TAG_MAPS_ACTIVITY));
+        mMakingAPostingButton.setOnTouchListener(new TouchListener(CommonConst.ActivityName.TAG_POSTING_ACTIVITY));
         return view;
     }
 

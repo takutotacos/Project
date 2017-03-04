@@ -35,51 +35,6 @@ public class CommonConst {
     }
 
     public static class Api {
-        public static final String LOCAL_SERVER_FOR_RX = "http://10.0.2.2:3000/api/";
+        public static final String LOCAL_SERVER_FOR_RX = "http://13.112.170.215/api/";
     }
-
-    public class ApiAction {
-        public static final String SHOW = "1";
-
-        public static final String CREATE = "CREATE";
-
-        public static final String INDEX = "INDEX";
-
-        public static final String GET_FOLLOWINGS = "4";
-
-        public static final String GET_FOLLOWERS = "5";
-
-        public static final String LIKE_USER_QUERY = "6";
-
-        public static final String ADD_FOLLOWING = "7";
-
-        public static final String LIKE_A_POST = "8";
-
-        public static final String DELETE_A_LIKE = "9";
-    }
-
-    public class StatusOfUser {
-        public static final String IS_USER_REMEMBERED = "isUserRemembered";
-    }
-
-    public class ApiResponse {
-        public static final String NOT_EXISTS = "-1";
-
-        public static final String EXISTS = "1";
-
-        public static final String REGISTER_SUCCESSFUL = "2";
-
-        public static final String REGISTER_FAILED = "3";
-
-        public static final String NULL = "null";
-
-        public static final String ADD_SUCCESS = "4";
-
-        public static final String ADD_FAILED = "5";
-    }
-
-    public class ApiKey {
-        public static final String GOOLGLE_API_KEY = "AIzaSyAPQgLrviezS8Phw0oKzPQ47tu6G-7Z4FM\t";
-    }
-
 }

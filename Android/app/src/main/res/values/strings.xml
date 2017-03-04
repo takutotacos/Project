@@ -54,7 +54,7 @@
     <string name="footer_map">地図</string>
     <string name="footer_notification">通知</string>
     <string name="footer_home">設定</string>
-    <string name="footer_wall">一覧</string>
+    <string name="footer_timeline">一覧</string>
     <string name="footer_making_a_posting">投稿</string>
 
     <!-- Strings related to ホーム画面 -->

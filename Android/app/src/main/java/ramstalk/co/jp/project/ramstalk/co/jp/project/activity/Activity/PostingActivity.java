@@ -174,7 +174,7 @@ public class PostingActivity extends AppCompatActivity implements GoogleApiClien
             public void onClick(View v) {
                 String comment = commentView.getText().toString();
                 //画像が選択されているか、コメントがあるかチェック
-                if(isValidValue(comment) && isValidValue(image) && isValidValue(userId)) {
+                if(isValidValue(comment) && isValidValue(userId)) {
                     Log.d(TAG,"POSTED");
                     Posting posting = new Posting(null,userId, selectedCategoryId, comment,
                             String.valueOf(latitude), String.valueOf(longitude),
